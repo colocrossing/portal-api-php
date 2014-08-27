@@ -3,11 +3,19 @@
 class ColoCrossing_Object
 {
 
+	private $resource;
+
 	private $values;
 
-	public function __construct(array $values = array())
+	public function __construct(ColoCrossing_Resource $resource, array $values = array())
 	{
+		$this->resource = $resource;
 		$this->values = $values;
+	}
+
+	public function getResource()
+	{
+		return $this->resource;
 	}
 
 	public function getValues()
@@ -15,19 +23,9 @@ class ColoCrossing_Object
 		return $this->values;
 	}
 
-	public function setValues($values)
-	{
-		$this->values = $values;
-	}
-
 	public function getValue($key)
 	{
 		return isset($this->values[$key]) ? $this->values[$key] : false;
-	}
-
-	public function setValue($key, $value)
-	{
-		return $this->values[$key] = $value;
 	}
 
 	public function __toJSON()

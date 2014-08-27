@@ -44,7 +44,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 			return array();
 		}
 
-		return ColoCrossing_Object_Factory::createObjectArray($this->getName(), $content[$name]);
+		return ColoCrossing_Object_Factory::createObjectArray($this, $content[$name]);
 	}
 
 	public function find($id)
@@ -59,7 +59,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 			return null;
 		}
 
-		return ColoCrossing_Object_Factory::createObject($name, $content[$name]);
+		return ColoCrossing_Object_Factory::createObject($this, $content[$name]);
 	}
 
 	public function getClient()
