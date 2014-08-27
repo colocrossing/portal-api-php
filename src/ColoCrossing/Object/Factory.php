@@ -3,9 +3,9 @@
 class ColoCrossing_Object_Factory
 {
 
-	public static function createObject(ColoCrossing_Resource $resource, array $values = array())
+	public static function createObject($resource = null, array $values = array())
 	{
-		$type = $resource->getName(false);
+		$type = isset($resource) ? $resource->getName(false) : 'subnet';
 
 		switch ($type)
 		{
@@ -20,9 +20,8 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($resource, $values);
 	}
 
-	public static function createObjectArray(ColoCrossing_Resource $resource, array $objects_values = array())
+	public static function createObjectArray($resource = null, array $objects_values = array())
 	{
-		$type = $resource->getName(false);
 		$objects = [];
 
 		foreach ($objects_values as $index => $values)

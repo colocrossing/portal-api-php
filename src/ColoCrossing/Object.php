@@ -7,7 +7,7 @@ class ColoCrossing_Object
 
 	private $values;
 
-	public function __construct(ColoCrossing_Resource $resource, array $values = array())
+	public function __construct($resource = null, array $values = array())
 	{
 		$this->resource = $resource;
 		$this->values = $values;
