@@ -12,7 +12,7 @@ class ColoCrossing_Http_Request
 
 	private $data = array();
 
-	public function __construct($url, $method = 'GET', array $headers = array(), array $queryParams = array(), array $data = array())
+	public function __construct($url, $method = 'GET', array $data = array(), array $queryParams = array(), array $headers = array())
 	{
 		$this->setUrl($url);
 

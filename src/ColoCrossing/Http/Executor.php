@@ -2,7 +2,10 @@
 
 class ColoCrossing_Http_Executor
 {
+
 	private $curl;
+
+	private $client;
 
 	public function __construct(ColoCrossing_Client $client)
 	{
@@ -87,7 +90,7 @@ class ColoCrossing_Http_Executor
 		$response = curl_exec($curl);
 		if(is_bool($response) && !$response)
 		{
-			throw new Exception('Unable to make connection to ColoCrossing API.');
+			throw new ColoCrossing_Error('Unable to make connection to ColoCrossing API.');
 		}
 
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -105,4 +108,5 @@ class ColoCrossing_Http_Executor
 		curl_close($this->curl);
 		$this->curl = null;
 	}
+
 }

@@ -77,6 +77,10 @@ class ColoCrossing_Http_Response
 				break;
 			case 'application/json':
 				$this->content = json_decode($this->body, true);
+				if(isset($this->content) && isset($this->content['status']) && $this->content['status'] == 'error')
+				{
+					$this->throwError();
+				}
 				break;
 			default:
 				$this->content = null;
@@ -88,4 +92,22 @@ class ColoCrossing_Http_Response
 	{
 		$this->code = $code;
 	}
+
+	private function throwError()
+	{
+		switch ($this->content['type']) {
+			case 'api_token_missing':
+			case 'unauthorized':
+			case 'inactive':
+				throw new ColoCrossing_Error_Authorization($this->code, $this->content);
+				break;
+			case 'missing_resource':
+				throw new ColoCrossing_Error_NotFound($this->content);
+				break;
+			default:
+				throw new ColoCrossing_Error_Api($this->code, $this->content);
+				break;
+		}
+	}
+
 }

@@ -29,6 +29,8 @@ class ColoCrossing_Client
 		}
 
 		$this->setOptions($options);
+
+		$this->sample_resource = new ColoCrossing_Resource_Abstract($this);
 	}
 
 	public function setAPIToken($api_token)
