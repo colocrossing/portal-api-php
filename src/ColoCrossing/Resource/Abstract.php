@@ -1,25 +1,65 @@
 <?php
 
-class ColoCrossing_Resource_Abstract
+abstract class ColoCrossing_Resource_Abstract
 {
 
 	private $client;
 
-	public function __construct(ColoCrossing_Client $client)
+	private $name;
+
+	private $url;
+
+	public function __construct(ColoCrossing_Client $client, $name, $url)
 	{
 		$this->client = $client;
+		$this->url = $url;
+
+		$this->setName($name);
 	}
 
-	public function test()
+	public function findAll($options = null)
 	{
-		$response = $this->sendRequest('/devices/100');
+		$url = $this->getURL();
+		$response = $this->sendRequest($url);
+		$content = $response->getContent();
+		$name = $this->getName(true);
 
-		var_dump($response->getContent());
+		if(empty($content) || empty($content[$name]))
+		{
+			return null;
+		}
+
+		return ColoCrossing_Object_Factory::createObjectCollection($name, $content[$name]);
+	}
+
+	public function find($id)
+	{
+		$url = $this->getURL() . '/' . urlencode($id);
+		$response = $this->sendRequest($url);
+		$content = $response->getContent();
+		$name = $this->getName();
+
+		if(empty($content) || empty($content[$name]))
+		{
+			return null;
+		}
+
+		return ColoCrossing_Object_Factory::createObject($name, $content[$name]);
 	}
 
 	public function getClient()
 	{
 		return $this->client;
+	}
+
+	public function getName($plural = false)
+	{
+		return $this->name[$plural ? 'plural' : 'singular'];
+	}
+
+	public function getURL()
+	{
+		return $this->url;
 	}
 
 	protected function sendRequest($url, $method = 'GET', $data = array())
@@ -37,6 +77,21 @@ class ColoCrossing_Resource_Abstract
 	{
 		$executor = $this->client->getHttpExecutor();
 		return $executor->executeRequest($request);
+	}
+
+	private function setName($name)
+	{
+		if(is_array($name))
+		{
+			$this->name = $name;
+		}
+		else
+		{
+			$this->name = array(
+				'singular' => $name,
+				'plural' => $name . 's'
+			);
+		}
 	}
 
 }

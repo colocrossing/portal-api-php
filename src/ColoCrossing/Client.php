@@ -10,7 +10,8 @@ class ColoCrossing_Client
 		'api_version' => 1,
 		'request_timeout' => 60,
 		'follow_redirects' => false,
-		'ssl_verify' => true
+		'ssl_verify' => true,
+		'page_limit' => 30
 	);
 
 	private $api_token;
@@ -30,7 +31,7 @@ class ColoCrossing_Client
 
 		$this->setOptions($options);
 
-		$this->sample_resource = new ColoCrossing_Resource_Abstract($this);
+		$this->devices = new ColoCrossing_Resource_Devices($this);
 	}
 
 	public function setAPIToken($api_token)

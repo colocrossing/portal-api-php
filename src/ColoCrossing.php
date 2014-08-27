@@ -21,6 +21,12 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Http/Response.php');
 
 //Include Resources Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Abstract.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Devices.php');
+
+//Include Objects Package
+require_once(dirname(__FILE__) . '/ColoCrossing/Object.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Object/Factory.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Object/Device.php');
 
 //Include Errors Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Error.php');
