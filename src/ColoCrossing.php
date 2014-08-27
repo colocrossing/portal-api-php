@@ -38,3 +38,6 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Error.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Error/Api.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Error/Authorization.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Error/NotFound.php');
+
+//Include Utility Class
+require_once(dirname(__FILE__) . '/ColoCrossing/Utility.php');
