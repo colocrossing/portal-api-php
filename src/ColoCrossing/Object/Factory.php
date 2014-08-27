@@ -13,7 +13,7 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($values);
 	}
 
-	public static function createObjectCollection($type, array $objects_values = array())
+	public static function createObjectArray($type, array $objects_values = array())
 	{
 		$objects = [];
 

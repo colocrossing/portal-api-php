@@ -19,9 +19,14 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Http/Request.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Http/Executor.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Http/Response.php');
 
+//Include Collection Class
+require_once(dirname(__FILE__) . '/ColoCrossing/Collection.php');
+
 //Include Resources Package
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Abstract.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Devices.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Subnets.php');
 
 //Include Objects Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Object.php');

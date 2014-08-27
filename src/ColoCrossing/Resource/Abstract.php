@@ -1,6 +1,6 @@
 <?php
 
-abstract class ColoCrossing_Resource_Abstract
+abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 {
 
 	private $client;
@@ -19,17 +19,31 @@ abstract class ColoCrossing_Resource_Abstract
 
 	public function findAll($options = null)
 	{
-		$url = $this->getURL();
-		$response = $this->sendRequest($url);
+		$options = isset($options) && is_array($options) ? $options : array();
+
+		$format = isset($options['format']) ? $options['format'] : 'collection';
+		$page_number = isset($options['page_number']) ? max($options['page_number'], 1) : 1;
+		$page_size = isset($options['page_size']) ? $options['page_size'] : $this->client->getOption('page_size');
+		$page_size = max(min($page_size, 100), 1);
+
+		if($format == 'collection')
+		{
+			return new ColoCrossing_Collection($this, $page_number, $page_size);
+		}
+
+		$request = $this->createRequest($this->getURL());
+		$request->setQueryParams(array('page' => $page_number, 'limit' => $page_size));
+		$response = $this->executeRequest($request);
+
 		$content = $response->getContent();
 		$name = $this->getName(true);
 
 		if(empty($content) || empty($content[$name]))
 		{
-			return null;
+			return array();
 		}
 
-		return ColoCrossing_Object_Factory::createObjectCollection($name, $content[$name]);
+		return ColoCrossing_Object_Factory::createObjectArray($name, $content[$name]);
 	}
 
 	public function find($id)
