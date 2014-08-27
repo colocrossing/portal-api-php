@@ -15,14 +15,17 @@ class ColoCrossing_Collection implements Iterator, Countable
 
 	private $page_size;
 
+	private $sort;
+
 	private $objects;
 
-	public function __construct(ColoCrossing_Resource $resource, $page_number = 1, $page_size = 30)
+	public function __construct(ColoCrossing_Resource $resource, $page_number = 1, $page_size = 30, array $sort = array())
 	{
 		$this->resource = $resource;
 
 		$this->setPageNumber($page_number);
 		$this->setPageSize($page_size);
+		$this->setSort($sort);
 
 		$this->overall_position = ($this->page_number - 1) * $this->page_size;
 		$this->page_position = 0;
@@ -104,12 +107,18 @@ class ColoCrossing_Collection implements Iterator, Countable
 		$this->page_size = max(min($page_size, 100), 1);
 	}
 
+	private function setSort($sort)
+	{
+		$this->sort = $sort;
+	}
+
 	private function loadCurrentPage()
 	{
 		$options = array(
 			'format' => 'array',
 			'page_number' => $this->page_number,
-			'page_size' => $this->page_size
+			'page_size' => $this->page_size,
+			'sort' => $this->sort
 		);
 		$this->objects = $this->resource->findAll($options);
 	}

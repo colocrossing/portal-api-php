@@ -22,17 +22,18 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$options = isset($options) && is_array($options) ? $options : array();
 
 		$format = isset($options['format']) ? $options['format'] : 'collection';
+		$sort = isset($options['sort']) ? (is_array($options['sort']) ? $options['sort'] : array($options['sort']) ) : array();
 		$page_number = isset($options['page_number']) ? max($options['page_number'], 1) : 1;
 		$page_size = isset($options['page_size']) ? $options['page_size'] : $this->client->getOption('page_size');
 		$page_size = max(min($page_size, 100), 1);
 
 		if($format == 'collection')
 		{
-			return new ColoCrossing_Collection($this, $page_number, $page_size);
+			return new ColoCrossing_Collection($this, $page_number, $page_size, $sort);
 		}
 
 		$request = $this->createRequest($this->getURL());
-		$request->setQueryParams(array('page' => $page_number, 'limit' => $page_size));
+		$request->setQueryParams(array('page' => $page_number, 'limit' => $page_size, 'sort' => implode($sort, ',')));
 		$response = $this->executeRequest($request);
 
 		$content = $response->getContent();
