@@ -51,4 +51,14 @@ class ColoCrossing_Object
 		return $this->values;
 	}
 
+	public function __call($name, $arguments)
+    {
+    	$name = ltrim(ColoCrossing_Utility::convertCamelCaseToSnakeCase($name), 'get_');
+        if (isset($this->values[$name]) || array_key_exists($name, $this->values))
+        {
+            return $this->values[$name];
+        }
+
+        return null;
+    }
 }

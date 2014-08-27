@@ -7,7 +7,11 @@ class ColoCrossing_Object_Factory
 	{
 		switch ($type) {
 			case 'device':
+				require_once(dirname(__FILE__) . '/Device.php');
 				return new ColoCrossing_Object_Device($values);
+			case 'subnet':
+				require_once(dirname(__FILE__) . '/Subnet.php');
+				return new ColoCrossing_Object_Subnet($values);
 		}
 
 		return new ColoCrossing_Object($values);
