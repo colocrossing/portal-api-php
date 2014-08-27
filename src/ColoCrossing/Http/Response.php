@@ -74,12 +74,16 @@ class ColoCrossing_Http_Response
 			case 'image/png':
 			case 'image/gif':
 				$this->content = imagecreatefromstring($this->body);
+				if(is_bool($this->content) && !$this->content)
+				{
+					throw new ColoCrossing_Error('ColoCrossing API Error - Image is corrupt or in an unsupported format.');
+				}
 				break;
 			case 'application/json':
 				$this->content = json_decode($this->body, true);
 				if(isset($this->content) && isset($this->content['status']) && $this->content['status'] == 'error')
 				{
-					$this->throwError();
+					$this->throwAPIError();
 				}
 				break;
 			default:
@@ -93,7 +97,7 @@ class ColoCrossing_Http_Response
 		$this->code = $code;
 	}
 
-	private function throwError()
+	private function throwAPIError()
 	{
 		switch ($this->content['type']) {
 			case 'api_token_missing':

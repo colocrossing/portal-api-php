@@ -12,7 +12,7 @@ class ColoCrossing_Resource_Abstract
 
 	public function test()
 	{
-		$response = $this->sendRequest('/');
+		$response = $this->sendRequest('/devices/100');
 
 		var_dump($response->getContent());
 	}

@@ -7,7 +7,7 @@ class ColoCrossing_Error_Api extends ColoCrossing_Error
 
 	private $type;
 
-	public function __construct($status = 500, $content = null, $message = null)
+	public function __construct($status = 500, array $content = array(), $message = null)
 	{
 		parent::__construct((isset($message) ? $message : 'ColoCrossing API Error') . ' - ' . $content['message']);
 
@@ -17,7 +17,7 @@ class ColoCrossing_Error_Api extends ColoCrossing_Error
 
 	public function getStatus()
 	{
-		return $this->http_status;
+		return $this->status;
 	}
 
 	public function getType()
