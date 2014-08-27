@@ -19,7 +19,7 @@ class ColoCrossing_Http_Request
 		$this->setMethod($method);
 		$this->setHeaders($headers);
 
-		$this->setQueryParams($getQueryParams);
+		$this->setQueryParams($queryParams);
 		$this->setData($data);
 	}
 
@@ -75,7 +75,7 @@ class ColoCrossing_Http_Request
 
 	public function getQueryString()
 	{
-		return count($this->queryParams) ? '?' . $this->buildQuery($this->queryParams) : '';
+		return count($this->queryParams) ? '?' . http_build_query($this->queryParams) : '';
 	}
 
 	public function setData(array $data)
@@ -87,24 +87,4 @@ class ColoCrossing_Http_Request
 	{
 		return $this->data;
 	}
-
-	private function buildQuery($parts)
-  	{
-    	$pairs = array();
-    	foreach ($parts as $key => $value)
-    	{
-      		if (is_array($value))
-      		{
-        		foreach ($value as $v)
-        		{
-          			$pairs[] = urlencode($key) . '=' . urlencode($v);
-        		}
-      		}
-      		else
-      		{
-        		$pairs[] = urlencode($key) . '=' . urlencode($value);
-      		}
-    	}
-    	return implode('&', $pairs);
-  	}
 }

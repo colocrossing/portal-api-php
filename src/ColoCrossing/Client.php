@@ -1,17 +1,16 @@
 <?php
 
-require_once('ColoCrossing/Http/Executor.php');
-
 class ColoCrossing_Client
 {
-	public const $VERSION = '1.0.0';
+	const VERSION = '1.0.0';
 
 	private static $DEFAULT_OPTIONS = array(
-		'application_name' => 'ColoCrossing PHP API Client'
-		'resource_url' => 'https://portal.matt/api/',
-		'version' => 1,
+		'application_name' => 'ColoCrossing PHP API Client',
+		'api_url' => 'https://portal.matt/api/',
+		'api_version' => 1,
 		'request_timeout' => 60,
-		'follow_redirects' => false
+		'follow_redirects' => false,
+		'ssl_verify' => true
 	);
 
 	private $api_token;
@@ -26,13 +25,13 @@ class ColoCrossing_Client
 
 		if(empty($this->api_token))
 		{
-			$this->setAPIToken(getenv('COLOCROSSING_API_TOKEN'))
+			$this->setAPIToken(getenv('COLOCROSSING_API_TOKEN'));
 		}
 
 		$this->setOptions($options);
 	}
 
-	public function setAPIToken(array $api_token)
+	public function setAPIToken($api_token)
 	{
 		$this->api_token = $api_token;
 	}
@@ -44,7 +43,7 @@ class ColoCrossing_Client
 
 	public function setOptions(array $options)
 	{
-		$this->options = array_merge($this->DEFAULT_OPTIONS, $options);
+		$this->options = array_merge(self::$DEFAULT_OPTIONS, $options);
 	}
 
 	public function getOptions()
@@ -73,6 +72,11 @@ class ColoCrossing_Client
 
 	public function getVersion()
 	{
-		return self::$VERSION;
+		return self::VERSION;
+	}
+
+	public function getBaseUrl()
+	{
+		return $this->getOption('api_url') . 'v' . $this->getOption('api_version');
 	}
 }

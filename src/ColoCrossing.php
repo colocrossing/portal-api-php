@@ -12,3 +12,7 @@ if (!function_exists('json_decode'))
 }
 
 require_once(dirname(__FILE__) . '/ColoCrossing/Client.php');
+
+require_once(dirname(__FILE__) . '/ColoCrossing/Http/Request.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Http/Executor.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Http/Response.php');

@@ -13,8 +13,10 @@ class ColoCrossing_Http_Executor
 	{
 		$this->createCurl();
 		$this->setCurlRequestOptions($request);
-		$this->executeCurl();
+		$response = $this->executeCurl();
 		$this->destroyCurl();
+
+		return $response;
 	}
 
 	private function createCurl()
@@ -26,12 +28,13 @@ class ColoCrossing_Http_Executor
 
 		$this->curl = curl_init();
 
-    	curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, $this->client->getOption('ssl_verify') ? 2 : 0);
+    	curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, $this->client->getOption('ssl_verify'));
     	curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
     	curl_setopt($this->curl, CURLOPT_HEADER, true);
 
 		curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $this->client->getOption('follow_redirects'));
-    	curl_setopt($curl, CURLOPT_USERAGENT, $this->client->getOption('application_name') . '/' . $client->getVersion());
+    	curl_setopt($this->curl, CURLOPT_USERAGENT, $this->client->getOption('application_name') . '/' . $this->client->getVersion());
     	curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, $this->client->getOption('request_timeout'));
     	curl_setopt($this->curl, CURLOPT_TIMEOUT, $this->client->getOption('request_timeout'));
 
@@ -53,12 +56,20 @@ class ColoCrossing_Http_Executor
 		$this->setCurlHeaders($request->getHeaders());
 
 		$curl = $this->getCurl();
-		curl_setopt($curl, CURLOPT_URL, $request->getUrl());
+		curl_setopt($curl, CURLOPT_URL, $this->client->getBaseUrl() . $request->getUrl());
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getMethod());
+
+        $request_data = $request->getData();
+        if(count($request_data))
+        {
+        	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($request_data));
+        }
 	}
 
 	private function setCurlHeaders(array $headers = array())
 	{
+		$headers['X-API-Token'] = $this->client->getAPIToken();
+
 		$curl = $this->getCurl();
 	    $curl_headers = array();
 
@@ -72,7 +83,16 @@ class ColoCrossing_Http_Executor
 	private function executeCurl()
 	{
 		$curl = $this->getCurl();
+
 		$response = curl_exec($curl);
+		if(is_bool($response) && !$response)
+		{
+			throw new Exception('Unable to make connection to ColoCrossing API.');
+		}
+
+		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+		return new ColoCrossing_Http_Response($response, $code);
 	}
 
 	private function destroyCurl()
