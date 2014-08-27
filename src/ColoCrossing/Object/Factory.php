@@ -5,7 +5,8 @@ class ColoCrossing_Object_Factory
 
 	public static function createObject($type, array $values = array())
 	{
-		switch ($type) {
+		switch ($type)
+		{
 			case 'device':
 				require_once(dirname(__FILE__) . '/Device.php');
 				return new ColoCrossing_Object_Device($values);
@@ -21,7 +22,8 @@ class ColoCrossing_Object_Factory
 	{
 		$objects = [];
 
-		foreach ($objects_values as $index => $values) {
+		foreach ($objects_values as $index => $values)
+		{
 			$objects[] = self::createObject($type, $values);
 		}
 

@@ -14,6 +14,8 @@ class ColoCrossing_Client
 		'page_size' => 30
 	);
 
+	private $resources;
+
 	private $api_token;
 
 	private $options = array();
@@ -31,8 +33,7 @@ class ColoCrossing_Client
 
 		$this->setOptions($options);
 
-		$this->devices = new ColoCrossing_Resource_Devices($this);
-		$this->subnets = new ColoCrossing_Resource_Subnets($this);
+		$this->resources = array();
 	}
 
 	public function setAPIToken($api_token)
@@ -82,5 +83,19 @@ class ColoCrossing_Client
 	public function getBaseUrl()
 	{
 		return $this->getOption('api_url') . 'v' . $this->getOption('api_version');
+	}
+
+	public function __get($name)
+	{
+		$available_resources = ColoCrossing_Resource_Factory::getAvailableResources();
+		if(isset($available_resources[$name]))
+		{
+			if(empty($this->resources[$name]))
+			{
+				$this->resources[$name] = ColoCrossing_Resource_Factory::createResource($name, $this);
+			}
+
+			return $this->resources[$name];
+		}
 	}
 }
