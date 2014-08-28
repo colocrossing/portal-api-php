@@ -29,6 +29,7 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Factory.php');
 
 //Include Objects Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Object.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Object.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Object/Factory.php');
 
 //Include Errors Package

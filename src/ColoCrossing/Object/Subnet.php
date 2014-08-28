@@ -1,6 +1,6 @@
 <?php
 
-class ColoCrossing_Object_Subnet extends ColoCrossing_Object
+class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 {
 	public function getDevice()
 	{

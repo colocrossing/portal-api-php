@@ -3,19 +3,11 @@
 class ColoCrossing_Object
 {
 
-	private $resource;
-
 	private $values;
 
-	public function __construct($resource = null, array $values = array())
+	public function __construct(array $values = array())
 	{
-		$this->resource = $resource;
 		$this->values = $values;
-	}
-
-	public function getResource()
-	{
-		return $this->resource;
 	}
 
 	public function getValues()
