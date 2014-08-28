@@ -3,9 +3,9 @@
 interface ColoCrossing_Resource
 {
 
-	public function findAll($options);
+	public function fetchAll($url, array $options = null);
 
-	public function find($id);
+	public function fetch($url);
 
 	public function getClient();
 

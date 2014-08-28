@@ -27,6 +27,10 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Resource.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Abstract.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Factory.php');
 
+//Include Child Resources Package
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Child/Abstract.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Child/Factory.php');
+
 //Include Objects Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Object.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource/Object.php');

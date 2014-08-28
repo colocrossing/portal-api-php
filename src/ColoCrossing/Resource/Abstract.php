@@ -9,62 +9,16 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	private $url;
 
+	private $child_resources;
+
 	public function __construct(ColoCrossing_Client $client, $name, $url)
 	{
 		$this->client = $client;
 		$this->url = $url;
 
+		$this->child_resources = array();
+
 		$this->setName($name);
-	}
-
-	public function findAll($options = null)
-	{
-		$options = isset($options) && is_array($options) ? $options : array();
-
-		$format = isset($options['format']) ? $options['format'] : 'collection';
-		$sort = isset($options['sort']) ? (is_array($options['sort']) ? $options['sort'] : array($options['sort']) ) : array();
-		$page_number = isset($options['page_number']) ? max($options['page_number'], 1) : 1;
-		$page_size = isset($options['page_size']) ? $options['page_size'] : $this->client->getOption('page_size');
-		$page_size = max(min($page_size, 100), 1);
-
-		if($format == 'collection')
-		{
-			return new ColoCrossing_Collection($this, $page_number, $page_size, $sort);
-		}
-
-		$request = $this->createRequest($this->getURL());
-		$request->setQueryParams(array('page' => $page_number, 'limit' => $page_size, 'sort' => implode($sort, ',')));
-		$response = $this->executeRequest($request);
-
-		$content = $response->getContent();
-		$name = $this->getName(true);
-
-		if(empty($content) || empty($content[$name]))
-		{
-			return array();
-		}
-
-		return ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content[$name]);
-	}
-
-	public function find($id, $options = null)
-	{
-		$options = isset($options) && is_array($options) ? $options : array();
-
-		$extra_content = isset($options['extra_content']) && is_array($options['extra_content']) ? $options['extra_content'] : array();
-
-		$url = $this->getURL() . '/' . urlencode($id);
-		$response = $this->sendRequest($url);
-		$content = $response->getContent();
-		$name = $this->getName();
-
-		if(empty($content) || empty($content[$name]))
-		{
-			return null;
-		}
-
-		$content[$name] = array_merge($extra_content, $content[$name]);
-		return ColoCrossing_Object_Factory::createObject($this->client, $this, $content[$name]);
 	}
 
 	public function getClient()
@@ -82,6 +36,94 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return $this->url;
 	}
 
+	public function __get($child_name)
+	{
+		$parent_name = $this->getName(true);
+		$available_child_resources = ColoCrossing_Resource_Child_Factory::getAvailableChildResources($parent_name);
+
+		if(isset($available_child_resources) && isset($available_child_resources[$child_name]))
+		{
+			if(empty($this->child_resources[$child_name]))
+			{
+				$this->child_resources[$child_name] = ColoCrossing_Resource_Child_Factory::createChildResource($parent_name, $child_name, $this->client);
+			}
+
+			return $this->child_resources[$child_name];
+		}
+	}
+
+	public function findAll(array $options = null)
+	{
+		$options = $this->createCollectionOptions($options);
+		$url = $this->createCollectionUrl();
+
+		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort']);
+	}
+
+	public function find($id)
+	{
+		$url = $this->createObjectUrl($id);
+
+		return $this->fetch($url);
+	}
+
+	public function fetchAll($url, array $options = null)
+	{
+		$options = $this->createCollectionOptions($options);
+
+		$request = $this->createRequest($url);
+		$request->setQueryParams(array(
+			'page' => $options['page_number'],
+			'limit' => $options['page_size'],
+			'sort' => implode($options['sort'], ',')
+		));
+		$response = $this->executeRequest($request);
+		$content = $this->getResponseContent($response, true);
+
+		if(empty($content))
+		{
+			return array();
+		}
+
+		return ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content);
+	}
+
+	public function fetch($url)
+	{
+		$response = $this->sendRequest($url);
+		$content = $this->getResponseContent($response, false);
+
+		if(empty($content))
+		{
+			return null;
+		}
+
+		return ColoCrossing_Object_Factory::createObject($this->client, $this, $content);
+	}
+
+	protected function createCollectionOptions(array $options = null)
+	{
+		$options = isset($options) && is_array($options) ? $options : array();
+
+		$options['format'] = isset($options['format']) ? $options['format'] : 'collection';
+		$options['sort'] = isset($options['sort']) ? (is_array($options['sort']) ? $options['sort'] : array($options['sort']) ) : array();
+		$options['page_number'] = isset($options['page_number']) ? max($options['page_number'], 1) : 1;
+		$options['page_size'] = isset($options['page_size']) ? $options['page_size'] : $this->client->getOption('page_size');
+		$options['page_size'] = max(min($options['page_size'], 100), 1);
+
+		return $options;
+	}
+
+	protected function createCollectionUrl()
+	{
+		return $this->url;
+	}
+
+	protected function createObjectUrl($id)
+	{
+		return $this->url . '/' . urlencode($id);
+	}
+
 	protected function sendRequest($url, $method = 'GET', $data = array())
 	{
 		$request = $this->createRequest($url, $method, $data);
@@ -97,6 +139,14 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 	{
 		$executor = $this->client->getHttpExecutor();
 		return $executor->executeRequest($request);
+	}
+
+	protected function getResponseContent(ColoCrossing_Http_Response $response, $is_collection = false)
+	{
+		$content = $response->getContent();
+		$name = $this->getName($is_collection);
+
+		return isset($content) && isset($content[$name]) && is_array($content[$name]) ? $content[$name] : null;
 	}
 
 	private function setName($name)

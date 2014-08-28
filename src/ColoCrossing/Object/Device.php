@@ -18,15 +18,14 @@ class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 		return $this->getObjectArray('subusers');
 	}
 
-	public function getRack()
+	public function getAssets(array $options = null)
 	{
-		return $this->getObject('rack', $this->client->devices);
+		return $this->getResourceChildCollection('assets', $options);
 	}
 
-	public function getRackDevices()
+	public function getNotes(array $options = null)
 	{
-		$client = $this->getClient();
-		return $this->getObjectArray('rack_devices', $this->client->client->devices);
+		return $this->getResourceChildCollection('notes', $options);
 	}
 
 }

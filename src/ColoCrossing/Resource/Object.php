@@ -17,4 +17,12 @@ class ColoCrossing_Resource_Object extends ColoCrossing_Object
 		return $this->resource;
 	}
 
+	public function getResourceChildCollection($child_type, array $options = null)
+	{
+		$parent_id = $this->getId();
+		$child_resource = $this->resource->$child_type;
+
+		return $child_resource->findAll($parent_id, $options);
+	}
+
 }
