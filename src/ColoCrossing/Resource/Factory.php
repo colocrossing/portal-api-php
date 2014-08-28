@@ -5,6 +5,8 @@ class ColoCrossing_Resource_Factory
 
 	private static $AVAILABLE_RESOURCES = array(
 		'devices' => '/Devices.php',
+		'networks' => '/Networks.php',
+		'null_routes' => '/NullRoutes.php',
 		'subnets' => '/Subnets.php'
 	);
 
@@ -21,6 +23,10 @@ class ColoCrossing_Resource_Factory
 		{
 			case 'devices':
 				return new ColoCrossing_Resource_Devices($client);
+			case 'networks':
+				return new ColoCrossing_Resource_Networks($client);
+			case 'null_routes':
+				return new ColoCrossing_Resource_NullRoutes($client);
 			case 'subnets':
 				return new ColoCrossing_Resource_Subnets($client);
 		}

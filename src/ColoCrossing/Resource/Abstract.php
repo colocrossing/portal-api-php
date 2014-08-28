@@ -44,11 +44,15 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 			return array();
 		}
 
-		return ColoCrossing_Object_Factory::createObjectArray($this, $content[$name]);
+		return ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content[$name]);
 	}
 
-	public function find($id)
+	public function find($id, $options = null)
 	{
+		$options = isset($options) && is_array($options) ? $options : array();
+
+		$extra_content = isset($options['extra_content']) && is_array($options['extra_content']) ? $options['extra_content'] : array();
+
 		$url = $this->getURL() . '/' . urlencode($id);
 		$response = $this->sendRequest($url);
 		$content = $response->getContent();
@@ -59,7 +63,8 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 			return null;
 		}
 
-		return ColoCrossing_Object_Factory::createObject($this, $content[$name]);
+		$content[$name] = array_merge($extra_content, $content[$name]);
+		return ColoCrossing_Object_Factory::createObject($this->client, $this, $content[$name]);
 	}
 
 	public function getClient()

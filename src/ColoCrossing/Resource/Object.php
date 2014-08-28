@@ -5,9 +5,10 @@ class ColoCrossing_Resource_Object extends ColoCrossing_Object
 
 	private $resource;
 
-	public function __construct(ColoCrossing_Resource $resource = null, array $values = array())
+	public function __construct(ColoCrossing_Client $client, ColoCrossing_Resource $resource, array $values = array())
 	{
-		parent::__construct($values);
+		parent::__construct($client, $values);
+
 		$this->resource = $resource;
 	}
 
