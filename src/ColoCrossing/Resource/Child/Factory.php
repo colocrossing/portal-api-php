@@ -10,9 +10,13 @@ class ColoCrossing_Resource_Child_Factory
 			'subnets' => '/Devices/Subnets.php'
 		),
 		'networks' => array(
-			'subnets' => '/Networks/Subnets.php'
+			'subnets' => '/Networks/Subnets.php',
+			'null_routes' => '/Networks/NullRoutes.php'
+
 		),
-		'subnets' => array()
+		'subnets' => array(
+			'null_routes' => '/Subnets/NullRoutes.php'
+		)
 	);
 
 	public static function createChildResource($parent_type, $child_type, ColoCrossing_Client $client)
@@ -42,9 +46,16 @@ class ColoCrossing_Resource_Child_Factory
 				{
 					case 'subnets':
 						return new ColoCrossing_Resource_Child_Networks_Subnets($client);
+					case 'null_routes':
+						return new ColoCrossing_Resource_Child_Networks_NullRoutes($client);
 				}
 				break;
 			case 'subnets':
+				switch ($child_type)
+				{
+					case 'null_routes':
+						return new ColoCrossing_Resource_Child_Subnets_NullRoutes($client);
+				}
 				break;
 		}
 

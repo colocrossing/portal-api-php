@@ -25,4 +25,9 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getObject('device', $client->devices);
 	}
 
+	public function getNullRoutes(array $options = null)
+	{
+		return $this->getResourceChildCollection('null_routes', $options);
+	}
+
 }

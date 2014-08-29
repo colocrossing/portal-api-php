@@ -62,9 +62,18 @@ class ColoCrossing_Object_Factory
 					case 'subnet':
 						require_once(dirname(__FILE__) . '/Subnet.php');
 						return new ColoCrossing_Object_Subnet($client, $child_resource, $values);
+					case 'null_route':
+						require_once(dirname(__FILE__) . '/NullRoute.php');
+						return new ColoCrossing_Object_NullRoute($client, $child_resource, $values);
 				}
 				break;
 			case 'subnet':
+				switch ($child_type)
+				{
+					case 'null_route':
+						require_once(dirname(__FILE__) . '/NullRoute.php');
+						return new ColoCrossing_Object_NullRoute($client, $child_resource, $values);
+				}
 				break;
 		}
 
