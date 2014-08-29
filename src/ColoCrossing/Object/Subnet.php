@@ -30,4 +30,14 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('null_routes', $options);
 	}
 
+	public function getReverseDNSRecords(array $options = null)
+	{
+		if(!$this->isReverseDnsEnabled())
+		{
+			return null;
+		}
+
+		return $this->getResourceChildCollection('rdns_records', $options);
+	}
+
 }

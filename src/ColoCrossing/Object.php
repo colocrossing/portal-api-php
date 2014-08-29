@@ -64,11 +64,28 @@ class ColoCrossing_Object
 
 	public function __call($name, $arguments)
     {
-    	$name = ltrim(ColoCrossing_Utility::convertCamelCaseToSnakeCase($name), 'get_');
-        if (isset($this->values[$name]) || array_key_exists($name, $this->values))
+    	$name = ColoCrossing_Utility::convertCamelCaseToSnakeCase($name);
+    	$name_parts = explode('_', $name);
+
+    	if(count($name_parts) <= 1)
+    	{
+    		return null;
+    	}
+
+    	$type = array_shift($name_parts);
+    	$name = implode('_', $name_parts);
+
+    	if (!isset($this->values[$name]) && !array_key_exists($name, $this->values))
         {
-            return $this->values[$name];
+        	return null;
         }
+
+    	switch ($type) {
+    		case 'get':
+    			return $this->values[$name];
+    		case 'is':
+    			return !!$this->values[$name];
+    	}
 
         return null;
     }
