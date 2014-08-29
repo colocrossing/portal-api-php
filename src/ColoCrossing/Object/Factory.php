@@ -108,20 +108,35 @@ class ColoCrossing_Object_Factory
 
 		require_once(dirname(__FILE__) . '/Device/Racked.php');
 
-		if($type['network'] == 'distribution') //Switch
+		if($type['is_rack']) //Rack
+		{
+			require_once(dirname(__FILE__) . '/Device/Rack.php');
+			return new ColoCrossing_Object_Device_Rack($client, $resource, $values);
+		}
+		else if($type['is_virtual']) //VPS
+		{
+			require_once(dirname(__FILE__) . '/Device/Virtual.php');
+			return new ColoCrossing_Object_Device_Virtual($client, $resource, $values);
+		}
+		else if($type['network'] == 'distribution' && $type['power'] == 'endpoint') //Switch
 		{
 			require_once(dirname(__FILE__) . '/Device/Switch.php');
 			return new ColoCrossing_Object_Device_Switch($client, $resource, $values);
 		}
-		else if($type['power'] == 'distribution') //PDU
+		else if($type['network'] == 'endpoint' && $type['power'] == 'distribution') //PDU
 		{
 			require_once(dirname(__FILE__) . '/Device/PowerDistributionUnit.php');
 			return new ColoCrossing_Object_Device_PowerDistributionUnit($client, $resource, $values);
 		}
-		else if($type['is_rack']) //Rack
+		else if($type['network'] == 'endpoint' && $type['power'] == 'endpoint') //Server, KVM
 		{
-			require_once(dirname(__FILE__) . '/Device/Rack.php');
-			return new ColoCrossing_Object_Device_Rack($client, $resource, $values);
+			require_once(dirname(__FILE__) . '/Device/NetworkPowerEndpoint.php');
+			return new ColoCrossing_Object_Device_NetworkPowerEndpoint($client, $resource, $values);
+		}
+		else if($type['network'] == 'endpoint' && !$type['power']) //Cross Connect
+		{
+			require_once(dirname(__FILE__) . '/Device/NetworkEndpoint.php');
+			return new ColoCrossing_Object_Device_NetworkEndpoint($client, $resource, $values);
 		}
 
 		return new ColoCrossing_Object_Device($client, $resource, $values);

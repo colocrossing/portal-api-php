@@ -1,6 +1,6 @@
 <?php
 
-class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Object_Device_Racked
+class ColoCrossing_Object_Device_Virtual extends ColoCrossing_Object_Device
 {
 
 	public function getSubnets(array $options = null)
