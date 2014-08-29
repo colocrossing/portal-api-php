@@ -7,7 +7,9 @@ class ColoCrossing_Resource_Child_Factory
 		'devices' => array(
 			'assets' => '/Devices/Assets.php',
 			'notes' => '/Devices/Notes.php',
-			'subnets' => '/Devices/Subnets.php'
+			'subnets' => '/Devices/Subnets.php',
+			'pdus' => '/Devices/PowerDistributionUnits.php',
+			'switches' => '/Devices/Switches.php'
 		),
 		'networks' => array(
 			'subnets' => '/Networks/Subnets.php',
@@ -40,6 +42,10 @@ class ColoCrossing_Resource_Child_Factory
 						return new ColoCrossing_Resource_Child_Devices_Notes($client);
 					case 'subnets':
 						return new ColoCrossing_Resource_Child_Devices_Subnets($client);
+					case 'pdus':
+						return new ColoCrossing_Resource_Child_Devices_PowerDistributionUnits($client);
+					case 'switches':
+						return new ColoCrossing_Resource_Child_Devices_Switches($client);
 				}
 				break;
 			case 'networks':

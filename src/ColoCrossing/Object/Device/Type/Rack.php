@@ -1,6 +1,6 @@
 <?php
 
-class ColoCrossing_Object_Device_Rack extends ColoCrossing_Object_Device
+class ColoCrossing_Object_Device_Type_Rack extends ColoCrossing_Object_Device
 {
 
 	public function getDevices()

@@ -1,11 +1,6 @@
 <?php
 
-class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Object_Device_Racked
+class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Resource_Object
 {
-
-	public function getSubnets(array $options = null)
-	{
-		return $this->getResourceChildCollection('subnets', $options);
-	}
 
 }
