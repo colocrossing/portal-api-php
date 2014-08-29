@@ -28,4 +28,9 @@ class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('notes', $options);
 	}
 
+	public function getSubnets(array $options = null)
+	{
+		return $this->getResourceChildCollection('subnets', $options);
+	}
+
 }

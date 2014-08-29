@@ -6,9 +6,12 @@ class ColoCrossing_Resource_Child_Factory
 	private static $AVAILABLE_CHILD_RESOURCES = array(
 		'devices' => array(
 			'assets' => '/Devices/Assets.php',
-			'notes' => '/Devices/Notes.php'
+			'notes' => '/Devices/Notes.php',
+			'subnets' => '/Devices/Subnets.php'
 		),
-		'networks' => array(),
+		'networks' => array(
+			'subnets' => '/Networks/Subnets.php'
+		),
 		'subnets' => array()
 	);
 
@@ -30,9 +33,16 @@ class ColoCrossing_Resource_Child_Factory
 						return new ColoCrossing_Resource_Child_Devices_Assets($client);
 					case 'notes':
 						return new ColoCrossing_Resource_Child_Devices_Notes($client);
+					case 'subnets':
+						return new ColoCrossing_Resource_Child_Devices_Subnets($client);
 				}
 				break;
 			case 'networks':
+				switch ($child_type)
+				{
+					case 'subnets':
+						return new ColoCrossing_Resource_Child_Networks_Subnets($client);
+				}
 				break;
 			case 'subnets':
 				break;

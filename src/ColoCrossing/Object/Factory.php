@@ -10,8 +10,6 @@ class ColoCrossing_Object_Factory
 			return new ColoCrossing_Object($client, $values);
 		}
 
-		//echo $resource->getName(false) . '<br>';
-
 		if(is_a($resource, 'ColoCrossing_Resource_Child_Abstract'))
 		{
 			return self::createChildObject($client, $resource, $values);
@@ -45,16 +43,26 @@ class ColoCrossing_Object_Factory
 		switch ($parent_type)
 		{
 			case 'device':
-				switch ($child_type) {
+				switch ($child_type)
+				{
 					case 'asset':
 						require_once(dirname(__FILE__) . '/Device/Asset.php');
 						return new ColoCrossing_Object_Device_Asset($client, $child_resource, $values);
 					case 'note':
 						require_once(dirname(__FILE__) . '/Device/Note.php');
 						return new ColoCrossing_Object_Device_Note($client, $child_resource, $values);
+					case 'subnet':
+						require_once(dirname(__FILE__) . '/Subnet.php');
+						return new ColoCrossing_Object_Subnet($client, $child_resource, $values);
 				}
 				break;
 			case 'network':
+				switch ($child_type)
+				{
+					case 'subnet':
+						require_once(dirname(__FILE__) . '/Subnet.php');
+						return new ColoCrossing_Object_Subnet($client, $child_resource, $values);
+				}
 				break;
 			case 'subnet':
 				break;
