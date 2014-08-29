@@ -95,7 +95,7 @@ class ColoCrossing_Object
 		return $this->objects;
 	}
 
-	protected function getObject($key, ColoCrossing_Resource $resource = null)
+	protected function getObject($key, ColoCrossing_Resource $resource = null, $type = null, $default = null)
 	{
 		if(isset($this->objects[$key]))
 		{
@@ -110,10 +110,10 @@ class ColoCrossing_Object
 			{
 				return $this->objects[$key] = $resource->find($value['id']);
 			}
-			return $this->objects[$key] = ColoCrossing_Object_Factory::createObject($this->client, $resource, $value);
+			return $this->objects[$key] = ColoCrossing_Object_Factory::createObject($this->client, $resource, $value, $type);
 		}
 
-		return null;
+		return $default;
 	}
 
 	protected function getObjectArrays()
@@ -121,7 +121,7 @@ class ColoCrossing_Object
 		return $this->object_arrays;
 	}
 
-	protected function getObjectArray($key, ColoCrossing_Resource $resource = null)
+	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null)
 	{
 		if(isset($this->object_arrays[$key]))
 		{
@@ -134,7 +134,7 @@ class ColoCrossing_Object
 		{
 			if(empty($resource))
 			{
-				return $this->object_arrays[$key] = ColoCrossing_Object_Factory::createObjectArray($this->client, $resource, $value);
+				return $this->object_arrays[$key] = ColoCrossing_Object_Factory::createObjectArray($this->client, $resource, $value, $type);
 			}
 
 			$this->object_arrays[$key] = array();
@@ -145,7 +145,7 @@ class ColoCrossing_Object
 			return $this->object_arrays[$key];
 		}
 
-		return null;
+		return $default;
 	}
 
 }

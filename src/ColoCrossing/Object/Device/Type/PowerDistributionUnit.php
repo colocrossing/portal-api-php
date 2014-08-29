@@ -13,4 +13,9 @@ class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing
 		return $this->getResourceChildCollection('switches', $options);
 	}
 
+	public function getPorts()
+	{
+		return $this->getObjectArray('ports', null, 'power_port', array());
+	}
+
 }

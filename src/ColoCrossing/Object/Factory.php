@@ -3,10 +3,19 @@
 class ColoCrossing_Object_Factory
 {
 
-	public static function createObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $values = array())
+	public static function createObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $values = array(), $type = null)
 	{
 		if(empty($resource))
 		{
+			switch ($type)
+			{
+				case 'network_port':
+					require_once(dirname(__FILE__) . '/Device/NetworkPort.php');
+					return new ColoCrossing_Object_Device_NetworkPort($client, $values);
+				case 'power_port':
+					require_once(dirname(__FILE__) . '/Device/PowerPort.php');
+					return new ColoCrossing_Object_Device_PowerPort($client, $values);
+			}
 			return new ColoCrossing_Object($client, $values);
 		}
 
@@ -86,13 +95,13 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($client, $values);
 	}
 
-	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array())
+	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array(), $type = null)
 	{
 		$objects = [];
 
 		foreach ($objects_values as $index => $values)
 		{
-			$objects[] = self::createObject($client, $resource, $values);
+			$objects[] = self::createObject($client, $resource, $values, $type);
 		}
 
 		return $objects;
@@ -157,10 +166,10 @@ class ColoCrossing_Object_Factory
 		switch ($child_type) {
 			case 'pdu':
 				require_once(dirname(__FILE__) . '/Device/PowerDistributionUnit.php');
-				return new ColoCrossing_Object_Device_PowerDistributionUnit($client, $resource, $values);
+				return new ColoCrossing_Object_Device_PowerDistributionUnit($client, $child_resource, $values);
 			case 'switch':
 				require_once(dirname(__FILE__) . '/Device/Switch.php');
-				return new ColoCrossing_Object_Device_Switch($client, $resource, $values);
+				return new ColoCrossing_Object_Device_Switch($client, $child_resource, $values);
 		}
 
 		return new ColoCrossing_Object_Device($client, $child_resource, $values);

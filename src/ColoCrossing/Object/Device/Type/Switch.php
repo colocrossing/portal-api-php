@@ -13,4 +13,9 @@ class ColoCrossing_Object_Device_Type_Switch extends ColoCrossing_Object_Device_
 		return $this->getResourceChildCollection('pdus', $options);
 	}
 
+	public function getPorts()
+	{
+		return $this->getObjectArray('ports', null, 'network_port', array());
+	}
+
 }
