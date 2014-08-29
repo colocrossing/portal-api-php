@@ -73,6 +73,9 @@ class ColoCrossing_Object_Factory
 					case 'null_route':
 						require_once(dirname(__FILE__) . '/NullRoute.php');
 						return new ColoCrossing_Object_NullRoute($client, $child_resource, $values);
+					case 'rdns_record':
+						require_once(dirname(__FILE__) . '/Subnet/ReverseDNSRecord.php');
+						return new ColoCrossing_Object__Subnet_ReverseDNSRecord($client, $child_resource, $values);
 				}
 				break;
 		}

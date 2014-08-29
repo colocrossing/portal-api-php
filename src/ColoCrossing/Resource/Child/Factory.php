@@ -15,7 +15,8 @@ class ColoCrossing_Resource_Child_Factory
 
 		),
 		'subnets' => array(
-			'null_routes' => '/Subnets/NullRoutes.php'
+			'null_routes' => '/Subnets/NullRoutes.php',
+			'rdns_records' => '/Subnets/ReverseDNSRecords.php'
 		)
 	);
 
@@ -55,6 +56,8 @@ class ColoCrossing_Resource_Child_Factory
 				{
 					case 'null_routes':
 						return new ColoCrossing_Resource_Child_Subnets_NullRoutes($client);
+					case 'rdns_records':
+						return new ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords($client);
 				}
 				break;
 		}
