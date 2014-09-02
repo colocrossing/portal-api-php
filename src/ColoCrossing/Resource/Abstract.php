@@ -137,12 +137,25 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	protected function executeRequest(ColoCrossing_Http_Request $request)
 	{
-		$executor = $this->client->getHttpExecutor();
-		return $executor->executeRequest($request);
+		try
+		{
+			$executor = $this->client->getHttpExecutor();
+			return $executor->executeRequest($request);
+		}
+		catch(ColoCrossing_Error_NotFound $e)
+		{
+			echo 'not found';
+			return null;
+		}
 	}
 
-	protected function getResponseContent(ColoCrossing_Http_Response $response, $is_collection = false)
+	protected function getResponseContent(ColoCrossing_Http_Response $response = null, $is_collection = false)
 	{
+		if(empty($response))
+		{
+			return null;
+		}
+
 		$content = $response->getContent();
 		$name = $this->getName($is_collection);
 
