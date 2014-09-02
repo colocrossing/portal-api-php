@@ -57,7 +57,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$options = $this->createCollectionOptions($options);
 		$url = $this->createCollectionUrl();
 
-		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort']);
+		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
 	}
 
 	public function find($id)
@@ -72,11 +72,18 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$options = $this->createCollectionOptions($options);
 
 		$request = $this->createRequest($url);
-		$request->setQueryParams(array(
+
+		$query_params = array(
 			'page' => $options['page_number'],
 			'limit' => $options['page_size'],
 			'sort' => implode($options['sort'], ',')
-		));
+		);
+		foreach ($options['filters'] as $filter => $value)
+		{
+			$query_params[$filter] = $value;
+		}
+		$request->setQueryParams($query_params);
+
 		$response = $this->executeRequest($request);
 		$content = $this->getResponseContent($response, true);
 
@@ -106,6 +113,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$options = isset($options) && is_array($options) ? $options : array();
 
 		$options['format'] = isset($options['format']) ? $options['format'] : 'collection';
+		$options['filters'] = isset($options['filters']) && is_array($options['filters']) ? $options['filters'] : array();
 		$options['sort'] = isset($options['sort']) ? (is_array($options['sort']) ? $options['sort'] : array($options['sort']) ) : array();
 		$options['page_number'] = isset($options['page_number']) ? max($options['page_number'], 1) : 1;
 		$options['page_size'] = isset($options['page_size']) ? $options['page_size'] : $this->client->getOption('page_size');

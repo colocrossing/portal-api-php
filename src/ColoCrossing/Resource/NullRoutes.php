@@ -8,6 +8,19 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		parent::__construct($client, 'null_route', '/null-routes');
 	}
 
+	public function findAllByIpAddress($ip_address, array $options = null)
+	{
+		if(filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		{
+			$options = isset($options) && is_array($options) ? $options : array();
+			$options['filters'] = array(
+				'ip_address' => $ip_address
+			);
+		}
+
+		return $this->findAll($options);
+	}
+
 	public function add($subnet_id, $ip_address, $comment = '', $expire_date = null)
 	{
 		$client = $this->getClient();
