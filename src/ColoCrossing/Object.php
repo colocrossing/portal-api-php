@@ -35,6 +35,11 @@ class ColoCrossing_Object
 		return isset($this->values[$key]) ? $this->values[$key] : false;
 	}
 
+	public function setValue($key, $value)
+	{
+		return $this->values[$key] = $value;
+	}
+
 	public function getId()
 	{
 		$id = $this->getValue('id');
