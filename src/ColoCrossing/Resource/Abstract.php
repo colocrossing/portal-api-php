@@ -144,7 +144,6 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		}
 		catch(ColoCrossing_Error_NotFound $e)
 		{
-			echo 'not found';
 			return null;
 		}
 	}

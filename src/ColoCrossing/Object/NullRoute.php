@@ -24,4 +24,11 @@ class ColoCrossing_Object_NullRoute extends ColoCrossing_Resource_Object
 		return $this->getObject('subnet', $client->subnets);
 	}
 
+	public function remove()
+	{
+		$client = $this->getClient();
+
+		return $client->null_routes->remove($this->getId());
+	}
+
 }

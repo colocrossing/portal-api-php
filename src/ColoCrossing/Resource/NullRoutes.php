@@ -19,7 +19,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		}
 
 		$data = array(
-			'subnet_id' => $subnet->getId(),
+			'subnet_id' => $subnet_id,
 			'ip_address' => $ip_address,
 			'comment' => $comment
 		);
