@@ -116,6 +116,16 @@ class ColoCrossing_Object
 		return $default;
 	}
 
+	protected function getObjectById($id, $key, ColoCrossing_Resource $resource)
+	{
+		if(isset($this->objects[$key]))
+		{
+			return $this->objects[$key];
+		}
+
+		return $this->objects[$key] = $resource->find($id);
+	}
+
 	protected function getObjectArrays()
 	{
 		return $this->object_arrays;

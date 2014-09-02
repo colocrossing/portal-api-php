@@ -156,11 +156,6 @@ class ColoCrossing_Object_Factory
 
 	public static function createDeviceChildObject(ColoCrossing_Client $client, ColoCrossing_Resource $child_resource = null, array $values = array())
 	{
-		if(isset($values['id']) && isset($values['owner']) && is_array($values['owner']))
-		{
-			return $client->devices->find($values['id']);
-		}
-
 		$child_type = $child_resource->getName(false);
 
 		switch ($child_type) {
