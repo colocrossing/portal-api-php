@@ -40,4 +40,23 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('rdns_records', $options);
 	}
 
+	public function getIpAddresses()
+	{
+		$start_ip = $this->getIpAddress();
+		$ip_parts = split('\.', $start_ip);
+		$last_ip_part = intval(array_pop($ip_parts));
+		$ip_prefix = implode('.', $ip_parts);
+
+		$cidr = intval($this->getCidr());
+		$num_ips = pow(2, 32 - $cidr);
+
+		$ips = array();
+		for ($i = 0; $i < $num_ips; $i++)
+		{
+			$ip_suffix = $last_ip_part + $i;
+			$ips[] = $ip_prefix . '.' . $ip_suffix;
+		}
+		return $ips;
+	}
+
 }
