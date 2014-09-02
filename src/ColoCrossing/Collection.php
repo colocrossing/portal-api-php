@@ -91,9 +91,10 @@ class ColoCrossing_Collection implements Iterator, Countable
 		    	$options = array(
 					'format' => 'array',
 					'page_number' => $page_number,
-					'page_size' => 100
+					'page_size' => 100,
+					'filters' => $this->filters
 				);
-				$objects = $this->resource->findAll($options);
+				$objects = $this->resource->fetchAll($this->url, $options);
 
 				$num_objects = count($objects);
 				$this->size += $num_objects;

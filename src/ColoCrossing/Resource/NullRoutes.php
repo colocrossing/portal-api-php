@@ -46,6 +46,18 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 			}
 		}
 
+		$null_routes = $this->findAllByIpAddress($ip_address);
+
+		foreach ($null_routes as $key => $null_route)
+		{
+			$subnet = $null_route->getSubnet();
+
+			if(isset($subnet) && $subnet->getId() == $subnet_id)
+			{
+				return false;
+			}
+		}
+
 		$url = $this->createCollectionUrl();
 
 		$response = $this->sendRequest($url, 'POST', $data);
