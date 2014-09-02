@@ -8,4 +8,71 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		parent::__construct($client, 'null_route', '/null-routes');
 	}
 
+	public function add($subnet_id, $ip_address, $comment = '', $expire_date = null)
+	{
+		$client = $this->getClient();
+		$subnet = $client->subnets->find($subnet_id);
+
+		if(empty($subnet) || !$subnet->isIpAddressInSubnet($ip_address))
+		{
+			return false;
+		}
+
+		$data = array(
+			'subnet_id' => $subnet->getId(),
+			'ip_address' => $ip_address,
+			'comment' => $comment
+		);
+
+		if(isset($expire_date) && is_int($expire_date))
+		{
+			$data['expire_date'] = $expire_date;
+			if($expire_date > strtotime("+30 days"))
+			{
+				return false;
+			}
+		}
+
+		$url = $this->createCollectionUrl();
+
+		$response = $this->sendRequest($url, 'POST', $data);
+
+		if(empty($response))
+		{
+			return null;
+		}
+
+		$content = $response->getContent();
+
+		if(empty($content) || empty($content['status']) || $content['status'] == 'error' || empty($content['null_route']) || empty($content['null_route']['id']))
+		{
+			return null;
+		}
+
+		return $this->find($content['null_route']['id']);
+	}
+
+	public function remove($id)
+	{
+		$null_route = $this->find($id);
+
+		if(empty($null_route) || !$null_route->isRemovable())
+		{
+			return false;
+		}
+
+		$url = $this->createObjectUrl($id);
+
+		$response = $this->sendRequest($url, 'DELETE');
+
+		if(empty($response))
+		{
+			return false;
+		}
+
+		$content = $response->getContent();
+
+		return isset($content) && isset($content['status']) && $content['status'] == 'ok';
+	}
+
 }

@@ -34,7 +34,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		if(!$this->isReverseDnsEnabled())
 		{
-			return null;
+			return array();
 		}
 
 		return $this->getResourceChildCollection('rdns_records', $options);
@@ -57,6 +57,25 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 			$ips[] = $ip_prefix . '.' . $ip_suffix;
 		}
 		return $ips;
+	}
+
+	public function isIpAddressInSubnet($ip_address)
+	{
+		$cidr = intval($this->getCidr());
+
+        $start_ip = ip2long($this->getIpAddress());
+        $end_ip = $start_ip + pow(2, 32 - $cidr) - 1;
+
+        $ip_address = ip2long($ip_address);
+
+        return $start_ip <= $ip_address && $end_ip >= $ip_address;
+	}
+
+	public function addNullRoute($ip_address, $comment = '', $expire_date = null)
+	{
+		$client = $this->getClient();
+
+		return $client->null_routes->add($this->getId(), $ip_address, $comment, $expire_date);
 	}
 
 }
