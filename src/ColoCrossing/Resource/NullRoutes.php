@@ -39,7 +39,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 		if(isset($expire_date) && is_int($expire_date))
 		{
-			$data['expire_date'] = $expire_date;
+			$data['expire_date'] = date('c', $expire_date);
 
 			if($expire_date > strtotime('+30 days'))
 			{
