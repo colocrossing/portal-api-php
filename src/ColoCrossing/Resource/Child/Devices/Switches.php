@@ -48,4 +48,45 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 		return $response->getContent();
 	}
 
+	public function setPortStatus($switch_id, $port_id, $device_id, $status)
+	{
+		$status = strtolower($status);
+
+		if($status != 'on' && $status != 'off')
+		{
+			return false;
+		}
+
+		$switch = $this->find($device_id, $switch_id);
+
+		if(empty($switch))
+		{
+			return false;
+		}
+
+		$port = $switch->getPort($port_id);
+
+		if(empty($port) || !$port->isControllable())
+		{
+			return false;
+		}
+
+		$url = $this->createObjectUrl($switch_id, $device_id);
+		$data = array(
+			'status' => $status,
+			'port_id' => $port_id
+		);
+
+		$response = $this->sendRequest($url, 'PUT', $data);
+
+		if(empty($response))
+		{
+			return false;
+		}
+
+		$content = $response->getContent();
+
+		return isset($content) && isset($content['status']) && $content['status'] == 'ok';
+	}
+
 }
