@@ -27,7 +27,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$port = $switch->getPort($port_id);
 
-		if(empty($port) || !$port->hasBandwidthGraph())
+		if(empty($port) || !$port->isBandwidthGraphAvailable())
 		{
 			return null;
 		}

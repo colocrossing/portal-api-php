@@ -10,7 +10,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		return $this->getObject('device', $client->devices);
 	}
 
-	public function hasBandwidthGraph()
+	public function isBandwidthGraphAvailable()
 	{
 		$device = $this->getDevice();
 
@@ -19,7 +19,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 
 	public function getBandwidthGraph($start = null, $end = null)
 	{
-		if(!$this->hasBandwidthGraph())
+		if(!$this->isBandwidthGraphAvailable())
 		{
 			return null;
 		}

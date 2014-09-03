@@ -8,9 +8,19 @@ class ColoCrossing_Object_Device_Type_Switch extends ColoCrossing_Object_Device_
 		return $this->getResourceChildCollection('subnets', $options);
 	}
 
+	public function getSubnet($id)
+	{
+		return $this->getResourceChildObject('subnets', $id);
+	}
+
 	public function getPowerDistributionUnits(array $options = null)
 	{
 		return $this->getResourceChildCollection('pdus', $options);
+	}
+
+	public function getPowerDistributionUnit($id)
+	{
+		return $this->getResourceChildObject('pdus', $id);
 	}
 
 	public function getPorts()

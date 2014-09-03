@@ -8,4 +8,9 @@ class ColoCrossing_Object_Device_Type_Virtual extends ColoCrossing_Object_Device
 		return $this->getResourceChildCollection('subnets', $options);
 	}
 
+	public function getSubnet($id)
+	{
+		return $this->getResourceChildObject('subnets', $id);
+	}
+
 }

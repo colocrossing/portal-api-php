@@ -30,6 +30,18 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('null_routes', $options);
 	}
 
+	public function getNullRoute($id)
+	{
+		return $this->getResourceChildObject('null_routes', $id);
+	}
+
+	public function addNullRoute($ip_address, $comment = '', $expire_date = null)
+	{
+		$client = $this->getClient();
+
+		return $client->null_routes->add($this->getId(), $ip_address, $comment, $expire_date);
+	}
+
 	public function getReverseDNSRecords(array $options = null)
 	{
 		if(!$this->isReverseDnsEnabled())
@@ -38,6 +50,16 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		}
 
 		return $this->getResourceChildCollection('rdns_records', $options);
+	}
+
+	public function getReverseDNSRecord($id)
+	{
+		if(!$this->isReverseDnsEnabled())
+		{
+			return null;
+		}
+
+		return $this->getResourceChildObject('rdns_records', $id);
 	}
 
 	public function getIpAddresses()
@@ -69,13 +91,6 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
         $ip_address = ip2long($ip_address);
 
         return $start_ip <= $ip_address && $end_ip >= $ip_address;
-	}
-
-	public function addNullRoute($ip_address, $comment = '', $expire_date = null)
-	{
-		$client = $this->getClient();
-
-		return $client->null_routes->add($this->getId(), $ip_address, $comment, $expire_date);
 	}
 
 }
