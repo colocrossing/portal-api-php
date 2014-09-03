@@ -1,17 +1,37 @@
 <?php
 
+/**
+ * This Handles Taking a ColoCrossing_Http_Request, executing it and creating a
+ * ColoCrossing_Http_Response with the result.
+ */
 class ColoCrossing_Http_Executor
 {
 
+	/**
+	 * The cURL Handle
+	 * @var resource
+	 */
 	private $curl;
 
+	/**
+	 * The API Client
+	 * @var ColoCrossing_Client
+	 */
 	private $client;
 
+	/**
+	 * @param ColoCrossing_Client $client The API Client
+	 */
 	public function __construct(ColoCrossing_Client $client)
 	{
 		$this->client = $client;
 	}
 
+	/**
+	 * Executes a Http Request
+	 * @param  ColoCrossing_Http_Request $request 	The Request to be Executed.
+	 * @return ColoCrossing_Http_Response     		The Response to the Request.
+	 */
 	public function executeRequest(ColoCrossing_Http_Request $request)
 	{
 		$this->createCurl();
@@ -22,6 +42,10 @@ class ColoCrossing_Http_Executor
 		return $response;
 	}
 
+	/**
+	 * Creates a cURL Handle and sets some Default Options.
+	 * @return resource The cURL Handle.
+	 */
 	private function createCurl()
 	{
 		if(isset($this->curl))
@@ -44,6 +68,10 @@ class ColoCrossing_Http_Executor
     	return $this->curl;
 	}
 
+	/**
+	 * Retrieves the Current cURL Handle. Creates it if not exists.
+	 * @return resource The cURL Handle.
+	 */
 	private function getCurl()
 	{
 		if(empty($this->curl))
@@ -54,6 +82,10 @@ class ColoCrossing_Http_Executor
 		return $this->curl;
 	}
 
+	/**
+	 * Sets the current cURL Handle's Options that Correspond to the current Request.
+	 * @param ColoCrossing_Http_Request $request The Request
+	 */
 	private function setCurlRequestOptions(ColoCrossing_Http_Request $request)
 	{
 		$this->setCurlHeaders($request->getHeaders());
@@ -69,6 +101,10 @@ class ColoCrossing_Http_Executor
         }
 	}
 
+	/**
+	 * Sets the current cURL Handle's Headers
+	 * @param array $headers The Headers to be set.
+	 */
 	private function setCurlHeaders(array $headers = array())
 	{
 		$headers['X-API-Token'] = $this->client->getAPIToken();
@@ -83,6 +119,10 @@ class ColoCrossing_Http_Executor
 	    curl_setopt($curl, CURLOPT_HTTPHEADER, $curl_headers);
 	}
 
+	/**
+	 * Executes the Current cURL Handle and Creates a Response to hold the Result
+	 * @return ColoCrossing_Http_Response The Response.
+	 */
 	private function executeCurl()
 	{
 		$curl = $this->getCurl();
@@ -99,15 +139,21 @@ class ColoCrossing_Http_Executor
 		return new ColoCrossing_Http_Response($body, $code, $content_type);
 	}
 
+	/**
+	 * Destroys the current cURL handle if it exists.
+	 * @return boolean	True if action occured.
+	 */
 	private function destroyCurl()
 	{
-		if(isset($this->curl))
+		if(empty($this->curl))
 		{
 			return false;
 		}
 
 		curl_close($this->curl);
 		$this->curl = null;
+
+		return true;
 	}
 
 }
