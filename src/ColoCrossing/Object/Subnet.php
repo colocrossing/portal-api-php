@@ -62,6 +62,12 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('rdns_records', $id);
 	}
 
+	public function getNumberOfIpAddresses()
+	{
+		$cidr = intval($this->getCidr());
+		return pow(2, 32 - $cidr);
+	}
+
 	public function getIpAddresses()
 	{
 		$start_ip = $this->getIpAddress();
@@ -69,24 +75,22 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		$last_ip_part = intval(array_pop($ip_parts));
 		$ip_prefix = implode('.', $ip_parts);
 
-		$cidr = intval($this->getCidr());
-		$num_ips = pow(2, 32 - $cidr);
-
+		$num_ips = $this->getNumberOfIpAddresses();
 		$ips = array();
+
 		for ($i = 0; $i < $num_ips; $i++)
 		{
 			$ip_suffix = $last_ip_part + $i;
 			$ips[] = $ip_prefix . '.' . $ip_suffix;
 		}
+
 		return $ips;
 	}
 
 	public function isIpAddressInSubnet($ip_address)
 	{
-		$cidr = intval($this->getCidr());
-
         $start_ip = ip2long($this->getIpAddress());
-        $end_ip = $start_ip + pow(2, 32 - $cidr) - 1;
+        $end_ip = $start_ip + $this->getNumberOfIpAddresses() - 1;
 
         $ip_address = ip2long($ip_address);
 

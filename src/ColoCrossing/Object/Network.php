@@ -23,4 +23,10 @@ class ColoCrossing_Object_Network extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('null_routes', $id);
 	}
 
+	public function getNumberOfIpAddresses()
+	{
+		$cidr = intval($this->getCidr());
+		return pow(2, 32 - $cidr);
+	}
+
 }
