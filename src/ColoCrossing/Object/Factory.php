@@ -95,12 +95,17 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($client, $values);
 	}
 
-	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array(), $type = null)
+	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array(), $type = null, array $additional_data = null)
 	{
 		$objects = [];
 
 		foreach ($objects_values as $index => $values)
 		{
+			if(isset($additional_data))
+			{
+				$values = array_merge($values, $additional_data);
+			}
+
 			$objects[] = self::createObject($client, $resource, $values, $type);
 		}
 

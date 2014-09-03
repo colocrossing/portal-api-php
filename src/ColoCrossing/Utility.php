@@ -9,4 +9,17 @@ class ColoCrossing_Utility
 		return strtolower($string);
 	}
 
+	public static function getObjectFromCollectionById($objects, $id)
+	{
+		foreach ($objects as $key => $object)
+		{
+			if($object->getId() == $id)
+			{
+				return $object;
+			}
+		}
+
+		return null;
+	}
+
 }

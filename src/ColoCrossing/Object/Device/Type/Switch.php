@@ -15,7 +15,18 @@ class ColoCrossing_Object_Device_Type_Switch extends ColoCrossing_Object_Device_
 
 	public function getPorts()
 	{
-		return $this->getObjectArray('ports', null, 'network_port', array());
+		$additional_data = array(
+			'switch' => $this
+		);
+
+		return $this->getObjectArray('ports', null, 'network_port', array(), $additional_data);
+	}
+
+	public function getPort($id)
+	{
+		$ports = $this->getPorts();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($ports, $id);
 	}
 
 }

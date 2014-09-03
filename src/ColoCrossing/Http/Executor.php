@@ -34,7 +34,7 @@ class ColoCrossing_Http_Executor
 		curl_setopt($this->curl, CURLOPT_SSL_VERIFYHOST, $this->client->getOption('ssl_verify') ? 2 : 0);
     	curl_setopt($this->curl, CURLOPT_SSL_VERIFYPEER, $this->client->getOption('ssl_verify'));
     	curl_setopt($this->curl, CURLOPT_RETURNTRANSFER, true);
-    	curl_setopt($this->curl, CURLOPT_HEADER, true);
+    	curl_setopt($this->curl, CURLOPT_HEADER, false);
 
 		curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $this->client->getOption('follow_redirects'));
     	curl_setopt($this->curl, CURLOPT_USERAGENT, $this->client->getOption('application_name') . '/' . $this->client->getVersion());
@@ -87,15 +87,16 @@ class ColoCrossing_Http_Executor
 	{
 		$curl = $this->getCurl();
 
-		$response = curl_exec($curl);
-		if(is_bool($response) && !$response)
+		$body = curl_exec($curl);
+		if(is_bool($body) && !$body)
 		{
 			throw new ColoCrossing_Error('Unable to make connection to ColoCrossing API.');
 		}
 
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+		$content_type = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
-		return new ColoCrossing_Http_Response($response, $code);
+		return new ColoCrossing_Http_Response($body, $code, $content_type);
 	}
 
 	private function destroyCurl()

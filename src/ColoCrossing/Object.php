@@ -136,7 +136,7 @@ class ColoCrossing_Object
 		return $this->object_arrays;
 	}
 
-	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null)
+	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null, array $additional_data = null)
 	{
 		if(isset($this->object_arrays[$key]))
 		{
@@ -149,7 +149,7 @@ class ColoCrossing_Object
 		{
 			if(empty($resource))
 			{
-				return $this->object_arrays[$key] = ColoCrossing_Object_Factory::createObjectArray($this->client, $resource, $value, $type);
+				return $this->object_arrays[$key] = ColoCrossing_Object_Factory::createObjectArray($this->client, $resource, $value, $type, $additional_data);
 			}
 
 			$this->object_arrays[$key] = array();

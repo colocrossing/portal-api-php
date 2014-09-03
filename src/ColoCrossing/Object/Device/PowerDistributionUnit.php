@@ -5,7 +5,18 @@ class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Reso
 
 	public function getPorts()
 	{
-		return $this->getObjectArray('ports', null, 'power_port', array());
+		$additional_data = array(
+			'power_distribution_unit' => $this
+		);
+
+		return $this->getObjectArray('ports', null, 'power_port', array(), $additional_data);
+	}
+
+	public function getPort($id)
+	{
+		$ports = $this->getPorts();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($ports, $id);
 	}
 
 	public function getOwner()
@@ -13,19 +24,23 @@ class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Reso
 		return $this->getObject('owner');
 	}
 
-	public function getDetailedDevice()
+	public function isDetailedDeviceAvailable()
 	{
 		$owner = $this->getOwner();
 
-		if(empty($owner))
+		return empty($owner);
+	}
+
+	public function getDetailedDevice()
+	{
+		if(!$this->isDetailedDeviceAvailable())
 		{
 			return null;
 		}
 
-		$device_id = $this->getId();
 		$client = $this->getClient();
 
-		return $this->getObjectById($device_id, 'detailed_device', $client->devices);
+		return $this->getObjectById($this->getId(), 'detailed_device', $client->devices);
 	}
 
 }

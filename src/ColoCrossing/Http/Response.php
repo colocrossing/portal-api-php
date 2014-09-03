@@ -2,33 +2,21 @@
 
 class ColoCrossing_Http_Response
 {
-	private $headers;
-
 	private $body;
 
 	private $content;
 
+	private $content_type;
+
 	private $code;
 
-	public function __construct($response, $code = 200)
+	public function __construct($body, $code = 200, $content_type = null)
 	{
+		$this->setBody($body);
 		$this->setCode($code);
-
-		$header_size = strpos($response, "\r\n\r\n");
-		$this->setHeaders($response, $header_size);
-		$this->setBody($response, $header_size);
+		$this->setContentType($content_type);
 
 		$this->setContent();
-	}
-
-	public function getHeaders()
-	{
-		return $this->headers;
-	}
-
-	public function getHeader($key)
-	{
-		return isset($this->headers[$key]) ? $this->headers[$key] : false;
 	}
 
 	public function getBody()
@@ -36,44 +24,44 @@ class ColoCrossing_Http_Response
 		return $this->body;
 	}
 
-	public function getContent()
-	{
-		return $this->content;
-	}
-
 	public function getCode()
 	{
 		return $this->code;
 	}
 
-	private function setHeaders($response, $header_size)
+	public function getContent()
 	{
-		$header = substr($response, 0, $header_size);
-
-		$this->headers = array();
-		foreach (explode("\r\n", $header) as $i => $line)
-		{
-			if($i > 0)
-			{
-				list($key, $value) = explode(': ', $line);
-				$this->headers[$key] = $value;
-			}
-		}
+		return $this->content;
 	}
 
-	private function setBody($response, $header_size)
+	public function getContentType()
 	{
-		$this->body = substr($response, $header_size);
+		return $this->content_type;
+	}
+
+	private function setBody($body)
+	{
+		$this->body = $body;
+	}
+
+	private function setCode($code)
+	{
+		$this->code = $code;
+	}
+
+	private function setContentType($content_type)
+	{
+		$this->content_type = $content_type;
 	}
 
 	private function setContent()
 	{
-		$content_type = isset($this->headers['Content-Type']) ? $this->headers['Content-Type'] : '';
-		switch ($content_type) {
+		switch ($this->getContentType()) {
 			case 'image/jpeg':
 			case 'image/png':
 			case 'image/gif':
 				$this->content = imagecreatefromstring($this->body);
+
 				if(is_bool($this->content) && !$this->content)
 				{
 					throw new ColoCrossing_Error('ColoCrossing API Error - Image is corrupt or in an unsupported format.');
@@ -81,6 +69,7 @@ class ColoCrossing_Http_Response
 				break;
 			case 'application/json':
 				$this->content = json_decode($this->body, true);
+
 				if(isset($this->content) && isset($this->content['status']) && $this->content['status'] == 'error')
 				{
 					$this->throwAPIError();
@@ -90,11 +79,6 @@ class ColoCrossing_Http_Response
 				$this->content = null;
 				break;
 		}
-	}
-
-	private function setCode($code)
-	{
-		$this->code = $code;
 	}
 
 	private function throwAPIError()

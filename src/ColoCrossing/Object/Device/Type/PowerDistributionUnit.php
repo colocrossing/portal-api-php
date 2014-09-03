@@ -15,7 +15,18 @@ class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing
 
 	public function getPorts()
 	{
-		return $this->getObjectArray('ports', null, 'power_port', array());
+		$additional_data = array(
+			'power_distribution_unit' => $this
+		);
+
+		return $this->getObjectArray('ports', null, 'power_port', array(), $additional_data);
+	}
+
+	public function getPort($id)
+	{
+		$ports = $this->getPorts();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($ports, $id);
 	}
 
 }

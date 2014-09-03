@@ -5,7 +5,18 @@ class ColoCrossing_Object_Device_Switch extends ColoCrossing_Resource_Object
 
 	public function getPorts()
 	{
-		return $this->getObjectArray('ports', null, 'network_port', array());
+		$additional_data = array(
+			'switch' => $this
+		);
+
+		return $this->getObjectArray('ports', null, 'network_port', array(), $additional_data);
+	}
+
+	public function getPort($id)
+	{
+		$ports = $this->getPorts();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($ports, $id);
 	}
 
 	public function getOwner()
@@ -13,11 +24,16 @@ class ColoCrossing_Object_Device_Switch extends ColoCrossing_Resource_Object
 		return $this->getObject('owner');
 	}
 
-	public function getDetailedDevice()
+	public function isDetailedDeviceAvailable()
 	{
 		$owner = $this->getOwner();
 
-		if(empty($owner))
+		return empty($owner);
+	}
+
+	public function getDetailedDevice()
+	{
+		if(!$this->isDetailedDeviceAvailable())
 		{
 			return null;
 		}
