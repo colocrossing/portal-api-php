@@ -75,7 +75,14 @@ class ColoCrossing_Http_Request
 
 	public function getQueryString()
 	{
-		return count($this->queryParams) ? '?' . http_build_query($this->queryParams) : '';
+		$params = $this->getQueryParams();
+
+		if($this->getMethod() == 'GET')
+		{
+			$params = array_merge($params, $this->getData());
+		}
+
+		return count($params) ? '?' . http_build_query($params) : '';
 	}
 
 	public function setData(array $data)

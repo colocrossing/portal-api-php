@@ -68,7 +68,7 @@ class ColoCrossing_Resource_Child_Factory
 				break;
 		}
 
-		throw new ColoCrossing_Error("ColoCrossing API Child Resource not found.");
+		throw new ColoCrossing_Error('ColoCrossing API Child Resource not found.');
 	}
 
 	public static function getAvailableChildResources($parent_name)

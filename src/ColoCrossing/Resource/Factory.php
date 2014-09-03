@@ -31,7 +31,7 @@ class ColoCrossing_Resource_Factory
 				return new ColoCrossing_Resource_Subnets($client);
 		}
 
-		throw new ColoCrossing_Error("ColoCrossing API Resource not found.");
+		throw new ColoCrossing_Error('ColoCrossing API Resource not found.');
 	}
 
 	public static function getAvailableResources()

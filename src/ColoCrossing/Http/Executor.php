@@ -63,7 +63,7 @@ class ColoCrossing_Http_Executor
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getMethod());
 
         $request_data = $request->getData();
-        if(count($request_data))
+        if(count($request_data) && $request->getMethod() != 'GET')
         {
         	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($request_data));
         }
