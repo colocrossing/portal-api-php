@@ -3,6 +3,11 @@
 class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Resource_Object
 {
 
+	public function getType()
+	{
+		return $this->getObject('type', null, 'type');
+	}
+
 	public function getPorts()
 	{
 		$additional_data = array(

@@ -5,7 +5,7 @@ class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 
 	public function getType()
 	{
-		return $this->getObject('type');
+		return $this->getObject('type', null, 'type');
 	}
 
 	public function getOwner()

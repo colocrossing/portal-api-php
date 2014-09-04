@@ -30,9 +30,18 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('null_routes', $options);
 	}
 
+	public function getNullRoutesByIpAddress($ip_address, array $options = null)
+	{
+		$client = $this->getClient();
+
+		return $client->subnets->null_routes->findAllByIpAddress($this->getId(), $ip_address, $options);
+	}
+
 	public function getNullRoute($id)
 	{
-		return $this->getResourceChildObject('null_routes', $id);
+		$null_routes = $this->getNullRoutes();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($null_routes, $id);
 	}
 
 	public function addNullRoute($ip_address, $comment = '', $expire_date = null)
@@ -62,6 +71,20 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('rdns_records', $id);
 	}
 
+	public function updateReverseDNSRecords(array $rdns_records)
+	{
+		$resource = $this->getResource();
+
+		return $resource->rdns_records->updateAll($this->getId(), $rdns_records);
+	}
+
+
+	public function getNumberOfIpAddresses()
+	{
+		$cidr = intval($this->getCidr());
+		return pow(2, 32 - $cidr);
+	}
+
 	public function getIpAddresses()
 	{
 		$start_ip = $this->getIpAddress();
@@ -69,24 +92,22 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		$last_ip_part = intval(array_pop($ip_parts));
 		$ip_prefix = implode('.', $ip_parts);
 
-		$cidr = intval($this->getCidr());
-		$num_ips = pow(2, 32 - $cidr);
-
+		$num_ips = $this->getNumberOfIpAddresses();
 		$ips = array();
+
 		for ($i = 0; $i < $num_ips; $i++)
 		{
 			$ip_suffix = $last_ip_part + $i;
 			$ips[] = $ip_prefix . '.' . $ip_suffix;
 		}
+
 		return $ips;
 	}
 
 	public function isIpAddressInSubnet($ip_address)
 	{
-		$cidr = intval($this->getCidr());
-
         $start_ip = ip2long($this->getIpAddress());
-        $end_ip = $start_ip + pow(2, 32 - $cidr) - 1;
+        $end_ip = $start_ip + $this->getNumberOfIpAddresses() - 1;
 
         $ip_address = ip2long($ip_address);
 

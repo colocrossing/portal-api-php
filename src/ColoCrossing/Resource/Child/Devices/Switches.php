@@ -20,7 +20,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$switch = $this->find($device_id, $switch_id);
 
-		if(empty($switch))
+		if(empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
@@ -59,7 +59,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$switch = $this->find($device_id, $switch_id);
 
-		if(empty($switch))
+		if(empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return false;
 		}

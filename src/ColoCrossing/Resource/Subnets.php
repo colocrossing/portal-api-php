@@ -10,13 +10,15 @@ class ColoCrossing_Resource_Subnets extends ColoCrossing_Resource_Abstract
 
 	public function findAllLikeIpAddress($ip_address, array $options = null)
 	{
-		if(filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if(!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 		{
-			$options = isset($options) && is_array($options) ? $options : array();
-			$options['filters'] = array(
-				'ip_address' => $ip_address
-			);
+			return array();
 		}
+
+		$options = isset($options) && is_array($options) ? $options : array();
+		$options['filters'] = array(
+			'ip_address' => $ip_address
+		);
 
 		return $this->findAll($options);
 	}

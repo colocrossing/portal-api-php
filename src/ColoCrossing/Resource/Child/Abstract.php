@@ -22,7 +22,7 @@ abstract class ColoCrossing_Resource_Child_Abstract extends ColoCrossing_Resourc
 		$options = $this->createCollectionOptions($options);
 		$url = $this->createCollectionUrl($parent_id);
 
-		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort']);
+		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
 	}
 
 	public function find($parent_id, $id)
