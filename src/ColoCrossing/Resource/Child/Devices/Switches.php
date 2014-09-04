@@ -25,6 +25,13 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return null;
 		}
 
+		$type = $switch->getType();
+
+		if(!$type->isNetworkDistribution())
+		{
+			return null;
+		}
+
 		$port = $switch->getPort($port_id);
 
 		if(empty($port) || !$port->isBandwidthGraphAvailable())
