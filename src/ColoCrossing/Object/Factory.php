@@ -15,6 +15,9 @@ class ColoCrossing_Object_Factory
 				case 'power_port':
 					require_once(dirname(__FILE__) . '/Device/PowerPort.php');
 					return new ColoCrossing_Object_Device_PowerPort($client, $values);
+				case 'type':
+					require_once(dirname(__FILE__) . '/Device/Type.php');
+					return new ColoCrossing_Object_Device_Type($client, $values);
 			}
 			return new ColoCrossing_Object($client, $values);
 		}
