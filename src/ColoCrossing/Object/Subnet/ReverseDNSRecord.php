@@ -13,14 +13,14 @@ class ColoCrossing_Object_Subnet_ReverseDNSRecord extends ColoCrossing_Resource_
 		}
 
 		$resource = $this->getResource();
+		$result = $resource->update($subnet->getId(), $this->getId(), $value);
 
-		if($resource->update($subnet->getId(), $this->getId(), $value))
+		if($result)
 		{
 			$this->setValue('record', $value);
-			return true;
 		}
 
-		return false;
+		return $result;
 	}
 
 	public function getSubnet()

@@ -39,7 +39,7 @@ $subnet_id = 715; //Enter your subnet id here
 $subnet = $colocrossing_client->subnets->find($subnet_id);
 
 //Find By Id Through Subnet
-$null_route_id = 27; //Enter your null route id here
+$null_route_id = 30; //Enter your null route id here
 $null_route = $subnet->getNullRoute($null_route_id);
 
 if(isset($null_route))
