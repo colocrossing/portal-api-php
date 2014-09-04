@@ -8,6 +8,8 @@ $colocrossing_client->setOption('ssl_verify', false);
 
 ?>
 
+<h1>Control a Switch Port</h1>
+
 <?php
 
 $switch_id = 38; //Enter your switch id here
@@ -18,22 +20,12 @@ if(isset($switch) && $switch->getType()->isNetworkDistribution())
 	$port_id = 4;//Enter your port id here
 	$port = $switch->getPort($port_id);
 
-	if(isset($port) )
+	if(isset($port) && $port->isControllable())
 	{
-		//Get Graph for the last week
-		$graph = $port->getBandwidthGraph(strtotime('-1 week'), time());
+		$success = $port->turnOn();
+		//$success = $port->turnOff();
 
-		if(isset($graph))
-		{
-			ob_clean();
-	    	ob_start();
-
-        	header("Content-Type: image/png");
-	    	imagepng($graph);
-	    	imagedestroy($graph);
-
-	    	ob_end_flush();
-		}
+		echo '<p>Success? ' . ($success ? 'Yes' : 'No') . '</p>';
 	}
 }
 
