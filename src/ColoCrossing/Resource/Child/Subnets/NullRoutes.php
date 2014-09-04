@@ -10,13 +10,15 @@ class ColoCrossing_Resource_Child_Subnets_NullRoutes extends ColoCrossing_Resour
 
 	public function findAllByIpAddress($parent_id, $ip_address, array $options = null)
 	{
-		if(filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if(!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 		{
-			$options = isset($options) && is_array($options) ? $options : array();
-			$options['filters'] = array(
-				'ip_address' => $ip_address
-			);
+			return array();
 		}
+
+		$options = isset($options) && is_array($options) ? $options : array();
+		$options['filters'] = array(
+			'ip_address' => $ip_address
+		);
 
 		return $this->findAll($parent_id, $options);
 	}
