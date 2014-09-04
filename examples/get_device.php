@@ -30,6 +30,62 @@ if(isset($device))
 	echo '<p>Id: ' . $type->getId() . '</p>';
 	echo '<p>Name: ' . $type->getName() . '</p>';
 
+	echo '<h2>Subnets</h2>';
+
+	if($type->isNetworked())
+	{
+		$subnets = $device->getSubnets();
+
+		foreach ($subnets as $i => $subnet)
+		{
+			echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
+		}
+	}
+	else
+	{
+		echo '<p>Device is not Networked.</p>';
+	}
+
+	//Verify Device has Switches
+	if($type->isNetworkEndpoint())
+	{
+		echo '<h2>Switches</h2>';
+
+		$switches = $device->getSwitches();
+
+		foreach ($switches as $i => $switch)
+		{
+			echo '<p>Switch #' . $switch->getId() . ' - ' . $switch->getName() . '</p>';
+
+			$ports = $switch->getPorts();
+
+			foreach ($ports as $j => $port)
+			{
+				echo '<p>--- Port #' . $port->getId() . ' - ' . $port->getStatus() . '</p>';
+			}
+		}
+	}
+
+	//Verify Device has PDUs
+	if($type->isPowerEndpoint())
+	{
+		echo '<h2>PDUs</h2>';
+
+		$pdus = $device->getPowerDistributionUnits();
+
+		foreach ($pdus as $i => $pdu)
+		{
+			echo '<p>PDU #' . $pdu->getId() . ' - ' . $pdu->getName() . '</p>';
+
+			$ports = $pdu->getPorts();
+
+			foreach ($ports as $j => $port)
+			{
+				echo '<p>--- Port #' . $port->getId() . ' - ' . $port->getStatus() . '</p>';
+			}
+		}
+	}
+
 	echo '<h2>Assets</h2>';
 
 	$assets = $device->getAssets();

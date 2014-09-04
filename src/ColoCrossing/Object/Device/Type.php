@@ -18,6 +18,11 @@ class ColoCrossing_Object_Device_Type extends ColoCrossing_Object
 		return !!$this->getValue('is_virtual');
 	}
 
+	public function isPowered()
+	{
+		return $this->isPowerEndpoint() || $this->isPowerDistribution();
+	}
+
 	public function isPowerEndpoint()
 	{
 		return $this->getValue('power') == 'endpoint';
@@ -26,6 +31,11 @@ class ColoCrossing_Object_Device_Type extends ColoCrossing_Object
 	public function isPowerDistribution()
 	{
 		return $this->getValue('power') == 'distribution';
+	}
+
+	public function isNetworked()
+	{
+		return $this->isNetworkEndpoint() || $this->isNetworkDistribution();
 	}
 
 	public function isNetworkEndpoint()
