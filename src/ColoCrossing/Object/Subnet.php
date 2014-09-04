@@ -71,6 +71,14 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('rdns_records', $id);
 	}
 
+	public function updateReverseDNSRecords(array $rdns_records)
+	{
+		$resource = $this->getResource();
+
+		return $resource->rdns_records->updateAll($this->getId(), $rdns_records);
+	}
+
+
 	public function getNumberOfIpAddresses()
 	{
 		$cidr = intval($this->getCidr());

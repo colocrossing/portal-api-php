@@ -16,7 +16,7 @@ $colocrossing_client->setOption('ssl_verify', false);
 $subnet_id = 715; //Enter your subnet id here
 $subnet = $colocrossing_client->subnets->find($subnet_id);
 
-if(isset($subnet))
+if(isset($subnet) && $subnet->isReverseDnsEnabled())
 {
 	echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
 
