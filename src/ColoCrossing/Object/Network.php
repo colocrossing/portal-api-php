@@ -13,6 +13,22 @@ class ColoCrossing_Object_Network extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('subnets', $id);
 	}
 
+	public function getSubnetByIpAddress($ip_address)
+	{
+		$client = $this->getClient();
+		$subnets = $client->networks->subnets->findAllLikeIpAddress($this->getId(), $ip_address, array('page_size' => 100));
+
+		foreach ($subnets as $key => $subnet)
+		{
+			if($subnet->isIpAddressInSubnet($ip_address))
+			{
+				return $subnet;
+			}
+		}
+
+		return null;
+	}
+
 	public function getNullRoutes(array $options = null)
 	{
 		return $this->getResourceChildCollection('null_routes', $options);
