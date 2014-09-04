@@ -23,3 +23,60 @@ Alternatively the API Token may be passed in the constructor as seen below.
 ```php
 $colocrossing_client = new ColoCrossing_Client('YOUR_API_TOKEN');
 ```
+
+Accessing Resources
+-------------------------------
+Once the ColoCrossing_Client is created, you can access numerous resources from the client object. The resources available are devices, networks, null_routes, and subnets.
+
+Each resource has a findAll method which will return a ColoCrossing_Collection of ColoCrossing_Object's that can then be iterated using a foreach loop.
+
+```php
+$devices = $colocrossing_client->devices->findAll();
+
+foreach($devices as $key => $device)
+{
+	echo $device->getName();
+}
+```
+
+Each resource has a find method which takes an id as the parameter and will return a ColoCrossing_Object.
+
+```php
+$device = $colocrossing_client->devices->find($device_id);
+
+echo $device->getName();
+```
+
+Using Objects
+-------------------------------
+The objects returned by the resources have numerous getter methods to retrieve attributes or child objects of the object. To see what methods are available on specific objects, its best to look at the objects code.
+
+```php
+echo $device->getName();
+echo $device->getNickname();
+echo $device->getHostname();
+echo $device->getUSize();
+
+$type = $device->getType();
+echo $type->getName();
+
+$notes = $device->getNotes()
+foreach($notes as $key => $note)
+{
+	echo $note->getNote();
+}
+
+$assets = $device->getAssets()
+foreach($assets as $key => $asset)
+{
+	echo $asset->getName();
+}
+```
+
+Examples
+-------------------------------
+Numerous examples have been provided in the repository's examples folder. The examples demonstrate how to accomplish most actions possible in the library. You are encouraged to look at these examples to learn the best practices for using the library.
+
+Reporting Issues/Contributing
+-------------------------------
+If you find an issue with the library, please report the issue to us by using the repository's issue tracker and we will try to resolve the issue. If you resolve the issue or make other improvements feel free to create a pull request so we can merge it into a future release.
