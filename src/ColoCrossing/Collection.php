@@ -132,6 +132,7 @@ class ColoCrossing_Collection implements Iterator, Countable
 			'sort' => $this->sort,
 			'filters' => $this->filters
 		);
+
 		$this->objects = $this->resource->fetchAll($this->url, $options);
 	}
 

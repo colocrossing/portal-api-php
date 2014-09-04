@@ -18,9 +18,18 @@ class ColoCrossing_Object_Network extends ColoCrossing_Resource_Object
 		return $this->getResourceChildCollection('null_routes', $options);
 	}
 
+	public function getNullRoutesByIpAddress($ip_address, array $options = null)
+	{
+		$client = $this->getClient();
+
+		return $client->networks->null_routes->findAllByIpAddress($this->getId(), $ip_address, $options);
+	}
+
 	public function getNullRoute($id)
 	{
-		return $this->getResourceChildObject('null_routes', $id);
+		$null_routes = $this->getNullRoutes();
+
+		return ColoCrossing_Utility::getObjectFromCollectionById($null_routes, $id);
 	}
 
 	public function getNumberOfIpAddresses()
