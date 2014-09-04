@@ -31,6 +31,16 @@ if(isset($network))
 	{
 		echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
 	}
+
+	echo '<h2>Null Routes</h2>';
+
+	$null_routes = $network->getNullRoutes();
+
+	foreach ($null_routes as $key => $null_route)
+	{
+		$expire_date = date('c', $null_route->getDateExpire());
+		echo '<p>Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . ' - ' . $expire_date . '</p>';
+	}
 }
 
 ?>
