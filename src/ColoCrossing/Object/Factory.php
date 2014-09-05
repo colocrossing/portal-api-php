@@ -100,7 +100,7 @@ class ColoCrossing_Object_Factory
 
 	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array(), $type = null, array $additional_data = null)
 	{
-		$objects = [];
+		$objects = array();
 
 		foreach ($objects_values as $index => $values)
 		{
