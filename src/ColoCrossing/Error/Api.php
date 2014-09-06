@@ -15,7 +15,7 @@ class ColoCrossing_Error_Api extends ColoCrossing_Error
 	/**
 	 * @param int $status  		The Http Status of the Request.
 	 * @param array   $content 	The content returned from the API.
-	 * @param string $message 	Optional. Defaults to ColoCrossing API Error - Message From API
+	 * @param string $message 	Optional. Defaults to "ColoCrossing API Error - Message From API"
 	 */
 	public function __construct($status = 500, array $content = array(), $message = null)
 	{

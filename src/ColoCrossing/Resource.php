@@ -8,16 +8,17 @@ interface ColoCrossing_Resource
 
 	/**
 	 * Retrieves a List of ColoCrossing_Object from this Resource
-	 * @param  string $url     The Url of the Resource relative the root of the API.
-	 * @param  array $options An Array of Options to Adjust the Result. Includes filters, sort, page_number, and page_size.
-	 * @return array<ColoCrossing_Object>		A List of ColoCrossing_Object from the Url
+	 * @param  string 			$url     	The Url of the Resource relative the root of the API.
+	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
+	 *											sort, page_number, and page_size.
+	 * @return array<ColoCrossing_Object>	A List of ColoCrossing_Object from the Url
 	 */
 	public function fetchAll($url, array $options = null);
 
 	/**
 	 * Retrieves a ColoCrossing_Object from this Resource
-	 * @param  string $url     The Url of the Resource relative the root of the API.
-	 * @return ColoCrossing_Object		The ColoCrossing_Object from the Url
+	 * @param  string 		$url    The Url of the Resource relative the root of the API.
+	 * @return ColoCrossing_Object	The ColoCrossing_Object from the Url
 	 */
 	public function fetch($url);
 
@@ -27,8 +28,8 @@ interface ColoCrossing_Resource
 	public function getClient();
 
 	/**
-	 * @param  boolean $plural Specifies if the plural form of the name is wanted.
-	 * @return string         The name of the resource. If $plural is true the name is in plural form,
+	 * @param  boolean $plural 	Specifies if the plural form of the name is wanted.
+	 * @return string         	The name of the resource. If $plural is true the name is in plural form,
 	 *                            otherwise it is in singular form.
 	 */
 	public function getName($plural);

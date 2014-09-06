@@ -1,11 +1,12 @@
 <?php
 
-//Verify the Needed Extensions Are Available
+//Verify cURL extension is available
 if (!function_exists('curl_init'))
 {
   throw new Exception('ColoCrossing API Client needs the CURL PHP extension.');
 }
 
+//Verify JSON extension is available
 if (!function_exists('json_decode'))
 {
   throw new Exception('ColoCrossing API Client needs the JSON PHP extension.');

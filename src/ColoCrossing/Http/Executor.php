@@ -36,10 +36,8 @@ class ColoCrossing_Http_Executor
 	{
 		$this->createCurl();
 		$this->setCurlRequestOptions($request);
-		$response = $this->executeCurl();
-		$this->destroyCurl();
-
-		return $response;
+		
+		return $this->executeCurl();
 	}
 
 	/**
@@ -128,6 +126,9 @@ class ColoCrossing_Http_Executor
 		$curl = $this->getCurl();
 
 		$body = curl_exec($curl);
+
+		$this->destroyCurl();
+		
 		if(is_bool($body) && !$body)
 		{
 			throw new ColoCrossing_Error('Unable to make connection to ColoCrossing API.');

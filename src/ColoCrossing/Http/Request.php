@@ -168,4 +168,5 @@ class ColoCrossing_Http_Request
 	{
 		return $this->data;
 	}
+	
 }

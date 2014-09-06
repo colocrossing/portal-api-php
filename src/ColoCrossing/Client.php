@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The Class Responsible for managing all Interactions with the ColoCrossing API
+ * This is Responsible for managing all Interactions with the ColoCrossing API
  */
 class ColoCrossing_Client
 {
@@ -149,6 +149,32 @@ class ColoCrossing_Client
 	}
 
 	/**
+	 * Retrieves a Resource if it is available. If the resource is available, but has not 
+	 * been created yet, then the resource is created and returned. Otherwise the already 
+	 * existing resource is returned.
+	 *
+	 * Resources that are available are devices, networks, null_routes and subnets.
+	 * @param  string 		$name 		The name of the resource requested.		
+	 * @return ColoCrossing_Resource 	The resource
+	 */
+	public function getResource($name)
+	{
+		$available_resources = ColoCrossing_Resource_Factory::getAvailableResources();
+		
+		if(empty($available_resources[$name]))
+		{
+			return null;
+		}
+
+		if(empty($this->resources[$name]))
+		{
+			$this->resources[$name] = ColoCrossing_Resource_Factory::createResource($name, $this);
+		}
+
+		return $this->resources[$name];
+	}
+
+	/**
 	 * Handles Magic Loading of Resources
 	 * @param  string $name 			The function called.
 	 * @return ColoCrossing_Resource    The resource.
@@ -156,14 +182,10 @@ class ColoCrossing_Client
 	public function __get($name)
 	{
 		$available_resources = ColoCrossing_Resource_Factory::getAvailableResources();
+		
 		if(isset($available_resources[$name]))
 		{
-			if(empty($this->resources[$name]))
-			{
-				$this->resources[$name] = ColoCrossing_Resource_Factory::createResource($name, $this);
-			}
-
-			return $this->resources[$name];
+			return $this->getResource($name);
 		}
 	}
 }

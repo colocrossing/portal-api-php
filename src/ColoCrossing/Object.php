@@ -7,7 +7,7 @@ class ColoCrossing_Object
 {
 
 	/**
-	 * The API Client of this Resource
+	 * The API Client
 	 * @var ColoCrossing_Client
 	 */
 	private $client;
