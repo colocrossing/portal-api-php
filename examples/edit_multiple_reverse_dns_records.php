@@ -16,11 +16,11 @@ $colocrossing_client->setOption('ssl_verify', false);
 $subnet_id = 715; //Enter your subnet id here
 $subnet = $colocrossing_client->subnets->find($subnet_id);
 
-if(isset($subnet) && $subnet->isReverseDnsEnabled())
+if (isset($subnet) && $subnet->isReverseDnsEnabled())
 {
 	echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
 
-	if(!$subnet->isPendingServiceRequest())
+	if (!$subnet->isPendingServiceRequest())
 	{
 
 		$rdns_records = $subnet->getReverseDNSRecords();
@@ -41,7 +41,7 @@ if(isset($subnet) && $subnet->isReverseDnsEnabled())
 
 		// Depending on client a ticket may need to be created to make rDNS update. If so, then the ticket
 		// Id will be returned. Otherwise a boolean is returned to specify success.
-		if(is_int($result))
+		if (is_int($result))
 		{
 			echo '<p> Ticket #' . $result . ' was created.</p>';
 		}

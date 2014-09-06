@@ -38,7 +38,7 @@ class ColoCrossing_Http_Executor
 	{
 		$this->createCurl();
 		$this->setCurlRequestOptions($request);
-		
+
 		return $this->executeCurl();
 	}
 
@@ -48,7 +48,7 @@ class ColoCrossing_Http_Executor
 	 */
 	private function createCurl()
 	{
-		if(isset($this->curl))
+		if (isset($this->curl))
 		{
 			$this->destroyCurl();
 		}
@@ -74,7 +74,7 @@ class ColoCrossing_Http_Executor
 	 */
 	private function getCurl()
 	{
-		if(empty($this->curl))
+		if (empty($this->curl))
 		{
 			return $this->createCurl();
 		}
@@ -95,7 +95,7 @@ class ColoCrossing_Http_Executor
         curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $request->getMethod());
 
         $request_data = $request->getData();
-        if(count($request_data) && $request->getMethod() != 'GET')
+        if (count($request_data) && $request->getMethod() != 'GET')
         {
         	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($request_data));
         }
@@ -130,8 +130,8 @@ class ColoCrossing_Http_Executor
 		$body = curl_exec($curl);
 
 		$this->destroyCurl();
-		
-		if(is_bool($body) && !$body)
+
+		if (is_bool($body) && !$body)
 		{
 			throw new ColoCrossing_Error('Unable to make connection to ColoCrossing API.');
 		}
@@ -148,7 +148,7 @@ class ColoCrossing_Http_Executor
 	 */
 	private function destroyCurl()
 	{
-		if(empty($this->curl))
+		if (empty($this->curl))
 		{
 			return false;
 		}

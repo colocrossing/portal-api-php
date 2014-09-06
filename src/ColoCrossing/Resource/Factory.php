@@ -14,7 +14,7 @@ class ColoCrossing_Resource_Factory
 	{
 		$available_resources = self::getAvailableResources();
 
-		if(isset($available_resources[$type]))
+		if (isset($available_resources[$type]))
 		{
 			require_once(dirname(__FILE__) . $available_resources[$type]);
 		}

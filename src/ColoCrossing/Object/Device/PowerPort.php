@@ -19,7 +19,7 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 
 	public function setStatus($status)
 	{
-		if(!$this->isControllable())
+		if (!$this->isControllable())
 		{
 			return false;
 		}

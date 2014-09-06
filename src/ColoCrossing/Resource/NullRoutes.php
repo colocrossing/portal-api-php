@@ -10,7 +10,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 	public function findAllByIpAddress($ip_address, array $options = null)
 	{
-		if(!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if (!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 		{
 			return array();
 		}
@@ -28,7 +28,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		$client = $this->getClient();
 		$subnet = $client->subnets->find($subnet_id);
 
-		if(empty($subnet) || !$subnet->isIpAddressInSubnet($ip_address))
+		if (empty($subnet) || !$subnet->isIpAddressInSubnet($ip_address))
 		{
 			return false;
 		}
@@ -39,11 +39,11 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 			'comment' => $comment
 		);
 
-		if(isset($expire_date) && is_int($expire_date))
+		if (isset($expire_date) && is_int($expire_date))
 		{
 			$data['expire_date'] = date('c', $expire_date);
 
-			if($expire_date > strtotime('+30 days'))
+			if ($expire_date > strtotime('+30 days'))
 			{
 				return false;
 			}
@@ -55,7 +55,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		{
 			$subnet = $null_route->getSubnet();
 
-			if(isset($subnet) && $subnet->getId() == $subnet_id)
+			if (isset($subnet) && $subnet->getId() == $subnet_id)
 			{
 				return false;
 			}
@@ -65,14 +65,14 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 		$response = $this->sendRequest($url, 'POST', $data);
 
-		if(empty($response))
+		if (empty($response))
 		{
 			return null;
 		}
 
 		$content = $response->getContent();
 
-		if(empty($content) || empty($content['status']) || $content['status'] == 'error' || empty($content['null_route']) || empty($content['null_route']['id']))
+		if (empty($content) || empty($content['status']) || $content['status'] == 'error' || empty($content['null_route']) || empty($content['null_route']['id']))
 		{
 			return null;
 		}
@@ -84,7 +84,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 	{
 		$null_route = $this->find($id);
 
-		if(empty($null_route) || !$null_route->isRemovable())
+		if (empty($null_route) || !$null_route->isRemovable())
 		{
 			return false;
 		}
@@ -93,7 +93,7 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 		$response = $this->sendRequest($url, 'DELETE');
 
-		if(empty($response))
+		if (empty($response))
 		{
 			return false;
 		}

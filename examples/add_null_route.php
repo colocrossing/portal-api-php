@@ -16,7 +16,7 @@ $colocrossing_client->setOption('ssl_verify', false);
 $subnet_id = 715; //Enter your subnet id here
 $subnet = $colocrossing_client->subnets->find($subnet_id);
 
-if(isset($subnet))
+if (isset($subnet))
 {
 	echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
 
@@ -26,7 +26,7 @@ if(isset($subnet))
 
 	$null_route = $subnet->addNullRoute($ip_address, $comment, $expire_date);
 
-	if(isset($null_route) && $null_route)
+	if (isset($null_route) && $null_route)
 	{
 		echo '<p>Added Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . '</p>';
 	}

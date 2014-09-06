@@ -20,7 +20,7 @@ class ColoCrossing_Object_Network extends ColoCrossing_Resource_Object
 
 		foreach ($subnets as $key => $subnet)
 		{
-			if($subnet->isIpAddressInSubnet($ip_address))
+			if ($subnet->isIpAddressInSubnet($ip_address))
 			{
 				return $subnet;
 			}

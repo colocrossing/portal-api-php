@@ -38,7 +38,7 @@ class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Reso
 
 	public function getDetailedDevice()
 	{
-		if(!$this->isDetailedDeviceAvailable())
+		if (!$this->isDetailedDeviceAvailable())
 		{
 			return null;
 		}

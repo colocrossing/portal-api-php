@@ -26,7 +26,7 @@ class ColoCrossing_Resource_Child_Factory
 	{
 		$available_child_resources = self::getAvailableChildResources($parent_type);
 
-		if(isset($available_child_resources) && isset($available_child_resources[$child_type]))
+		if (isset($available_child_resources) && isset($available_child_resources[$child_type]))
 		{
 			require_once(dirname(__FILE__) . $available_child_resources[$child_type]);
 		}

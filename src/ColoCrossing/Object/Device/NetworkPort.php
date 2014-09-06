@@ -19,7 +19,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 
 	public function getBandwidthGraph($start = null, $end = null)
 	{
-		if(!$this->isBandwidthGraphAvailable())
+		if (!$this->isBandwidthGraphAvailable())
 		{
 			return null;
 		}
@@ -41,7 +41,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 
 	public function setStatus($status)
 	{
-		if(!$this->isControllable())
+		if (!$this->isControllable())
 		{
 			return false;
 		}

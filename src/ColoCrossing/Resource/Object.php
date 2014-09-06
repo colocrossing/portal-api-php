@@ -27,7 +27,7 @@ class ColoCrossing_Resource_Object extends ColoCrossing_Object
 
 	protected function getResourceChildObject($child_type, $child_id)
 	{
-		if(empty($child_id) || !is_numeric($child_id))
+		if (empty($child_id) || !is_numeric($child_id))
 		{
 			return null;
 		}

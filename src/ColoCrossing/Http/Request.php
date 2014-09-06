@@ -147,7 +147,7 @@ class ColoCrossing_Http_Request
 	{
 		$params = $this->getQueryParams();
 
-		if($this->getMethod() == 'GET')
+		if ($this->getMethod() == 'GET')
 		{
 			$params = array_merge($params, $this->getData());
 		}
@@ -170,5 +170,5 @@ class ColoCrossing_Http_Request
 	{
 		return $this->data;
 	}
-	
+
 }

@@ -18,7 +18,7 @@ $colocrossing_client->setOption('ssl_verify', false);
 $null_route_id = 27; //Enter your null route id here
 $null_route = $colocrossing_client->null_routes->find($null_route_id);
 
-if(isset($null_route))
+if (isset($null_route))
 {
 	echo '<p>Removing Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . '</p>';
 	echo '<p>Success? ' . ($null_route->remove() ? 'Yes' : 'No') . '</p>';
@@ -28,7 +28,7 @@ if(isset($null_route))
 $ip_address = '1.1.2.2'; //Enter your null route ip address here
 $null_routes = $colocrossing_client->null_routes->findAllByIpAddress($ip_address);
 
-foreach($null_routes as $key => $null_route)
+foreach ($null_routes as $key => $null_route)
 {
 	echo '<p>Removing Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . '</p>';
 	echo '<p>Success? ' . ($null_route->remove() ? 'Yes' : 'No') . '</p>';
@@ -42,7 +42,7 @@ $subnet = $colocrossing_client->subnets->find($subnet_id);
 $null_route_id = 30; //Enter your null route id here
 $null_route = $subnet->getNullRoute($null_route_id);
 
-if(isset($null_route))
+if (isset($null_route))
 {
 	echo '<p>Removing Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . '</p>';
 	echo '<p>Success? ' . ($null_route->remove() ? 'Yes' : 'No') . '</p>';
@@ -52,7 +52,7 @@ if(isset($null_route))
 $ip_address = '1.1.2.3'; //Enter your null route ip address here
 $null_routes = $subnet->getNullRoutesByIpAddress($ip_address);
 
-foreach($null_routes as $key => $null_route)
+foreach ($null_routes as $key => $null_route)
 {
 	echo '<p>Removing Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . '</p>';
 	echo '<p>Success? ' . ($null_route->remove() ? 'Yes' : 'No') . '</p>';

@@ -130,7 +130,7 @@ class ColoCrossing_Object
     	$name = ColoCrossing_Utility::convertCamelCaseToSnakeCase($name);
     	$name_parts = explode('_', $name);
 
-    	if(count($name_parts) <= 1)
+    	if (count($name_parts) <= 1)
     	{
     		return null;
     	}
@@ -173,16 +173,16 @@ class ColoCrossing_Object
 	 */
 	protected function getObject($key, ColoCrossing_Resource $resource = null, $type = null, $default = null)
 	{
-		if(isset($this->objects[$key]))
+		if (isset($this->objects[$key]))
 		{
 			return $this->objects[$key];
 		}
 
 		$value = $this->getValue($key);
 
-		if($value && is_array($value))
+		if ($value && is_array($value))
 		{
-			if(isset($resource) && isset($value['id']))
+			if (isset($resource) && isset($value['id']))
 			{
 				return $this->objects[$key] = $resource->find($value['id']);
 			}
@@ -201,7 +201,7 @@ class ColoCrossing_Object
 	 */
 	protected function getObjectById($id, $key, ColoCrossing_Resource $resource)
 	{
-		if(isset($this->objects[$key]))
+		if (isset($this->objects[$key]))
 		{
 			return $this->objects[$key];
 		}
@@ -230,16 +230,16 @@ class ColoCrossing_Object
 	 */
 	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null, array $additional_data = null)
 	{
-		if(isset($this->object_arrays[$key]))
+		if (isset($this->object_arrays[$key]))
 		{
 			return $this->object_arrays[$key];
 		}
 
 		$value = $this->getValue($key);
 
-		if($value && is_array($value))
+		if ($value && is_array($value))
 		{
-			if(empty($resource))
+			if (empty($resource))
 			{
 				return $this->object_arrays[$key] = ColoCrossing_Object_Factory::createObjectArray($this->client, $resource, $value, $type, $additional_data);
 			}

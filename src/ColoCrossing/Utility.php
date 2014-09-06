@@ -28,7 +28,7 @@ class ColoCrossing_Utility
 	{
 		foreach ($objects as $key => $object)
 		{
-			if($object->getId() == $id)
+			if ($object->getId() == $id)
 			{
 				return $object;
 			}

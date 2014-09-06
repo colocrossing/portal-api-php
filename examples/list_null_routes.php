@@ -17,7 +17,7 @@ $options = array(
 );
 $null_routes = $colocrossing_client->null_routes->findAll($options);
 
-foreach($null_routes as $key => $null_route)
+foreach ($null_routes as $key => $null_route)
 {
 	$expire_date = date('c', $null_route->getDateExpire());
 	echo '<p>Null Route #' . $null_route->getId() . ' - ' . $null_route->getIpAddress() . ' - ' . $expire_date . '</p>';

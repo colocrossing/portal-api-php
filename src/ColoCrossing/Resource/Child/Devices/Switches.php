@@ -13,21 +13,21 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 		$start = isset($start) ? $start : strtotime(date('Y').'-'.date('m').'-01'.' '.date('h').':'.date('i').':00');
 		$end = isset($end) ? $end : strtotime(date('Y').'-'.date('m').'-'.date('d').' '.date('h').':'.date('i').':59');
 
-		if($start >= $end)
+		if ($start >= $end)
 		{
 			return null;
 		}
 
 		$switch = $this->find($device_id, $switch_id);
 
-		if(empty($switch) || !$switch->getType()->isNetworkDistribution())
+		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
 
 		$port = $switch->getPort($port_id);
 
-		if(empty($port) || !$port->isBandwidthGraphAvailable())
+		if (empty($port) || !$port->isBandwidthGraphAvailable())
 		{
 			return null;
 		}
@@ -40,7 +40,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$response = $this->sendRequest($url, 'GET', $data);
 
-		if(empty($response) || $response->getContentType() != 'image/png')
+		if (empty($response) || $response->getContentType() != 'image/png')
 		{
 			return null;
 		}
@@ -52,21 +52,21 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	{
 		$status = strtolower($status);
 
-		if($status != 'on' && $status != 'off')
+		if ($status != 'on' && $status != 'off')
 		{
 			return false;
 		}
 
 		$switch = $this->find($device_id, $switch_id);
 
-		if(empty($switch) || !$switch->getType()->isNetworkDistribution())
+		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return false;
 		}
 
 		$port = $switch->getPort($port_id);
 
-		if(empty($port) || !$port->isControllable())
+		if (empty($port) || !$port->isControllable())
 		{
 			return false;
 		}
@@ -79,7 +79,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$response = $this->sendRequest($url, 'PUT', $data);
 
-		if(empty($response))
+		if (empty($response))
 		{
 			return false;
 		}

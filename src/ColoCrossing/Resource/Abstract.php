@@ -41,9 +41,9 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$parent_name = $this->getName(true);
 		$available_child_resources = ColoCrossing_Resource_Child_Factory::getAvailableChildResources($parent_name);
 
-		if(isset($available_child_resources) && isset($available_child_resources[$child_name]))
+		if (isset($available_child_resources) && isset($available_child_resources[$child_name]))
 		{
-			if(empty($this->child_resources[$child_name]))
+			if (empty($this->child_resources[$child_name]))
 			{
 				$this->child_resources[$child_name] = ColoCrossing_Resource_Child_Factory::createChildResource($parent_name, $child_name, $this->client);
 			}
@@ -87,7 +87,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$response = $this->executeRequest($request);
 		$content = $this->getResponseContent($response, true);
 
-		if(empty($content))
+		if (empty($content))
 		{
 			return array();
 		}
@@ -100,7 +100,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$response = $this->sendRequest($url);
 		$content = $this->getResponseContent($response, false);
 
-		if(empty($content))
+		if (empty($content))
 		{
 			return null;
 		}
@@ -158,7 +158,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	protected function getResponseContent(ColoCrossing_Http_Response $response = null, $is_collection = false)
 	{
-		if(empty($response))
+		if (empty($response))
 		{
 			return null;
 		}
@@ -171,7 +171,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	private function setName($name)
 	{
-		if(is_array($name))
+		if (is_array($name))
 		{
 			$this->name = $name;
 		}

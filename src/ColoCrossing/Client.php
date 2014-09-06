@@ -58,7 +58,7 @@ class ColoCrossing_Client
 	{
 		$this->setAPIToken($api_token);
 
-		if(empty($this->api_token))
+		if (empty($this->api_token))
 		{
 			$this->setAPIToken(getenv('COLOCROSSING_API_TOKEN'));
 		}
@@ -125,7 +125,7 @@ class ColoCrossing_Client
 	 */
 	public function getHttpExecutor()
 	{
-		if(empty($this->http_executor))
+		if (empty($this->http_executor))
 		{
 			$this->http_executor = new ColoCrossing_Http_Executor($this);
 		}
@@ -150,24 +150,24 @@ class ColoCrossing_Client
 	}
 
 	/**
-	 * Retrieves a Resource if it is available. If the resource is available, but has not 
-	 * been created yet, then the resource is created and returned. Otherwise the already 
+	 * Retrieves a Resource if it is available. If the resource is available, but has not
+	 * been created yet, then the resource is created and returned. Otherwise the already
 	 * existing resource is returned.
 	 *
 	 * Resources that are available are devices, networks, null_routes and subnets.
-	 * @param  string 		$name 		The name of the resource requested.		
+	 * @param  string 		$name 		The name of the resource requested.
 	 * @return ColoCrossing_Resource 	The resource
 	 */
 	public function getResource($name)
 	{
 		$available_resources = ColoCrossing_Resource_Factory::getAvailableResources();
-		
-		if(empty($available_resources[$name]))
+
+		if (empty($available_resources[$name]))
 		{
 			return null;
 		}
 
-		if(empty($this->resources[$name]))
+		if (empty($this->resources[$name]))
 		{
 			$this->resources[$name] = ColoCrossing_Resource_Factory::createResource($name, $this);
 		}
@@ -183,8 +183,8 @@ class ColoCrossing_Client
 	public function __get($name)
 	{
 		$available_resources = ColoCrossing_Resource_Factory::getAvailableResources();
-		
-		if(isset($available_resources[$name]))
+
+		if (isset($available_resources[$name]))
 		{
 			return $this->getResource($name);
 		}

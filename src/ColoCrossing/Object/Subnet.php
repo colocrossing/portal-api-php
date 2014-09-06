@@ -8,7 +8,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 		$client = $this->getClient();
 		$network = $this->getValue('network');
 
-		if(empty($network) || !is_array($network))
+		if (empty($network) || !is_array($network))
 		{
 			return null;
 		}
@@ -53,7 +53,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 
 	public function getReverseDNSRecords(array $options = null)
 	{
-		if(!$this->isReverseDnsEnabled())
+		if (!$this->isReverseDnsEnabled())
 		{
 			return array();
 		}
@@ -63,7 +63,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 
 	public function getReverseDNSRecord($id)
 	{
-		if(!$this->isReverseDnsEnabled())
+		if (!$this->isReverseDnsEnabled())
 		{
 			return null;
 		}

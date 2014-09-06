@@ -12,21 +12,21 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 	{
 		$status = strtolower($status);
 
-		if($status != 'on' && $status != 'off' && $status != 'restart')
+		if ($status != 'on' && $status != 'off' && $status != 'restart')
 		{
 			return false;
 		}
 
 		$pdu = $this->find($device_id, $pdu_id);
 
-		if(empty($pdu) || !$pdu->getType()->isPowerDistribution())
+		if (empty($pdu) || !$pdu->getType()->isPowerDistribution())
 		{
 			return false;
 		}
 
 		$port = $pdu->getPort($port_id);
 
-		if(empty($port) || !$port->isControllable())
+		if (empty($port) || !$port->isControllable())
 		{
 			return false;
 		}
@@ -39,7 +39,7 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 
 		$response = $this->sendRequest($url, 'PUT', $data);
 
-		if(empty($response))
+		if (empty($response))
 		{
 			return false;
 		}

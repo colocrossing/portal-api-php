@@ -24,7 +24,7 @@ class ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords extends ColoCrossing
 		$client = $this->getClient();
 		$subnet = $client->subnets->find($subnet_id);
 
-		if(empty($subnet) || $subnet->isPendingServiceRequest())
+		if (empty($subnet) || $subnet->isPendingServiceRequest())
 		{
 			return false;
 		}
@@ -38,19 +38,19 @@ class ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords extends ColoCrossing
 
 		$response = $this->sendRequest($url, 'PUT', $data);
 
-		if(empty($response))
+		if (empty($response))
 		{
 			return false;
 		}
 
 		$content = $response->getContent();
 
-		if(empty($content) || empty($content['status']) || $content['status'] == 'error')
+		if (empty($content) || empty($content['status']) || $content['status'] == 'error')
 		{
 			return false;
 		}
 
-		if(isset($content['ticket']) && isset($content['ticket']['id']) && is_numeric($content['ticket']['id']) && $content['ticket']['id'] > 0)
+		if (isset($content['ticket']) && isset($content['ticket']['id']) && is_numeric($content['ticket']['id']) && $content['ticket']['id'] > 0)
 		{
 			return intval($content['ticket']['id']);
 		}

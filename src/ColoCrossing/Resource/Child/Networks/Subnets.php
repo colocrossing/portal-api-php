@@ -10,7 +10,7 @@ class ColoCrossing_Resource_Child_Networks_Subnets extends ColoCrossing_Resource
 
 	public function findAllLikeIpAddress($parent_id, $ip_address, array $options = null)
 	{
-		if(!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
+		if (!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
 		{
 			return array();
 		}
