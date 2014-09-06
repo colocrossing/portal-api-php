@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Represents an instance of a Subnet resource from the API.
+ * Holds data for a Subnet and provides methods to retrive
+ * objects related to the subnet such as its Network, Device,
+ * Null Routes, or Reverse DNS Records.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ */
 class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 {
 

@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Represents an instance of a Switch assigned to a Device resource from
+ * the API. Holds only the data for the Switch that is associated with the
+ * assigned device from which this object was retrieved. It provides methods
+ * to retrieve objects related to the Switch such as its Type, Owner, or
+ * Ports. The Ports retrieved from this object are only the one's assigned
+ * to the Device from which this Switch object was retrieved.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ * @subpackage ColoCrossing_Object_Device
+ */
 class ColoCrossing_Object_Device_Switch extends ColoCrossing_Resource_Object
 {
 

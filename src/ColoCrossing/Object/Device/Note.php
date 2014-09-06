@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Represents an instance of a Device's Note resource from the API.
+ * Holds data for a Device's Note and provides methods to retrive
+ * objects related to the note such as its User or Device.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ * @subpackage ColoCrossing_Object_Device
+ */
 class ColoCrossing_Object_Device_Note extends ColoCrossing_Resource_Object
 {
 

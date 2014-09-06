@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Represents an instance of a PDU's Power Port resource from
+ * the API. Holds data for a PDU's Power Port and provides
+ * methods to retrieve objects related to the power port such as
+ * its assigned Device or PDU. It also provides methods to restart,
+ * turn on or turn off the port.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ * @subpackage ColoCrossing_Object_Device
+ */
 class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 {
 

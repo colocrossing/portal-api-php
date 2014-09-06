@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * Represents an instance of a PDU assigned to a Device resource from
+ * the API. Holds only the data for the PDU that is associated with the
+ * assigned device. It provides methods to retrieve objects related to
+ * the PDU such as its Type, Owner, or Ports. The Ports retrieved from
+ * this object are only the one's assigned to the Device from which this
+ * PDU object was retrieved.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ * @subpackage ColoCrossing_Object_Device
+ */
 class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Resource_Object
 {
 

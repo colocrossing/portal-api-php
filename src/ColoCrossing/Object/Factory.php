@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Responsible for creating all Objects that inherit from
+ * ColoCrossing_Object. Determines the types of objects to create
+ * by examining the Resource or the explicit type provided.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ */
 class ColoCrossing_Object_Factory
 {
 

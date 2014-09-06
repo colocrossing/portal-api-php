@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Represents an instance of a Null Route resource from the API.
+ * Holds data for a Null Route and provides methods to retrive
+ * objects related to the null route such as its Subnet.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ */
 class ColoCrossing_Object_NullRoute extends ColoCrossing_Resource_Object
 {
 

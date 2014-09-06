@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Represents an instance of a Network resource from the API.
+ * Holds data for a Network and provides methods to retrive
+ * objects related to the subnet such as its Subnets or Null Routes.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ */
 class ColoCrossing_Object_Network extends ColoCrossing_Resource_Object
 {
 
