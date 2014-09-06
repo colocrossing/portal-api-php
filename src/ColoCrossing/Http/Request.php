@@ -2,6 +2,8 @@
 
 /**
  * Holds all the necessary data for making an HTTP Request
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Http
  */
 class ColoCrossing_Http_Request
 {

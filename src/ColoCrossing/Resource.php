@@ -1,7 +1,9 @@
 <?php
 
 /**
- * Inteface For an Resource In the API
+ * Inteface for a Resource In the API
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
  */
 interface ColoCrossing_Resource
 {

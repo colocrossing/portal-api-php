@@ -2,6 +2,8 @@
 
 /**
  * Generic Exception For All Errors in The API
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Error
  */
 class ColoCrossing_Error extends Exception
 {

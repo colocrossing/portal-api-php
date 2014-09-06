@@ -1,7 +1,8 @@
 <?php
 
 /**
- * This is Responsible for managing all Interactions with the ColoCrossing API
+ * Responsible for managing all Interactions with the ColoCrossing API
+ * @category   ColoCrossing
  */
 class ColoCrossing_Client
 {

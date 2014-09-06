@@ -2,6 +2,8 @@
 
 /**
  * The Base Object for Any Data that is Returned from the API.
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
  */
 class ColoCrossing_Object
 {

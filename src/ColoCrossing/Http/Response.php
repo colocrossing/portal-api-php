@@ -2,6 +2,8 @@
 
 /**
  * Holds All the Results of Http Request Being Executed.
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Http
  */
 class ColoCrossing_Http_Response
 {

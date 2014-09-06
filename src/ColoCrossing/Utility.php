@@ -2,6 +2,7 @@
 
 /**
  * Utility Class that holds methods to be used generically
+ * @category   ColoCrossing
  */
 class ColoCrossing_Utility
 {

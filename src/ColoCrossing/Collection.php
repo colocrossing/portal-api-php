@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * A Collection used for iterating through all Paginated Collections
+ * in the API.
+ * @category   ColoCrossing
+ */
 class ColoCrossing_Collection implements Iterator, Countable
 {
 

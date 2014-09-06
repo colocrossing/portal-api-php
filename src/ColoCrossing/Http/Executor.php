@@ -3,6 +3,8 @@
 /**
  * This Handles Taking a ColoCrossing_Http_Request, executing it and creating a
  * ColoCrossing_Http_Response with the result.
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Http
  */
 class ColoCrossing_Http_Executor
 {
