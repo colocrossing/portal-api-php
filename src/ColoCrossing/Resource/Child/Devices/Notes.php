@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's device notes sub-resource
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child_Devices
+ */
 class ColoCrossing_Resource_Child_Devices_Notes extends ColoCrossing_Resource_Child_Abstract
 {
 

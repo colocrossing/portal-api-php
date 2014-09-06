@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's subnets resource
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ */
 class ColoCrossing_Resource_Subnets extends ColoCrossing_Resource_Abstract
 {
 

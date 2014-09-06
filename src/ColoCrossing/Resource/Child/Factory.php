@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Factory Class that handles creating all Objects that inherit from
+ * ColoCrossing_Resource_Child_Abstract by using the provided parent
+ * and child types.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child
+ */
 class ColoCrossing_Resource_Child_Factory
 {
 

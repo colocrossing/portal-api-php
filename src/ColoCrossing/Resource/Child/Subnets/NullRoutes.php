@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's subnet null routes sub-resource
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child_Subnets
+ */
 class ColoCrossing_Resource_Child_Subnets_NullRoutes extends ColoCrossing_Resource_Child_Abstract
 {
 

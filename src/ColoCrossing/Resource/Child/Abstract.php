@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * The base implementation for accessing a specific  Sub-Resource of
+ * the API. Handles Creating the URL of the sub-resource by using the
+ * parent resource.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child
+ * @abstract
+ */
 abstract class ColoCrossing_Resource_Child_Abstract extends ColoCrossing_Resource_Abstract
 {
 

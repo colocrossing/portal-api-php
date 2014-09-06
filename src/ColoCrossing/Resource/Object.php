@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * An extension to the generic ColoCrossing_Object that adds support for
+ * linking the Object to the resource it originated from.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ */
 class ColoCrossing_Resource_Object extends ColoCrossing_Object
 {
 

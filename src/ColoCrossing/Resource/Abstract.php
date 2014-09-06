@@ -1,5 +1,15 @@
 <?php
 
+/**
+ * The base implementation for accessing a specific Resource of
+ * the API. Handles Creating the URL of the resource and creating
+ * the Http Request Object and sending it to be executed and retrieving
+ * the content.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @abstract
+ */
 abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 {
 

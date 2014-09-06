@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's subnet rDNS records sub-resource.
+ * Also handles updating the rDNS records via the API.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child_Subnets
+ */
 class ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords extends ColoCrossing_Resource_Child_Abstract
 {
 

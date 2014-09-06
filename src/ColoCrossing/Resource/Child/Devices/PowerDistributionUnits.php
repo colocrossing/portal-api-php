@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's device PDUs sub-resource.
+ * Also Allows for controlling the port of the PDU.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child_Devices
+ */
 class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCrossing_Resource_Child_Abstract
 {
 

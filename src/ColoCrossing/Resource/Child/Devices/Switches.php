@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's device switches sub-resource.
+ * Also Allows for controlling the port of the Switch and retrieving a
+ * port's Bandwidth Graphs.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @subpackage ColoCrossing_Resource_Child_Devices
+ */
 class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource_Child_Abstract
 {
 

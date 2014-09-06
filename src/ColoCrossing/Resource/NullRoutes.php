@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * Handles retrieving data from the API's null routes resource.
+ * Also allows for adding and removing null routes through the API.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ */
 class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 {
 
