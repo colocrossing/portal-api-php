@@ -19,11 +19,21 @@
 class ColoCrossing_Object_Device_Type_Virtual extends ColoCrossing_Object_Device
 {
 
+	/**
+	 * Retrieves the list of Device Subnet objects.
+	 * @param  array 	$options 		The Options of the page and sorting.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Subnet>	The Device Subnets
+	 */
 	public function getSubnets(array $options = null)
 	{
 		return $this->getResourceChildCollection('subnets', $options);
 	}
 
+	/**
+	 * Retrieves the Device Subnet object matching the provided Id.
+	 * @param  int 		$id 					The Id.
+	 * @return ColoCrossing_Object_Subnet|null	The Device Subnet
+	 */
 	public function getSubnet($id)
 	{
 		return $this->getResourceChildObject('subnets', $id);

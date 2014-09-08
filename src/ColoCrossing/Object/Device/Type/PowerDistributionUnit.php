@@ -19,26 +19,50 @@
 class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing_Object_Device_Type_Racked
 {
 
+	/**
+	 * Retrieves the list of Device Subnet objects.
+	 * @param  array 	$options 		The Options of the page and sorting.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Subnet>	The Device Subnets
+	 */
 	public function getSubnets(array $options = null)
 	{
 		return $this->getResourceChildCollection('subnets', $options);
 	}
 
+	/**
+	 * Retrieves the Device Subnet object matching the provided Id.
+	 * @param  int 		$id 					The Id.
+	 * @return ColoCrossing_Object_Subnet|null	The Device Subnet
+	 */
 	public function getSubnet($id)
 	{
 		return $this->getResourceChildObject('subnets', $id);
 	}
 
+	/**
+	 * Retrieve the list of Switches this is attached to.
+	 * @param  array 	$options 		The Options of the page and sorting.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Device_Type_Switch>	The Switches
+	 */
 	public function getSwitches(array $options = null)
 	{
 		return $this->getResourceChildCollection('switches', $options);
 	}
 
+	/**
+	 * Retrieve the Switch this is attached to matching the provided Id.
+	 * @param  int 	$id 	The Id.
+	 * @return ColoCrossing_Object_Device_Type_Switch|null	The Switch
+	 */
 	public function getSwitch($id)
 	{
 		return $this->getResourceChildObject('switches', $id);
 	}
 
+	/**
+	 * Retrieves the Ports on this PDU
+	 * @return array<ColoCrossing_Object_Device_PowerPort> The Power Ports
+	 */
 	public function getPorts()
 	{
 		$additional_data = array(
@@ -48,6 +72,10 @@ class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing
 		return $this->getObjectArray('ports', null, 'power_port', array(), $additional_data);
 	}
 
+	/**
+	 * Retrieves the Port on this PDU matching the provided Id.
+	 * @return array<ColoCrossing_Object_Device_PowerPort> The Power Port
+	 */
 	public function getPort($id)
 	{
 		$ports = $this->getPorts();

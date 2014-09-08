@@ -19,12 +19,26 @@
 class ColoCrossing_Object_Device_Type_Racked extends ColoCrossing_Object_Device
 {
 
+	/**
+	 * Retrieves the Rack object that this Device is assigned to.
+	 * If the Rack is assigned to you, then the Detailed Rack object is
+	 * returned. Otherwise a generic object is returned that holds the Id,
+	 * Name, and USize.
+	 * @return ColoCrossing_Object_Device_Type_Rack|ColoCrossing_Object|null	The Rack
+	 */
 	public function getRack()
 	{
-		//TODO Return Full Rack Object when Rack is Owned By Client
 		$client = $this->getClient();
+		$rack = $this->getValue('rack');
 
-		return $this->getObject('rack');
+		if (empty($rack) || !is_array($rack))
+		{
+			return null;
+		}
+
+		$resource = isset($rack['owner']) && is_array($rack['owner']) ? $client->devices : null;
+
+		return $this->getObject('rack', $resource);
 	}
 
 }
