@@ -8,4 +8,5 @@ TODO
 -throw exception when result length changes
 -comments on Collection methods
 -reload resourced object
-
+-add check to verify subnet has null routing available when adding/deleting null route
+  using the isNullRoutesEnabled() method on the subnet
