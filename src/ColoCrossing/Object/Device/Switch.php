@@ -38,7 +38,7 @@ class ColoCrossing_Object_Device_Switch extends ColoCrossing_Resource_Object
 
 	public function getOwner()
 	{
-		return $this->getObject('owner');
+		return $this->getObject('owner', null, 'user');
 	}
 
 	public function isDetailedDeviceAvailable()

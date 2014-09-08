@@ -18,21 +18,40 @@
 class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 {
 
+	/**
+	 * Retrieves the Device Type object that describes the capabilities
+	 * of this device. Such as its power, network, and rack capabilities.
+	 * @return ColoCrossing_Object_Device_Type  The Device Type
+	 */
 	public function getType()
 	{
 		return $this->getObject('type', null, 'type');
 	}
 
+	/**
+	 * Retrieves the User object of the Owner of this. It will always be the
+	 * user associated with the API Token.
+	 * @return ColoCrossing_Object_User The Owner of the Device.
+	 */
 	public function getOwner()
 	{
-		return $this->getObject('owner');
+		return $this->getObject('owner', null, 'user');
 	}
 
+	/**
+	 * Retrieves list of User objects that are assigned as subusers to this device.
+	 * @return array<ColoCrossing_Object_User>	The Subusers of the Device.
+	 */
 	public function getSubusers()
 	{
-		return $this->getObjectArray('subusers');
+		return $this->getObjectArray('subusers', null, 'user', array());
 	}
 
+	/**
+	 * Retrieves User object that is assigned as a subuser of this device.
+	 * @param int 		$id 					The Id of the subuser.
+	 * @return ColoCrossing_Object_User|null	The Subuser of the Device.
+	 */
 	public function getSubuser($id)
 	{
 		$subusers = $this->getSubusers();
@@ -40,21 +59,41 @@ class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 		return ColoCrossing_Utility::getObjectFromCollectionById($subusers, $id);
 	}
 
+	/**
+	 * Retrieves the list of Device Asset objects.
+	 * @param  array 	$options 		The Options of the page and sorting.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Device_Asset>	The Device Assets
+	 */
 	public function getAssets(array $options = null)
 	{
 		return $this->getResourceChildCollection('assets', $options);
 	}
 
+	/**
+	 * Retrieves the Device Asset object matching the provided Id.
+	 * @param  int 		$id 							The Id.
+	 * @return ColoCrossing_Object_Device_Asset|null	The Device Asset
+	 */
 	public function getAsset($id)
 	{
 		return $this->getResourceChildObject('assets', $id);
 	}
 
+	/**
+	 * Retrieves the list of Device Note objects.
+	 * @param  array 	$options 		The Options of the page and sorting.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Device_Note>	The Device Notes
+	 */
 	public function getNotes(array $options = null)
 	{
 		return $this->getResourceChildCollection('notes', $options);
 	}
 
+	/**
+	 * Retrieves the Device Note object matching the provided Id.
+	 * @param  int 		$id 						The Id.
+	 * @return ColoCrossing_Object_Device_Note|null	The Device Note
+	 */
 	public function getNote($id)
 	{
 		return $this->getResourceChildObject('notes', $id);

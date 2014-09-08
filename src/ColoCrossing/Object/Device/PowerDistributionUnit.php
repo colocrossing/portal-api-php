@@ -38,7 +38,7 @@ class ColoCrossing_Object_Device_PowerDistributionUnit extends ColoCrossing_Reso
 
 	public function getOwner()
 	{
-		return $this->getObject('owner');
+		return $this->getObject('owner', null, 'user');
 	}
 
 	public function isDetailedDeviceAvailable()

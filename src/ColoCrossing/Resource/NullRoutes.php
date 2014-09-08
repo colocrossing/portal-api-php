@@ -74,14 +74,14 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 		if (empty($response))
 		{
-			return null;
+			return false;
 		}
 
 		$content = $response->getContent();
 
 		if (empty($content) || empty($content['status']) || $content['status'] == 'error' || empty($content['null_route']) || empty($content['null_route']['id']))
 		{
-			return null;
+			return false;
 		}
 
 		return $this->find($content['null_route']['id']);
