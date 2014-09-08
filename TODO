@@ -1,6 +1,4 @@
 TODO
--subusers list add type
--devices rack add owner if rack owned by current user
 -add examples of getting device's switch and pdu and show checking for detailed device.
 -comments on resources methods
 -paged collection
