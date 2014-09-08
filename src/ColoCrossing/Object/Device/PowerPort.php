@@ -14,6 +14,10 @@
 class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 {
 
+	/**
+	 * Retreives the Deivce object that the Power Port belongs to.
+	 * @return ColoCrossing_Object_Device 	The Power Port's Device
+	 */
 	public function getDevice()
 	{
 		$client = $this->getClient();
@@ -21,6 +25,10 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 		return $this->getObject('device', $client->devices);
 	}
 
+	/**
+	 * Determines if the port has the ability to be controlled.
+	 * @return boolean True if the port status can be set, false otherwise.
+	 */
 	public function isControllable()
 	{
 		$device = $this->getDevice();
@@ -28,6 +36,11 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 		return $this->isControl() && isset($device);
 	}
 
+	/**
+	 * Sets the status of the port.
+	 * @param 	string $status 	The status of the port. Either 'on' or 'off'.
+	 * @return boolean 			True if the status is set successfully, false otherwise.
+	 */
 	public function setStatus($status)
 	{
 		if (!$this->isControllable())
@@ -43,16 +56,28 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 		return $client->devices->pdus->setPortStatus($pdu->getId(), $this->getId(), $device->getId(), $status);
 	}
 
+	/**
+	 * Turns the port on.
+	 * @return boolean 	True if the status is set successfully, false otherwise.
+	 */
 	public function turnOn()
 	{
 		return $this->setStatus('on');
 	}
 
+	/**
+	 * Turns the port off.
+	 * @return boolean 	True if the status is set successfully, false otherwise.
+	 */
 	public function turnOff()
 	{
 		return $this->setStatus('off');
 	}
 
+	/**
+	 * Restarts the port.
+	 * @return boolean 	True if the status is set successfully, false otherwise.
+	 */
 	public function restart()
 	{
 		return $this->setStatus('restart');

@@ -12,11 +12,19 @@
 class ColoCrossing_Object_Device_Note extends ColoCrossing_Resource_Object
 {
 
+	/**
+	 * Retreives the User object that created the Note.
+	 * @return ColoCrossing_Object_User	   The Note's User
+	 */
 	public function getUser()
 	{
-		return $this->getObject('user');
+		return $this->getObject('user', null, 'user');
 	}
 
+	/**
+	 * Retreives the Deivce object that the Note belongs to.
+	 * @return ColoCrossing_Object_Device 	The Note's Device
+	 */
 	public function getDevice()
 	{
 		$client = $this->getClient();
@@ -24,6 +32,10 @@ class ColoCrossing_Object_Device_Note extends ColoCrossing_Resource_Object
 		return $this->getObject('device', $client->devices);
 	}
 
+	/**
+	 * Retrieves the Time the Note was Created as a Unix Timestamp.
+	 * @return int The create time.
+	 */
 	public function getTime()
 	{
 		$time = $this->getValue('time');

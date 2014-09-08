@@ -13,6 +13,12 @@
 class ColoCrossing_Object_Subnet_ReverseDNSRecord extends ColoCrossing_Resource_Object
 {
 
+	/**
+	 * Updates this Reverse DNS Record's value with the one provided.
+	 * @param  string $value 	The new record value.
+	 * @return boolean|int 		True if successful, false otherwise. If a ticket to review the request
+	 *                            	must be created, then the ticket id is returned.
+	 */
 	public function update($value)
 	{
 		$subnet = $this->getSubnet();
@@ -33,6 +39,10 @@ class ColoCrossing_Object_Subnet_ReverseDNSRecord extends ColoCrossing_Resource_
 		return $result;
 	}
 
+	/**
+	 * Retrieves the Subnet object that this Reverse DNS Record is on.
+	 * @return ColoCrossing_Object_Subnet|null	The Subnet
+	 */
 	public function getSubnet()
 	{
 		$client = $this->getClient();
