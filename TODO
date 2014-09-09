@@ -1,6 +1,5 @@
 TODO
 -add examples of getting device's switch and pdu and show checking for detailed device.
--comments on resources methods
 -paged collection
 -expand methods of collection class and use paged collection as part of normal collection
 -refactor collection parameters in object
@@ -10,3 +9,6 @@ TODO
 -reload resourced object
 -add check to verify subnet has null routing available when adding/deleting null route
   using the isNullRoutesEnabled() method on the subnet
+-refactor parent/child resources to use proper inheritance and interfaces
+-refactor parent/child objects to use proper inheritance and interfaces
+-refactor object factory to be cleaner
