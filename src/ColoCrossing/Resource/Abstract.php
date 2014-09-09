@@ -124,7 +124,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 	 * Retrieves a List of ColoCrossing_Object from this Resource
 	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
 	 *											sort, page_number, and page_size.
-	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object from the Url
+	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
 	 */
 	public function findAll(array $options = null)
 	{

@@ -13,6 +13,7 @@ class ColoCrossing_Resource_Factory
 	/**
 	 * The Available Resources and the Files they are Available in
 	 * @var array<string, string>
+	 * @static
 	 */
 	private static $AVAILABLE_RESOURCES = array(
 		'devices' => '/Devices.php',
