@@ -11,11 +11,23 @@
 class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCrossing_Resource_Child_Abstract
 {
 
+	/**
+	 * @param ColoCrossing_Client $client The API Client
+	 */
 	public function __construct(ColoCrossing_Client $client)
 	{
 		parent::__construct($client->devices, $client, 'pdu', '/power');
 	}
 
+	/**
+	 * Set the status of the provided port on the provided pdu that
+	 * is connected to the provided device.
+	 * @param  int 		$pdu_id    	The Id of Pdu the Port is on
+	 * @param  int 		$port_id   	The Id of the Port to control
+	 * @param  int 		$device_id 	The Id of the Device the Port is assigned to
+	 * @param  string 	$status    	The new Port status. 'on', 'off', or 'restart'
+	 * @return boolean  		   	True if succeeds, false otherwise.
+	 */
 	public function setPortStatus($pdu_id, $port_id, $device_id, $status)
 	{
 		$status = strtolower($status);
