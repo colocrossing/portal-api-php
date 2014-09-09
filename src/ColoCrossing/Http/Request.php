@@ -2,6 +2,8 @@
 
 /**
  * Holds all the necessary data for making an HTTP Request
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Http
  */
 class ColoCrossing_Http_Request
 {
@@ -145,7 +147,7 @@ class ColoCrossing_Http_Request
 	{
 		$params = $this->getQueryParams();
 
-		if($this->getMethod() == 'GET')
+		if ($this->getMethod() == 'GET')
 		{
 			$params = array_merge($params, $this->getData());
 		}
@@ -168,4 +170,5 @@ class ColoCrossing_Http_Request
 	{
 		return $this->data;
 	}
+
 }

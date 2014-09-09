@@ -15,7 +15,7 @@ $colocrossing_client->setOption('ssl_verify', false);
 $device_id = 18; //Enter your device id here
 $device = $colocrossing_client->devices->find($device_id);
 
-if(isset($device))
+if (isset($device))
 {
 
 	echo '<p>Id: ' . $device->getId() . '</p>';
@@ -32,7 +32,7 @@ if(isset($device))
 
 	echo '<h2>Subnets</h2>';
 
-	if($type->isNetworked())
+	if ($type->isNetworked())
 	{
 		$subnets = $device->getSubnets();
 
@@ -47,7 +47,7 @@ if(isset($device))
 	}
 
 	//Verify Device has Switches
-	if($type->isNetworkEndpoint())
+	if ($type->isNetworkEndpoint())
 	{
 		echo '<h2>Switches</h2>';
 
@@ -67,7 +67,7 @@ if(isset($device))
 	}
 
 	//Verify Device has PDUs
-	if($type->isPowerEndpoint())
+	if ($type->isPowerEndpoint())
 	{
 		echo '<h2>PDUs</h2>';
 

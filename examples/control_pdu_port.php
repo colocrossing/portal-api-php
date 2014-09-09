@@ -15,12 +15,12 @@ $colocrossing_client->setOption('ssl_verify', false);
 $pdu_id = 37; //Enter your pdu id here
 $pdu = $colocrossing_client->devices->find($pdu_id);
 
-if(isset($pdu) && $pdu->getType()->isPowerDistribution())
+if (isset($pdu) && $pdu->getType()->isPowerDistribution())
 {
 	$port_id = 2; //Enter your port id here
 	$port = $pdu->getPort($port_id);
 
-	if(isset($port) && $port->isControllable())
+	if (isset($port) && $port->isControllable())
 	{
 		$success = $port->turnOn();
 		//$success = $port->turnOff();

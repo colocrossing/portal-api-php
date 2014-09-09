@@ -1,11 +1,30 @@
 <?php
 
+/**
+ * Responsible for creating all Objects that inherit from
+ * ColoCrossing_Object. Determines the types of objects to create
+ * by examining the Resource or the explicit type provided.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Object
+ */
 class ColoCrossing_Object_Factory
 {
 
-	public static function createObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $values = array(), $type = null)
+	/**
+	 * Creates a ColoCrossing_Object of the correct type based upon the
+	 * parameters provided.
+	 * @param  ColoCrossing_Client 		$client   The API Client
+	 * @param  ColoCrossing_Resource    $resource The Resource to use to determine which
+	 *                                            	object type to create.
+	 * @param  array               		$values   The values of the object to be created.
+	 * @param  string             		$type     The type of a Non-Resourced object to create.
+	 * @return ColoCrossing_Object           	  The Object created.
+	 */
+	public static function createObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null,
+											array $values = array(), $type = null)
 	{
-		if(empty($resource))
+		if (empty($resource))
 		{
 			switch ($type)
 			{
@@ -18,11 +37,14 @@ class ColoCrossing_Object_Factory
 				case 'type':
 					require_once(dirname(__FILE__) . '/Device/Type.php');
 					return new ColoCrossing_Object_Device_Type($client, $values);
+				case 'user':
+					require_once(dirname(__FILE__) . '/User.php');
+					return new ColoCrossing_Object_User($client, $values);
 			}
 			return new ColoCrossing_Object($client, $values);
 		}
 
-		if(is_a($resource, 'ColoCrossing_Resource_Child_Abstract'))
+		if (is_a($resource, 'ColoCrossing_Resource_Child_Abstract'))
 		{
 			return self::createChildObject($client, $resource, $values);
 		}
@@ -45,7 +67,16 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($client, $values);
 	}
 
-	private static function createChildObject(ColoCrossing_Client $client, ColoCrossing_Resource $child_resource, array $values = array())
+	/**
+	 * Creates a ColoCrossing_Object based upon the Child Resource Created
+	 * @param  ColoCrossing_Client 		$client   		The API Client
+	 * @param  ColoCrossing_Resource    $child_resource The Child Resource to use to determine which
+	 *                                            	     	object type to create.
+	 * @param  array               		$values   		The values of the object to be created.
+	 * @return ColoCrossing_Object           	  		The Child Object created.
+	 */
+	private static function createChildObject(ColoCrossing_Client $client, ColoCrossing_Resource $child_resource,
+												array $values = array())
 	{
 		$child_type = $child_resource->getName(false);
 
@@ -67,8 +98,11 @@ class ColoCrossing_Object_Factory
 						require_once(dirname(__FILE__) . '/Subnet.php');
 						return new ColoCrossing_Object_Subnet($client, $child_resource, $values);
 					case 'pdu':
+						require_once(dirname(__FILE__) . '/Device/PowerDistributionUnit.php');
+						return new ColoCrossing_Object_Device_PowerDistributionUnit($client, $child_resource, $values);
 					case 'switch':
-						return self::createDeviceChildObject($client, $child_resource, $values);
+						require_once(dirname(__FILE__) . '/Device/Switch.php');
+						return new ColoCrossing_Object_Device_Switch($client, $child_resource, $values);
 				}
 				break;
 			case 'network':
@@ -98,15 +132,27 @@ class ColoCrossing_Object_Factory
 		return new ColoCrossing_Object($client, $values);
 	}
 
-	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $objects_values = array(), $type = null, array $additional_data = null)
+	/**
+	 * Creates a Array of ColoCrossing_Object's of the correct type based upon the
+	 * parameters provided.
+	 * @param  ColoCrossing_Client 		$client   		The API Client
+	 * @param  ColoCrossing_Resource    $resource 		The Resource to use to determine which
+	 *                                            	 		object type to use.
+	 * @param  array               		$objects_values The values of the objects to be created.
+	 * @param  string             		$type     		The type of a Non-Resourced object to create.
+	 * @param  array 					$data 			Data to be added to each Object created.
+	 * @return ColoCrossing_Object           	  		The List of Objects created.
+	 */
+	public static function createObjectArray(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null,
+												array $objects_values = array(), $type = null, array $data = null)
 	{
 		$objects = array();
 
 		foreach ($objects_values as $index => $values)
 		{
-			if(isset($additional_data))
+			if (isset($data))
 			{
-				$values = array_merge($values, $additional_data);
+				$values = array_merge($values, $data);
 			}
 
 			$objects[] = self::createObject($client, $resource, $values, $type);
@@ -115,67 +161,61 @@ class ColoCrossing_Object_Factory
 		return $objects;
 	}
 
-	public static function createDeviceObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null, array $values = array())
+	/**
+	 * Creates a ColoCrossing_Object_Device of the correct subtype according to the type of
+	 * device specified in the values.
+	 * @param  ColoCrossing_Client 		$client   The API Client
+	 * @param  ColoCrossing_Resource    $resource The Resource to use to determine which
+	 *                                            	object type to create.
+	 * @param  array               		$values   The values of the object to be created.
+	 * @return ColoCrossing_Object           	  The Device Object created.
+	 */
+	public static function createDeviceObject(ColoCrossing_Client $client, ColoCrossing_Resource $resource = null,
+												array $values = array())
 	{
 		require_once(dirname(__FILE__) . '/Device.php');
 
 		$type = isset($values) && is_array($values) && isset($values['type']) && is_array($values['type']) ? $values['type'] : null;
 
-		if(empty($type))
+		if (empty($type))
 		{
 			return new ColoCrossing_Object_Device($client, $resource, $values);
 		}
 
 		require_once(dirname(__FILE__) . '/Device/Type/Racked.php');
 
-		if($type['is_rack']) //Rack
+		if ($type['is_rack']) //Rack
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/Rack.php');
 			return new ColoCrossing_Object_Device_Type_Rack($client, $resource, $values);
 		}
-		else if($type['is_virtual']) //VPS
+		else if ($type['is_virtual']) //VPS
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/Virtual.php');
 			return new ColoCrossing_Object_Device_Type_Virtual($client, $resource, $values);
 		}
-		else if($type['network'] == 'distribution' && $type['power'] == 'endpoint') //Switch
+		else if ($type['network'] == 'distribution' && $type['power'] == 'endpoint') //Switch
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/Switch.php');
 			return new ColoCrossing_Object_Device_Type_Switch($client, $resource, $values);
 		}
-		else if($type['network'] == 'endpoint' && $type['power'] == 'distribution') //PDU
+		else if ($type['network'] == 'endpoint' && $type['power'] == 'distribution') //PDU
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/PowerDistributionUnit.php');
 			return new ColoCrossing_Object_Device_Type_PowerDistributionUnit($client, $resource, $values);
 		}
-		else if($type['network'] == 'endpoint' && $type['power'] == 'endpoint') //Server, KVM
+		else if ($type['network'] == 'endpoint' && $type['power'] == 'endpoint') //Server, KVM
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/NetworkPowerEndpoint.php');
 			return new ColoCrossing_Object_Device_Type_NetworkPowerEndpoint($client, $resource, $values);
 		}
-		else if($type['network'] == 'endpoint' && !$type['power']) //Cross Connect
+		else if ($type['network'] == 'endpoint' && !$type['power']) //Cross Connect
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/NetworkEndpoint.php');
 			return new ColoCrossing_Object_Device_Type_NetworkEndpoint($client, $resource, $values);
 		}
 
 		return new ColoCrossing_Object_Device($client, $resource, $values);
-	}
-
-	public static function createDeviceChildObject(ColoCrossing_Client $client, ColoCrossing_Resource $child_resource = null, array $values = array())
-	{
-		$child_type = $child_resource->getName(false);
-
-		switch ($child_type) {
-			case 'pdu':
-				require_once(dirname(__FILE__) . '/Device/PowerDistributionUnit.php');
-				return new ColoCrossing_Object_Device_PowerDistributionUnit($client, $child_resource, $values);
-			case 'switch':
-				require_once(dirname(__FILE__) . '/Device/Switch.php');
-				return new ColoCrossing_Object_Device_Switch($client, $child_resource, $values);
-		}
-
-		return new ColoCrossing_Object_Device($client, $child_resource, $values);
 	}
 
 }

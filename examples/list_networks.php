@@ -17,7 +17,7 @@ $options = array(
 );
 $networks = $colocrossing_client->networks->findAll($options);
 
-foreach($networks as $key => $network)
+foreach ($networks as $key => $network)
 {
 	echo '<p>Network #' . $network->getId() . ' - ' . $network->getIpAddress() . '</p>';
 }

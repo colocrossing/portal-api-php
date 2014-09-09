@@ -2,6 +2,7 @@
 
 /**
  * Utility Class that holds methods to be used generically
+ * @category   ColoCrossing
  */
 class ColoCrossing_Utility
 {
@@ -19,15 +20,15 @@ class ColoCrossing_Utility
 
 	/**
 	 * Gets An ColoCrossing_Object From a List that has the provided Id.
-	 * @param  Iterable<ColoCrossing_Object> $objects The Objects to search through.
-	 * @param  int $id      The Id to search for.
-	 * @return ColoCrossing_Object          The Object with the provided Id. Null if no match found.
+	 * @param  Iterable<ColoCrossing_Object>	$objects 	The Objects to search through.
+	 * @param  int 								$id      	The Id to search for.
+	 * @return ColoCrossing_Object          				The Object with the provided Id. Null if no match found.
 	 */
 	public static function getObjectFromCollectionById($objects, $id)
 	{
 		foreach ($objects as $key => $object)
 		{
-			if($object->getId() == $id)
+			if ($object->getId() == $id)
 			{
 				return $object;
 			}

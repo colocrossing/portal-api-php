@@ -2,6 +2,8 @@
 
 /**
  * Holds All the Results of Http Request Being Executed.
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Http
  */
 class ColoCrossing_Http_Response
 {
@@ -87,7 +89,7 @@ class ColoCrossing_Http_Response
 			case 'image/gif':
 				$this->content = imagecreatefromstring($this->body);
 
-				if(is_bool($this->content) && !$this->content)
+				if (is_bool($this->content) && !$this->content)
 				{
 					throw new ColoCrossing_Error('ColoCrossing API Error - Image is corrupt or in an unsupported format.');
 				}
@@ -95,7 +97,7 @@ class ColoCrossing_Http_Response
 			case 'application/json':
 				$this->content = json_decode($this->body, true);
 
-				if(isset($this->content) && isset($this->content['status']) && $this->content['status'] == 'error')
+				if (isset($this->content) && isset($this->content['status']) && $this->content['status'] == 'error')
 				{
 					$this->throwAPIError();
 				}

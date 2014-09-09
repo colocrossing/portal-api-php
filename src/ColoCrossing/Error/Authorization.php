@@ -2,6 +2,8 @@
 
 /**
  * An Error For when Authorizing in the API Fails
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Error
  */
 class ColoCrossing_Error_Authorization extends ColoCrossing_Error_Api
 {

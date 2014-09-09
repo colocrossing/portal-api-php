@@ -17,7 +17,7 @@ $options = array(
 );
 $subnets = $colocrossing_client->subnets->findAll($options);
 
-foreach($subnets as $key => $subnet)
+foreach ($subnets as $key => $subnet)
 {
 	echo '<p>Subnet #' . $subnet->getId() . ' - ' . $subnet->getIpAddress() . '</p>';
 }

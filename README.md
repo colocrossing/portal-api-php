@@ -33,7 +33,7 @@ Each resource has a findAll method which will return a ColoCrossing_Collection o
 ```php
 $devices = $colocrossing_client->devices->findAll();
 
-foreach($devices as $key => $device)
+foreach ($devices as $key => $device)
 {
 	echo $device->getName();
 }
@@ -61,13 +61,13 @@ $type = $device->getType();
 echo $type->getName();
 
 $notes = $device->getNotes()
-foreach($notes as $key => $note)
+foreach ($notes as $key => $note)
 {
 	echo $note->getNote();
 }
 
 $assets = $device->getAssets()
-foreach($assets as $key => $asset)
+foreach ($assets as $key => $asset)
 {
 	echo $asset->getName();
 }

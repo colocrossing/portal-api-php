@@ -1,16 +1,49 @@
 <?php
 
+/**
+ * The base implementation for accessing a specific Resource of
+ * the API. Handles Creating the URL of the resource and creating
+ * the Http Request Object and sending it to be executed and retrieving
+ * the content.
+ *
+ * @category   ColoCrossing
+ * @package    ColoCrossing_Resource
+ * @abstract
+ */
 abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 {
 
+	/**
+	 * The API Client
+	 * @var ColoCrossing_Client
+	 */
 	private $client;
 
+	/**
+	 * The Name in plural and singular forms
+	 * @var array<string>
+	 */
 	private $name;
 
+	/**
+	 * The Url of the Resource Relative to the root of parent.
+	 * @var string
+	 */
 	private $url;
 
+	/**
+	 * The Child Resources
+	 * @var ColoCrossing_Resource_Child_Abstract
+	 */
 	private $child_resources;
 
+	/**
+	 * @param ColoCrossing_Client 	$client The API Client
+	 * @param string|array<string>  $name   The Resource Name. If string, it is assumed the
+	 *                                      	singular form is provided and the plural form
+	 *                                      	is created by appending an 's'.
+	 * @param string              	$url    The Url of the Resource Relative to the root of parent.
+	 */
 	public function __construct(ColoCrossing_Client $client, $name, $url)
 	{
 		$this->client = $client;
@@ -21,37 +54,78 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$this->setName($name);
 	}
 
+	/**
+	 * @return ColoCrossing_Client The API Client of this Resource
+	 */
 	public function getClient()
 	{
 		return $this->client;
 	}
 
+	/**
+	 * @param  boolean $plural 	Specifies if the plural form of the name is wanted.
+	 * @return string         	The name of the resource. If $plural is true the name is in plural form,
+	 *                            otherwise it is in singular form.
+	 */
 	public function getName($plural = false)
 	{
 		return $this->name[$plural ? 'plural' : 'singular'];
 	}
 
+	/**
+	 * @return string The Base Url of this Resource relative the root of API.
+	 */
 	public function getURL()
 	{
 		return $this->url;
 	}
 
-	public function __get($child_name)
+	/**
+	 * Retrieves a Child Resource if it is available. If the resource is available, but has not
+	 * been created yet, then the resource is created and returned. Otherwise the already
+	 * existing resource is returned.
+	 * @param  string 		$child_name 			The name of the child resource requested.
+	 * @return ColoCrossing_Resource_Child_Abstract The child resource
+	 */
+	public function getChildResource($child_name)
 	{
 		$parent_name = $this->getName(true);
 		$available_child_resources = ColoCrossing_Resource_Child_Factory::getAvailableChildResources($parent_name);
 
-		if(isset($available_child_resources) && isset($available_child_resources[$child_name]))
+		if (empty($available_child_resources) || empty($available_child_resources[$child_name]))
 		{
-			if(empty($this->child_resources[$child_name]))
-			{
-				$this->child_resources[$child_name] = ColoCrossing_Resource_Child_Factory::createChildResource($parent_name, $child_name, $this->client);
-			}
+			return null;
+		}
 
-			return $this->child_resources[$child_name];
+		if (empty($this->child_resources[$child_name]))
+		{
+			$this->child_resources[$child_name] = ColoCrossing_Resource_Child_Factory::createChildResource($parent_name, $child_name, $this->client);
+		}
+
+		return $this->child_resources[$child_name];
+	}
+
+	/**
+	 * Handles Magic Loading of Child Resources
+	 * @param  string $name 			The function called.
+	 * @return ColoCrossing_Resource    The resource.
+	 */
+	public function __get($name)
+	{
+		$available_child_resources = ColoCrossing_Resource_Child_Factory::getAvailableChildResources($this->getName(true));
+
+		if (isset($available_child_resources) && isset($available_child_resources[$name]))
+		{
+			return $this->getChildResource($name);
 		}
 	}
 
+	/**
+	 * Retrieves a List of ColoCrossing_Object from this Resource
+	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
+	 *											sort, page_number, and page_size.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
+	 */
 	public function findAll(array $options = null)
 	{
 		$options = $this->createCollectionOptions($options);
@@ -60,6 +134,11 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
 	}
 
+	/**
+	 * Retrieves a ColoCrossing_Object from this Resource
+	 * @param  int 			$id     The Id
+	 * @return ColoCrossing_Object	The ColoCrossing_Object
+	 */
 	public function find($id)
 	{
 		$url = $this->createObjectUrl($id);
@@ -67,6 +146,13 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return $this->fetch($url);
 	}
 
+	/**
+	 * Retrieves a List of ColoCrossing_Object from this Resource
+	 * @param  string 			$url     	The Url of the Resource relative the root of the API.
+	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
+	 *											sort, page_number, and page_size.
+	 * @return array<ColoCrossing_Object>	A List of ColoCrossing_Object from the Url
+	 */
 	public function fetchAll($url, array $options = null)
 	{
 		$options = $this->createCollectionOptions($options);
@@ -87,7 +173,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$response = $this->executeRequest($request);
 		$content = $this->getResponseContent($response, true);
 
-		if(empty($content))
+		if (empty($content))
 		{
 			return array();
 		}
@@ -95,12 +181,17 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content);
 	}
 
+	/**
+	 * Retrieves a ColoCrossing_Object from this Resource
+	 * @param  string 		$url    The Url of the Resource relative the root of the API.
+	 * @return ColoCrossing_Object	The ColoCrossing_Object from the Url
+	 */
 	public function fetch($url)
 	{
 		$response = $this->sendRequest($url);
 		$content = $this->getResponseContent($response, false);
 
-		if(empty($content))
+		if (empty($content))
 		{
 			return null;
 		}
@@ -108,6 +199,11 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return ColoCrossing_Object_Factory::createObject($this->client, $this, $content);
 	}
 
+	/**
+	 * Creates a valid Options array for a Collection
+	 * @param  array|null $options 	The Options Provided for the Collection
+	 * @return array          		The Verified Collection Options
+	 */
 	protected function createCollectionOptions(array $options = null)
 	{
 		$options = isset($options) && is_array($options) ? $options : array();
@@ -122,32 +218,63 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return $options;
 	}
 
+	/**
+	 * Creates the Url that refers to the Collection/Index of this Resource
+	 * @return string 	The Url
+	 */
 	protected function createCollectionUrl()
 	{
 		return $this->url;
 	}
 
+	/**
+	 * Creates the Url that refers to a Object in this Resource.
+	 * @param  int $id 	The Object Id
+	 * @return string   The Url
+	 */
 	protected function createObjectUrl($id)
 	{
 		return $this->url . '/' . urlencode($id);
 	}
 
+	/**
+	 * Creates a Http Request to the API, Executes it, and returns the Http Response
+	 * @param  string 		$url    			The Url
+	 * @param  string 		$method 			The Http Method. GET, POST, PUT, or DELETE
+	 * @param  array  		$data   			The Data to be sent as the Body. Sent in the
+	 *                            					query string for a GET request.
+	 * @return ColoCrossing_Http_Response|null	The Http Response
+	 */
 	protected function sendRequest($url, $method = 'GET', $data = array())
 	{
 		$request = $this->createRequest($url, $method, $data);
 		return $this->executeRequest($request);
 	}
 
+	/**
+	 * Creates a Http Request to the API
+	 * @param  string 		$url    		The Url
+	 * @param  string 		$method 		The Http Method. GET, POST, PUT, or DELETE
+	 * @param  array  		$data   		The Data to be sent as the Body. Sent in the
+	 *                            				query string for a GET request.
+	 * @return ColoCrossing_Http_Request	The Http Request
+	 */
 	protected function createRequest($url, $method = 'GET', $data = array())
 	{
 		return new ColoCrossing_Http_Request($url, $method, $data);
 	}
 
+	/**
+	 * Executes the Http Request and Returns the Http Repsonse
+	 * @param  ColoCrossing_Http_Request  $request 	The Http Request
+	 * @return ColoCrossing_Http_Response|null		The Http Response
+	 */
 	protected function executeRequest(ColoCrossing_Http_Request $request)
 	{
+		$executor = $this->client->getHttpExecutor();
+
 		try
 		{
-			$executor = $this->client->getHttpExecutor();
 			return $executor->executeRequest($request);
 		}
 		catch(ColoCrossing_Error_NotFound $e)
@@ -156,9 +283,16 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		}
 	}
 
+	/**
+	 * Retrieves the Content from the Http Response
+	 * @param  ColoCrossing_Http_Response	$response      	The Http Response
+	 * @param  boolean						$is_collection 	Specifies if the content is expected
+	 *                                     						as a collection
+	 * @return array|null                 					The Content
+	 */
 	protected function getResponseContent(ColoCrossing_Http_Response $response = null, $is_collection = false)
 	{
-		if(empty($response))
+		if (empty($response))
 		{
 			return null;
 		}
@@ -169,9 +303,16 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		return isset($content) && isset($content[$name]) && is_array($content[$name]) ? $content[$name] : null;
 	}
 
+	/**
+	 * Sets the name of the Resource.
+	 * @param string|array<string> 	$name 	If string, it is assumed the singular form is provided and
+	 *                                    		the plural form is created by appending an 's'.
+	 *                                    		Otherwise, an array with a singular and plural keys is
+	 *                                    		expected.
+	 */
 	private function setName($name)
 	{
-		if(is_array($name))
+		if (is_array($name))
 		{
 			$this->name = $name;
 		}
