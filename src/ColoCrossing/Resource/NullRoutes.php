@@ -10,11 +10,20 @@
 class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 {
 
+	/**
+	 * @param ColoCrossing_Client $client The API Client
+	 */
 	public function __construct(ColoCrossing_Client $client)
 	{
 		parent::__construct($client, 'null_route', '/null-routes');
 	}
 
+	/**
+	 * Retrieve a Collection of Null Routes on the provided Ip Address.
+	 * @param  string 	$ip_address 	The Ip Address. If invalid empty array is returned.
+	 * @param  array 	$options    	The Options for the page and sort.
+	 * @return array|ColoCrossing_Collection<ColoCrossing_Object_NullRoute> The Null Routes
+	 */
 	public function findAllByIpAddress($ip_address, array $options = null)
 	{
 		if (!filter_var($ip_address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4))
@@ -30,6 +39,16 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		return $this->findAll($options);
 	}
 
+	/**
+	 * Adds a Null Route to an Ip Address on the provided Subnet.
+	 * @param int 		$subnet_id 		The Id of the Subnet
+	 * @param string 	$ip_address  	The Ip Address
+	 * @param string 	$comment     	The Comment Explaing the Reason for the Null Route
+	 * @param int 		$expire_date 	The Date The Null Route is to Expire as a Unix Timestamp.
+	 *                           			Defaults to 4 hrs from now. Max of 30 days from now.
+	 * @return boolean|ColoCrossing_Object_NullRoute
+	 *         						 	The new Null Route object if successful, false otherwise.
+	 */
 	public function add($subnet_id, $ip_address, $comment = '', $expire_date = null)
 	{
 		$client = $this->getClient();
@@ -87,6 +106,11 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 		return $this->find($content['null_route']['id']);
 	}
 
+	/**
+	 * Removes this Null Route.
+	 * @param  int 	$id 	The Id
+	 * @return boolean		True if the removal suceeds, false otherwise.
+	 */
 	public function remove($id)
 	{
 		$null_route = $this->find($id);
