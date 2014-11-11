@@ -17,7 +17,7 @@ if (isset($switch) && $switch->getType()->isNetworkDistribution())
 	$port_id = 4;//Enter your port id here
 	$port = $switch->getPort($port_id);
 
-	if (isset($port) )
+	if (isset($port) && $port->isBandwidthGraphAvailable())
 	{
 		//Get Graph for the last week
 		$graph = $port->getBandwidthGraph(strtotime('-1 week'), time());
