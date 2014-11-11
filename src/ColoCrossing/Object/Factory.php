@@ -37,6 +37,9 @@ class ColoCrossing_Object_Factory
 				case 'type':
 					require_once(dirname(__FILE__) . '/Device/Type.php');
 					return new ColoCrossing_Object_Device_Type($client, $values);
+				case 'bandwidth_usage':
+					require_once(dirname(__FILE__) . '/Device/BandwidthUsage.php');
+					return new ColoCrossing_Object_Device_BandwidthUsage($client, $values);
 				case 'user':
 					require_once(dirname(__FILE__) . '/User.php');
 					return new ColoCrossing_Object_User($client, $values);

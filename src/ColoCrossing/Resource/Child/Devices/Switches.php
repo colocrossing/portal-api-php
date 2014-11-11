@@ -96,7 +96,22 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 
 		$url = $this->createObjectUrl($switch_id, $device_id) . '/bandwidths/' . urlencode($port_id);
 
-		return $this->fetch($url);
+		$response = $this->sendRequest($url);
+
+		if (empty($response))
+		{
+			return null;
+		}
+
+		$content = $response->getContent();
+		$content = isset($content) && isset($content['bandwidth']) && is_array($content['bandwidth']) ? $content['bandwidth'] : null;
+
+		if (empty($content))
+		{
+			return null;
+		}
+
+		return ColoCrossing_Object_Factory::createObject($this->getClient(), null, $content, 'bandwidth_usage');
 	}
 
 	/**
