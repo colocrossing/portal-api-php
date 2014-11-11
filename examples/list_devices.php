@@ -16,7 +16,7 @@ $options = array(
 );
 $devices = $colocrossing_client->devices->findAll($options);
 
-foreach($devices as $key => $device)
+foreach ($devices as $key => $device)
 {
 	echo '<p>Device #' . $device->getId() . ' - ' . $device->getName() . '</p>';
 }

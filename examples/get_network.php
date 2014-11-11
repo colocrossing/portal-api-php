@@ -14,7 +14,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 $network_id = 55; //Enter your network id here
 $network = $colocrossing_client->networks->find($network_id);
 
-if(isset($network))
+if (isset($network))
 {
 
 	echo '<p>Id: ' . $network->getId() . '</p>';

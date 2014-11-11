@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * A Collection used for iterating through all Paginated Collections
+ * in the API.
+ * @category   ColoCrossing
+ */
 class ColoCrossing_Collection implements Iterator, Countable
 {
 
@@ -62,7 +67,7 @@ class ColoCrossing_Collection implements Iterator, Countable
         $this->overall_position++;
         $this->page_position++;
 
-        if($this->page_position == $this->page_size)
+        if ($this->page_position == $this->page_size)
         {
         	$this->setPageNumber($this->page_number + 1);
         	$this->page_position = 0;
@@ -82,7 +87,7 @@ class ColoCrossing_Collection implements Iterator, Countable
 
     public function size()
     {
-    	if($this->size === null)
+    	if ($this->size === null)
     	{
 	    	$this->size = 0;
 	    	$page_number = 1;

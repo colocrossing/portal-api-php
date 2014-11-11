@@ -14,7 +14,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 $null_route_id = 64; //Enter your null route id here
 $null_route = $colocrossing_client->null_routes->find($null_route_id);
 
-if(isset($null_route))
+if (isset($null_route))
 {
 
 	echo '<p>Id: ' . $null_route->getId() . '</p>';
@@ -27,7 +27,7 @@ if(isset($null_route))
 
 	$subnet = $null_route->getSubnet();
 
-	if(isset($subnet))
+	if (isset($subnet))
 	{
 		echo '<p>Id: ' . $subnet->getId() . '</p>';
 		echo '<p>IP Address: ' . $subnet->getIpAddress() . '</p>';

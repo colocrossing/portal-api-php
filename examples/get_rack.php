@@ -14,7 +14,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 $rack_id = 35; //Enter your rack id here
 $rack = $colocrossing_client->devices->find($rack_id);
 
-if(isset($rack))
+if (isset($rack))
 {
 
 	echo '<p>Id: ' . $rack->getId() . '</p>';
@@ -29,7 +29,7 @@ if(isset($rack))
 	echo '<p>Id: ' . $type->getId() . '</p>';
 	echo '<p>Name: ' . $type->getName() . '</p>';
 
-	if($type->isRack())
+	if ($type->isRack())
 	{
 		echo '<h2>Devices</h2>';
 

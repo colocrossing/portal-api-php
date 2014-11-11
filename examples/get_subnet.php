@@ -14,7 +14,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 $subnet_id = 715; //Enter your subnet id here
 $subnet = $colocrossing_client->subnets->find($subnet_id);
 
-if(isset($subnet))
+if (isset($subnet))
 {
 
 	echo '<p>Id: ' . $subnet->getId() . '</p>';
@@ -27,7 +27,7 @@ if(isset($subnet))
 
 	$network = $subnet->getNetwork();
 
-	if(isset($network))
+	if (isset($network))
 	{
 		echo '<p>Id: ' . $network->getId() . '</p>';
 		echo '<p>IP Address: ' . $network->getIpAddress() . '</p>';
@@ -39,13 +39,13 @@ if(isset($subnet))
 
 	$device = $subnet->getDevice();
 
-	if(isset($device))
+	if (isset($device))
 	{
 		echo '<p>Id: ' . $device->getId() . '</p>';
 		echo '<p>Name: ' . $device->getName() . '</p>';
 	}
 
-	if($subnet->isReverseDnsEnabled())
+	if ($subnet->isReverseDnsEnabled())
 	{
 		echo '<h2>rDNS Records</h2>';
 

@@ -14,7 +14,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 $switch_id = 38; //Enter your switch id here
 $switch = $colocrossing_client->devices->find($switch_id);
 
-if(isset($switch))
+if (isset($switch))
 {
 
 	echo '<p>Id: ' . $switch->getId() . '</p>';
@@ -29,7 +29,7 @@ if(isset($switch))
 	echo '<p>Id: ' . $type->getId() . '</p>';
 	echo '<p>Name: ' . $type->getName() . '</p>';
 
-	if($type->isNetworkDistribution())
+	if ($type->isNetworkDistribution())
 	{
 		echo '<h2>Ports</h2>';
 
@@ -41,7 +41,7 @@ if(isset($switch))
 
 			$device = $port->getDevice();
 
-			if(isset($device))
+			if (isset($device))
 			{
 				echo '<p>Device #' . $device->getId() . ' - ' . $device->getName() . '</p>';
 			}
