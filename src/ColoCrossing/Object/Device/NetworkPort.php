@@ -58,6 +58,36 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	}
 
 	/**
+	 * Determines if a Bandwidth Usage is available for this Port
+	 * @return boolean True if graph is available, false otherwise.
+	 */
+	public function isBandwidthUsageAvailable()
+	{
+		$device = $this->getDevice();
+
+		return !!$this->getHasBandwidthUsage() && isset($device);
+	}
+
+	/**
+	 * Retrieves the Bandwidth Usage for this port.
+	 * @return ColoCrossing_Object 	The Bandwidth Usage
+	 */
+	public function getBandwidthUsage()
+	{
+		if (!$this->isBandwidthUsageAvailable())
+		{
+			return null;
+		}
+
+		$switch = $this->getSwitch();
+		$device = $this->getDevice();
+
+		$client = $this->getClient();
+
+		return $client->devices->switches->getBandwidthUsage($switch->getId(), $this->getId(), $device->getId());
+	}
+
+	/**
 	 * Determines if the port has the ability to be controlled.
 	 * @return boolean True if the port status can be set, false otherwise.
 	 */
