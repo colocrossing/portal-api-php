@@ -11,7 +11,7 @@ $colocrossing_client->setAPIToken('YOUR_API_TOKEN');
 
 <?php
 
-$device_id = 18; //Enter your device id here
+$device_id = 18; //Enter your device id or exact name here
 $device = $colocrossing_client->devices->find($device_id);
 
 if (isset($device))
