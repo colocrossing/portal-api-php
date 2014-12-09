@@ -124,9 +124,10 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 	 * Retrieves a List of ColoCrossing_Object from this Resource
 	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
 	 *											sort, page_number, and page_size.
+	 * @param  int 				$parent_id 	Ignored, Only Used For Child Resources
 	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
 	 */
-	public function findAll(array $options = null)
+	public function findAll(array $options = null, $parent_id)
 	{
 		$options = $this->createCollectionOptions($options);
 		$url = $this->createCollectionUrl();
@@ -136,10 +137,11 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	/**
 	 * Retrieves a ColoCrossing_Object from this Resource
-	 * @param  int 			$id     The Id
-	 * @return ColoCrossing_Object	The ColoCrossing_Object
+	 * @param  int 			$id     	The Id
+	 * @param  int 			$parent_id 	Ignored, Only Used For Child Resources
+	 * @return ColoCrossing_Object		The ColoCrossing_Object
 	 */
-	public function find($id)
+	public function find($id, $parent_id)
 	{
 		$url = $this->createObjectUrl($id);
 
@@ -220,19 +222,21 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	/**
 	 * Creates the Url that refers to the Collection/Index of this Resource
-	 * @return string 	The Url
+	 * @param  int $parent_id 	Ignored, Only Used For Child Resources
+	 * @return string 			The Url
 	 */
-	protected function createCollectionUrl()
+	protected function createCollectionUrl($parent_id)
 	{
 		return $this->url;
 	}
 
 	/**
 	 * Creates the Url that refers to a Object in this Resource.
-	 * @param  int $id 	The Object Id
-	 * @return string   The Url
+	 * @param  int $id 			The Object Id
+	 * @param  int $parent_id 	Ignored, Only Used For Child Resources
+	 * @return string   		The Url
 	 */
-	protected function createObjectUrl($id)
+	protected function createObjectUrl($id, $parent_id)
 	{
 		return $this->url . '/' . urlencode($id);
 	}

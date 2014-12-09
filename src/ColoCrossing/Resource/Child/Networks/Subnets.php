@@ -37,7 +37,7 @@ class ColoCrossing_Resource_Child_Networks_Subnets extends ColoCrossing_Resource
 			'ip_address' => $ip_address
 		);
 
-		return $this->findAll($parent_id, $options);
+		return $this->findAll($options, $parent_id);
 	}
 
 }

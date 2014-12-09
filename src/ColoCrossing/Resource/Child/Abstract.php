@@ -49,7 +49,7 @@ abstract class ColoCrossing_Resource_Child_Abstract extends ColoCrossing_Resourc
 	 *											sort, page_number, and page_size.
 	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
 	 */
-	public function findAll($parent_id, array $options = null)
+	public function findAll(array $options = null, $parent_id)
 	{
 		$options = $this->createCollectionOptions($options);
 		$url = $this->createCollectionUrl($parent_id);
