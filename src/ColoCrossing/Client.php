@@ -21,6 +21,7 @@ class ColoCrossing_Client
 		'api_url' => 'https://portal.colocrossing.com/api/',
 		'api_version' => 1,
 		'request_timeout' => 60,
+		'connection_timeout' => 5,
 		'follow_redirects' => false,
 		'ssl_verify' => true,
 		'page_size' => 30
