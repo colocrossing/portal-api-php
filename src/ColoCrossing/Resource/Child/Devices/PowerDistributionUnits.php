@@ -37,7 +37,7 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 			return false;
 		}
 
-		$pdu = $this->find($device_id, $pdu_id);
+		$pdu = $this->find($pdu_id, $device_id);
 
 		if (empty($pdu) || !$pdu->getType()->isPowerDistribution())
 		{

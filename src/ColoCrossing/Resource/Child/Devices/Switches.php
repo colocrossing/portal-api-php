@@ -40,7 +40,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return null;
 		}
 
-		$switch = $this->find($device_id, $switch_id);
+		$switch = $this->find($switch_id, $device_id);
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
@@ -80,7 +80,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	 */
 	public function getBandwidthUsage($switch_id, $port_id, $device_id, $start = null, $end = null)
 	{
-		$switch = $this->find($device_id, $switch_id);
+		$switch = $this->find($switch_id, $device_id);
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
@@ -132,7 +132,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return false;
 		}
 
-		$switch = $this->find($device_id, $switch_id);
+		$switch = $this->find($switch_id, $device_id);
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{

@@ -13,7 +13,7 @@ interface ColoCrossing_Resource
 	 * @param  string 			$url     	The Url of the Resource relative the root of the API.
 	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
 	 *											sort, page_number, and page_size.
-	 * @return array<ColoCrossing_Object>	A List of ColoCrossing_Object from the Url
+	 * @return array(array<ColoCrossing_Object>, int)	A List of ColoCrossing_Object from the Url and the Total Record Count
 	 */
 	public function fetchAll($url, array $options = null);
 

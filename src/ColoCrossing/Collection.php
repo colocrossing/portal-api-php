@@ -1,144 +1,54 @@
 <?php
 
 /**
- * A Collection used for iterating through all Paginated Collections
+ * A Collection used for iterating through all Paginated Resources
  * in the API.
  * @category   ColoCrossing
  */
-class ColoCrossing_Collection implements Iterator, Countable
+class ColoCrossing_Collection extends ColoCrossing_AbstractCollection
 {
 
-	private $resource;
+	/**
+	 * The Size of Page to Load
+	 */
+	const PAGE_SIZE = 100;
 
-	private $url;
+	/**
+	 * The Collection of Pages
+	 * @var ColoCrossing_PagedCollection
+	 */
+	private $pages;
 
-	private $size = null;
-
-	private $overall_position;
-
-	private $page_position;
-
-	private $page_number;
-
-	private $page_size;
-
-	private $sort;
-
-	private $filters;
-
-	private $objects;
-
-	public function __construct(ColoCrossing_Resource $resource, $url, $page_number = 1, $page_size = 30, array $sort = array(), array $filters = array())
+	/**
+	 * Constructs a Collection According to the Provided Sort and Filter Parameters
+	 * for the provided Resource
+	 * @param ColoCrossing_Resource 	$resource    The Resource To Pull From
+	 * @param string                	$url         The Resource URL To Pull From
+	 * @param array<string>             $sort        The Sort Fields
+	 * @param array<string, string|int> $filters     The Values to Filter By
+	 */
+	public function __construct(ColoCrossing_Resource $resource, $url, array $sort = array(), array $filters = array())
 	{
-		$this->resource = $resource;
-		$this->url = $url;
-
-		$this->setPageNumber($page_number);
-		$this->setPageSize($page_size);
-		$this->setSort($sort);
-		$this->setFilters($filters);
-
-		$this->overall_position = ($this->page_number - 1) * $this->page_size;
-		$this->page_position = 0;
-
-		$this->loadCurrentPage();
+		$this->pages = new ColoCrossing_PagedCollection($resource, $url, 1, self::PAGE_SIZE, $sort, $filters);
 	}
 
-	public function rewind()
+	/**
+	 * Returns the number of records available in this collection
+	 * @return integer The Number of Records
+	 */
+	public function size()
 	{
-		$this->setPageNumber(1);
-
-        $this->overall_position = 0;
-		$this->page_position = 0;
-    }
-
-    public function current()
-    {
-        return $this->objects[$this->page_position];
-    }
-
-	public function key()
-	{
-        return $this->overall_position;
-    }
-
-    public function next()
-    {
-        $this->overall_position++;
-        $this->page_position++;
-
-        if ($this->page_position == $this->page_size)
-        {
-        	$this->setPageNumber($this->page_number + 1);
-        	$this->page_position = 0;
-        	$this->loadCurrentPage();
-        }
-    }
-
-    public function valid()
-    {
-        return isset($this->objects[$this->page_position]);
-    }
-
-    public function count()
-    {
-    	return $this->size();
-    }
-
-    public function size()
-    {
-    	if ($this->size === null)
-    	{
-	    	$this->size = 0;
-	    	$page_number = 1;
-
-	    	do{
-		    	$options = array(
-					'format' => 'array',
-					'page_number' => $page_number,
-					'page_size' => 100,
-					'filters' => $this->filters
-				);
-				$objects = $this->resource->fetchAll($this->url, $options);
-
-				$num_objects = count($objects);
-				$this->size += $num_objects;
-			}while($num_objects > 0 && $page_number++);
-	    }
-
-	    return $this->size;
-    }
-
-	private function setPageNumber($page_number)
-	{
-		$this->page_number = max($page_number, 1);
+		return $this->pages->getTotalRecordCount();
 	}
 
-	private function setPageSize($page_size)
+	/**
+	 * Fetches the Current Element from the Remote Source
+	 * @return mixed The Current Element
+	 */
+	protected function fetch()
 	{
-		$this->page_size = max(min($page_size, 100), 1);
-	}
-
-	private function setSort($sort)
-	{
-		$this->sort = $sort;
-	}
-
-	private function setFilters($filters)
-	{
-		$this->filters = $filters;
-	}
-
-	private function loadCurrentPage()
-	{
-		$options = array(
-			'page_number' => $this->page_number,
-			'page_size' => $this->page_size,
-			'sort' => $this->sort,
-			'filters' => $this->filters
-		);
-
-		$this->objects = $this->resource->fetchAll($this->url, $options);
+		$page = $this->pages->get(floor($this->key() / self::PAGE_SIZE) + 1);
+		return $page[$this->key() - ($this->pages->key() - 1) * self::PAGE_SIZE];
 	}
 
 }

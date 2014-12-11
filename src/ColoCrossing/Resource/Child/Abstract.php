@@ -43,34 +43,6 @@ abstract class ColoCrossing_Resource_Child_Abstract extends ColoCrossing_Resourc
 	}
 
 	/**
-	 * Retrieves a List of ColoCrossing_Object from this Resource
-	 * @param  int 				$parent_id 	The Parent Id
-	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
-	 *											sort, page_number, and page_size.
-	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
-	 */
-	public function findAll(array $options = null, $parent_id)
-	{
-		$options = $this->createCollectionOptions($options);
-		$url = $this->createCollectionUrl($parent_id);
-
-		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
-	}
-
-	/**
-	 * Retrieves a ColoCrossing_Object from this Resource
-	 * @param  int 			$parent_id 	The Parent Id
-	 * @param  int 			$id     	The Id
-	 * @return ColoCrossing_Object		The ColoCrossing_Object
-	 */
-	public function find($parent_id, $id)
-	{
-		$url = $this->createObjectUrl($id, $parent_id);
-
-		return $this->fetch($url);
-	}
-
-	/**
 	 * Creates the Url that refers to the Collection/Index of this Child Resource
 	 * @param  int 	$parent_id 	The Parent Id
 	 * @return string 			The Url

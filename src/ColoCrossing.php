@@ -20,8 +20,10 @@ require_once(dirname(__FILE__) . '/ColoCrossing/Http/Request.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Http/Executor.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Http/Response.php');
 
-//Include Collection Class
+//Include Collection Classes
+require_once(dirname(__FILE__) . '/ColoCrossing/AbstractCollection.php');
 require_once(dirname(__FILE__) . '/ColoCrossing/Collection.php');
+require_once(dirname(__FILE__) . '/ColoCrossing/PagedCollection.php');
 
 //Include Resources Package
 require_once(dirname(__FILE__) . '/ColoCrossing/Resource.php');
