@@ -35,6 +35,17 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	}
 
 	/**
+	 * Determines if Subnet is Assigned to Device
+	 * @return boolean True if Subnet is Assigned to Device
+	 */
+	public function isAssigned()
+	{
+		$device = $this->getValue('device');
+
+		return isset($device);
+	}
+
+	/**
 	 * Retrieves the Device Object that this is Assigned to. Returns null
 	 * if subnet unassigned.
 	 * @return ColoCrossing_Object_Device|null 	The Device
@@ -45,6 +56,41 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 
 		return $this->getObject('device', $client->devices);
 	}
+
+	/**
+	 * Retrieves the Device Name that this is Assigned to. Returns null
+	 * if subnet unassigned.
+	 * @return string 	The Device Name
+	 */
+	public function getDeviceName()
+	{
+		if(!$this->isAssigned())
+		{
+			return null;
+		}
+
+		$device = $this->getValue('device');
+
+		return $device['name'];
+	}
+
+	/**
+	 * Retrieves the Device Id that this is Assigned to. Returns null
+	 * if subnet unassigned.
+	 * @return string 	The Device Id
+	 */
+	public function getDeviceId()
+	{
+		if(!$this->isAssigned())
+		{
+			return null;
+		}
+
+		$device = $this->getValue('device');
+
+		return $device['id'];
+	}
+
 
 	/**
 	 * Retrieves the list of Subnet Null Route objects.
@@ -188,6 +234,15 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
         $ip_address = ip2long($ip_address);
 
         return $start_ip <= $ip_address && $end_ip >= $ip_address;
+	}
+
+	/**
+	 * Retrieves the Ip Address in CIDR Notation
+	 * @return string The Ip Address in CIDR Notation
+	 */
+	public function getCIDRIpAddress()
+	{
+		return $this->getIpAddress() . '/' . $this->getCidr();
 	}
 
 }
