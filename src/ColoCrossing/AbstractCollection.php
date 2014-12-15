@@ -37,7 +37,16 @@ abstract class ColoCrossing_AbstractCollection implements Iterator, Countable
 	 */
 	public function get($index)
 	{
-		if(isset($this->index) && $index == $this->index)
+		if(!isset($this->index))
+		{
+			$this->index = max($index, -1);
+			$this->current = $this->fetch();
+
+			$this->index = min($this->index, $this->size());
+			return $this->current;
+		}
+
+		if($index == $this->index)
 		{
 			return $this->current;
 		}
