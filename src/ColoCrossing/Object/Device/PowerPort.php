@@ -37,9 +37,10 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 	/**
 	 * Sets the status of the port.
 	 * @param 	string $status 	The status of the port. Either 'on' or 'off'.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 			True if the status is set successfully, false otherwise.
 	 */
-	public function setStatus($status)
+	public function setStatus($status, $comment = null)
 	{
 		if (!$this->isControllable())
 		{
@@ -51,34 +52,37 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 
 		$client = $this->getClient();
 
-		return $client->devices->pdus->setPortStatus($pdu, $this, $device, $status);
+		return $client->devices->pdus->setPortStatus($pdu, $this, $device, $status, $comment);
 	}
 
 	/**
 	 * Turns the port on.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 	True if the status is set successfully, false otherwise.
 	 */
-	public function turnOn()
+	public function turnOn($comment = null)
 	{
-		return $this->setStatus('on');
+		return $this->setStatus('on', $comment);
 	}
 
 	/**
 	 * Turns the port off.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 	True if the status is set successfully, false otherwise.
 	 */
-	public function turnOff()
+	public function turnOff($comment = null)
 	{
-		return $this->setStatus('off');
+		return $this->setStatus('off', $comment);
 	}
 
 	/**
 	 * Restarts the port.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 	True if the status is set successfully, false otherwise.
 	 */
-	public function restart()
+	public function restart($comment = null)
 	{
-		return $this->setStatus('restart');
+		return $this->setStatus('restart', $comment);
 	}
 
 }

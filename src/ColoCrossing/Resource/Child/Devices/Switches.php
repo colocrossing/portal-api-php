@@ -136,13 +136,19 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
 	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
 	 * @param  string 										$status    	The new Port status. 'on' or 'off'
+	 * @param  string 										$comment    The comment, Optional, Max Length of 20 Chars
 	 * @return boolean  		   	True if succeeds, false otherwise.
 	 */
-	public function setPortStatus($switch, $port, $device, $status)
+	public function setPortStatus($switch, $port, $device, $status, $comment = null)
 	{
 		$status = strtolower($status);
 
 		if ($status != 'on' && $status != 'off')
+		{
+			return false;
+		}
+
+		if (isset($comment) && strlen($comment) > 20)
 		{
 			return false;
 		}
@@ -172,7 +178,8 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 		$url = $this->createObjectUrl($switch->getId(), $device_id);
 		$data = array(
 			'status' => $status,
-			'port_id' => $port->getId()
+			'port_id' => $port->getId(),
+			'comment' => $comment
 		);
 
 		$response = $this->sendRequest($url, 'PUT', $data);

@@ -22,17 +22,23 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 	/**
 	 * Set the status of the provided port on the provided pdu that
 	 * is connected to the provided device.
-	 * @param  int|ColoCrossing_Object_Device_Type_PowerDistributionUnit	$pdu 	The PDU or Id
+	 * @param  int|ColoCrossing_Object_Device_Type_PowerDistributionUnit	$pdu 		The PDU or Id
 	 * @param  int|ColoCrossing_Object_Device_NetworkPort 					$port   	The Port or Id
 	 * @param  int|ColoCrossing_Object_Device 								$device 	The Device or Id
 	 * @param  string 														$status    	The new Port status. 'on', 'off', or 'restart'
+	 * @param  string 														$comment    The comment, Optional, Max Length of 20 Chars
 	 * @return boolean  		   	True if succeeds, false otherwise.
 	 */
-	public function setPortStatus($pdu, $port, $device, $status)
+	public function setPortStatus($pdu, $port, $device, $status, $comment = null)
 	{
 		$status = strtolower($status);
 
 		if ($status != 'on' && $status != 'off' && $status != 'restart')
+		{
+			return false;
+		}
+
+		if (isset($comment) && strlen($comment) > 20)
 		{
 			return false;
 		}
@@ -62,7 +68,8 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 		$url = $this->createObjectUrl($pdu->getId(), $device_id);
 		$data = array(
 			'status' => $status,
-			'port_id' => $port->getId()
+			'port_id' => $port->getId(),
+			'comment' => $comment
 		);
 
 		$response = $this->sendRequest($url, 'PUT', $data);
