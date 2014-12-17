@@ -93,9 +93,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isControllable()
 	{
-		$device = $this->getDevice();
-
-		return $this->isControl() && isset($device);
+		return $this->isControl();
 	}
 
 	/**

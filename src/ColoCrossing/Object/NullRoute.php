@@ -53,6 +53,18 @@ class ColoCrossing_Object_NullRoute extends ColoCrossing_Resource_Object
 	}
 
 	/**
+	 * Retrieves the Subnet id that this Null Route is on.
+	 * @return int|null	The Subnet Id
+	 */
+	public function getSubnetId()
+	{
+		$subnet = $this->getValue('subnet');
+
+		return isset($subnet) && is_array($subnet) ? intval($subnet['id']) : null;
+	}
+
+
+	/**
 	 * Removes this Null Route.
 	 * @return boolean	True if the removal suceeds, false otherwise.
 	 */
@@ -65,7 +77,7 @@ class ColoCrossing_Object_NullRoute extends ColoCrossing_Resource_Object
 
 		$client = $this->getClient();
 
-		if($client->null_routes->remove($this->getId()))
+		if($client->null_routes->remove($this))
 		{
 			return $this->is_removed = true;
 		}

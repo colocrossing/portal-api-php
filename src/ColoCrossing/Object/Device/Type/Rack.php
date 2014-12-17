@@ -41,7 +41,8 @@ class ColoCrossing_Object_Device_Type_Rack extends ColoCrossing_Object_Device
 
 		$client = $this->getClient();
 
-		return $this->getObjectArray('devices', $client->devices);
+		//Ignores Devices We Dont Have Access to
+		return $this->getObjectArray('devices', $client->devices, null, null, null, true);
 	}
 
 	/**

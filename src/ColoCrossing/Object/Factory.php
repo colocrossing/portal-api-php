@@ -197,7 +197,7 @@ class ColoCrossing_Object_Factory
 			require_once(dirname(__FILE__) . '/Device/Type/Virtual.php');
 			return new ColoCrossing_Object_Device_Type_Virtual($client, $resource, $values);
 		}
-		else if ($type['network'] == 'distribution' && $type['power'] == 'endpoint') //Switch
+		else if ($type['network'] == 'distribution' && $type['power'] == 'endpoint') //Switch, Firewall
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/Switch.php');
 			return new ColoCrossing_Object_Device_Type_Switch($client, $resource, $values);
@@ -207,7 +207,7 @@ class ColoCrossing_Object_Factory
 			require_once(dirname(__FILE__) . '/Device/Type/PowerDistributionUnit.php');
 			return new ColoCrossing_Object_Device_Type_PowerDistributionUnit($client, $resource, $values);
 		}
-		else if ($type['network'] == 'endpoint' && $type['power'] == 'endpoint') //Server, KVM
+		else if ($type['network'] == 'endpoint' && $type['power'] == 'endpoint') //Colo/Dedi Server, KVM
 		{
 			require_once(dirname(__FILE__) . '/Device/Type/NetworkPowerEndpoint.php');
 			return new ColoCrossing_Object_Device_Type_NetworkPowerEndpoint($client, $resource, $values);
@@ -218,7 +218,7 @@ class ColoCrossing_Object_Factory
 			return new ColoCrossing_Object_Device_Type_NetworkEndpoint($client, $resource, $values);
 		}
 
-		return new ColoCrossing_Object_Device($client, $resource, $values);
+		return new ColoCrossing_Object_Device_Type_Racked($client, $resource, $values); //Panel
 	}
 
 }

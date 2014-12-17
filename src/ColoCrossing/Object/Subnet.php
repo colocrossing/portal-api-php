@@ -140,7 +140,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		$client = $this->getClient();
 
-		return $client->null_routes->add($this->getId(), $ip_address, $comment, $expire_date);
+		return $client->null_routes->add($this, $ip_address, $comment, $expire_date);
 	}
 
 	/**
@@ -185,7 +185,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		$resource = $this->getResource();
 
-		return $resource->rdns_records->updateAll($this->getId(), $rdns_records);
+		return $resource->rdns_records->updateAll($this, $rdns_records);
 	}
 
 	/**

@@ -228,7 +228,7 @@ class ColoCrossing_Object
 	 * @param  array 					$additional_data  Extra Data to add to each object when not loading from a resource.
 	 * @return Iterable<ColoCrossing_Object>	  The List of ColoCrossing_Object's.
 	 */
-	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null, array $additional_data = null)
+	protected function getObjectArray($key, ColoCrossing_Resource $resource = null, $type = null, $default = null, array $additional_data = null, $ignore_unauthorized = false)
 	{
 		if (isset($this->object_arrays[$key]))
 		{
@@ -247,7 +247,14 @@ class ColoCrossing_Object
 			$this->object_arrays[$key] = array();
 			foreach ($value as $index => $content)
 			{
-				$this->object_arrays[$key][] = $resource->find($content['id']);
+				try {
+					$object = $resource->find($content['id']);
+					$this->object_arrays[$key][] = $object;
+				} catch (ColoCrossing_Error_Authorization $e) {
+					if(!$ignore_unauthorized) {
+						throw $e;
+					}
+				}
 			}
 			return $this->object_arrays[$key];
 		}
