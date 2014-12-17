@@ -81,29 +81,36 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Retrieves the Bandwidth Usage of the provided Port on the provided Switch
 	 * that is assigned to the provided Device.
-	 * @param  int $switch_id 		The Switch Id
-	 * @param  int $port_id   		The Port Id
-	 * @param  int $device_id 		The Device Id
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
 	 * @return ColoCrossing_Object	The Bandwidth Usage
 	 */
 	public function getBandwidthUsage($switch_id, $port_id, $device_id, $start = null, $end = null)
 	{
-		$switch = $this->find($switch_id, $device_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isBandwidthUsageAvailable())
 		{
 			return null;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id) . '/bandwidths/' . urlencode($port_id);
-
+		$url = $this->createObjectUrl($switch->getId(), $device_id) . '/bandwidths/' . urlencode($port->getId());
 		$response = $this->sendRequest($url);
 
 		if (empty($response))
