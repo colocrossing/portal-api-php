@@ -86,7 +86,7 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
 	 * @return ColoCrossing_Object	The Bandwidth Usage
 	 */
-	public function getBandwidthUsage($switch_id, $port_id, $device_id, $start = null, $end = null)
+	public function getBandwidthUsage($switch, $port, $device, $start = null, $end = null)
 	{
 		$device_id = is_numeric($device) ? $device : $device->getId();
 
@@ -132,13 +132,13 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Set the status of the provided port on the provided switch that
 	 * is connected to the provided device.
-	 * @param  int 		$switch_id  The Id of Switch the Port is on
-	 * @param  int 		$port_id   	The Id of the Port to control
-	 * @param  int 		$device_id 	The Id of the Device the Port is assigned to
-	 * @param  string 	$status    	The new Port status. 'on' or 'off'
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
+	 * @param  string 										$status    	The new Port status. 'on' or 'off'
 	 * @return boolean  		   	True if succeeds, false otherwise.
 	 */
-	public function setPortStatus($switch_id, $port_id, $device_id, $status)
+	public function setPortStatus($switch, $port, $device, $status)
 	{
 		$status = strtolower($status);
 
@@ -147,24 +147,32 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return false;
 		}
 
-		$switch = $this->find($switch_id, $device_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return false;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isControllable())
 		{
 			return false;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id);
+		$url = $this->createObjectUrl($switch->getId(), $device_id);
 		$data = array(
 			'status' => $status,
-			'port_id' => $port_id
+			'port_id' => $port->getId()
 		);
 
 		$response = $this->sendRequest($url, 'PUT', $data);

@@ -113,7 +113,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->setPortStatus($switch->getId(), $this->getId(), $device->getId(), $status);
+		return $client->devices->switches->setPortStatus($switch, $this, $device, $status);
 	}
 
 	/**
