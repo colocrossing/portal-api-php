@@ -23,14 +23,14 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Retrieves the Bandwidth Graph of the provided Port on the provided Switch
 	 * that is assigned to the provided Device.
-	 * @param  int $switch_id 	The Switch Id
-	 * @param  int $port_id   	The Port Id
-	 * @param  int $device_id 	The Device Id
-	 * @param  int $start     	The Unix Timestamp that is the start time of the graph range.
-	 * @param  int $end      	The Unix Timestamp that is the end time of the graph range.
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
+	 * @param  int 											$start     	The Unix Timestamp that is the start time of the graph range.
+	 * @param  int 											$end      	The Unix Timestamp that is the end time of the graph range.
 	 * @return resource|null	An PNG Image Resource if it is available, null otherwise
 	 */
-	public function getBandwidthGraph($switch_id, $port_id, $device_id, $start = null, $end = null)
+	public function getBandwidthGraph($switch, $port, $device, $start = null, $end = null)
 	{
 		$start = isset($start) ? $start : strtotime(date('Y').'-'.date('m').'-01'.' '.date('h').':'.date('i').':00');
 		$end = isset($end) ? $end : strtotime(date('Y').'-'.date('m').'-'.date('d').' '.date('h').':'.date('i').':59');
@@ -40,21 +40,29 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return null;
 		}
 
-		$switch = $this->find($switch_id, $device_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isBandwidthGraphAvailable())
 		{
 			return null;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id) . '/graphs/' . urlencode($port_id);
+		$url = $this->createObjectUrl($switch->getId(), $device_id) . '/graphs/' . urlencode($port->getId());
 		$data = array(
 			'start' => date('c', $start),
 			'end' => date('c', $end)

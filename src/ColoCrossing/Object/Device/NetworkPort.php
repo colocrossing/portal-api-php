@@ -54,7 +54,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->getBandwidthGraph($switch->getId(), $this->getId(), $device->getId(), $start, $end);
+		return $client->devices->switches->getBandwidthGraph($switch, $this, $device, $start, $end);
 	}
 
 	/**
