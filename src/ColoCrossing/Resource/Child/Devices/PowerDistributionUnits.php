@@ -22,13 +22,13 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 	/**
 	 * Set the status of the provided port on the provided pdu that
 	 * is connected to the provided device.
-	 * @param  int 		$pdu_id    	The Id of Pdu the Port is on
-	 * @param  int 		$port_id   	The Id of the Port to control
-	 * @param  int 		$device_id 	The Id of the Device the Port is assigned to
-	 * @param  string 	$status    	The new Port status. 'on', 'off', or 'restart'
+	 * @param  int|ColoCrossing_Object_Device_Type_PowerDistributionUnit	$pdu 	The PDU or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 					$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 								$device 	The Device or Id
+	 * @param  string 														$status    	The new Port status. 'on', 'off', or 'restart'
 	 * @return boolean  		   	True if succeeds, false otherwise.
 	 */
-	public function setPortStatus($pdu_id, $port_id, $device_id, $status)
+	public function setPortStatus($pdu, $port, $device, $status)
 	{
 		$status = strtolower($status);
 
@@ -37,24 +37,32 @@ class ColoCrossing_Resource_Child_Devices_PowerDistributionUnits extends ColoCro
 			return false;
 		}
 
-		$pdu = $this->find($pdu_id, $device_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($pdu))
+		{
+			$pdu = $this->find($pdu, $device_id);
+		}
 
 		if (empty($pdu) || !$pdu->getType()->isPowerDistribution())
 		{
 			return false;
 		}
 
-		$port = $pdu->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $pdu->getPort($port);
+		}
 
 		if (empty($port) || !$port->isControllable())
 		{
 			return false;
 		}
 
-		$url = $this->createObjectUrl($pdu_id, $device_id);
+		$url = $this->createObjectUrl($pdu->getId(), $device_id);
 		$data = array(
 			'status' => $status,
-			'port_id' => $port_id
+			'port_id' => $port->getId()
 		);
 
 		$response = $this->sendRequest($url, 'PUT', $data);

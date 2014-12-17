@@ -51,7 +51,7 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 
 		$client = $this->getClient();
 
-		return $client->devices->pdus->setPortStatus($pdu->getId(), $this->getId(), $device->getId(), $status);
+		return $client->devices->pdus->setPortStatus($pdu, $this, $device, $status);
 	}
 
 	/**
