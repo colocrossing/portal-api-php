@@ -94,9 +94,9 @@ class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing
 
 		foreach ($ports as $index => $port)
 		{
-			if(isset($port['device']))
+			if($port->isAssignedToDevice())
 			{
-				$devices[] = $port['device']['id'];
+				$devices[] = $port->getDeviceId();
 			}
 		}
 

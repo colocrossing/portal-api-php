@@ -26,6 +26,33 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	}
 
 	/**
+	 * Retrieves the device Id that is Assigned to this Port
+	 * Returns Null if port is unassigned.
+	 * @return int|null The Device Id
+	 */
+	public function getDeviceId()
+	{
+		$device = $this->getValue('device');
+
+		if(empty($device) || !is_array($device))
+		{
+			return null;
+		}
+
+		return $device['id'];
+	}
+
+	/**
+	 * Determines if this Port is Assigned to a Device
+	 * @return boolean True if port is assigned
+	 */
+	public function isAssignedToDevice()
+	{
+		$device_id = $this->getDeviceId();
+		return isset($device_id);
+	}
+
+	/**
 	 * Determines if a Bandwidth Graph is available for this Port
 	 * @return boolean True if graph is available, false otherwise.
 	 */
