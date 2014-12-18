@@ -20,29 +20,17 @@ class ColoCrossing_Object_Device_Type_Rack extends ColoCrossing_Object_Device
 
 	/**
 	 * Retrieves the Devices that are assigned to this rack.
-	 * @return ColoCrossing_Object_Device_Type_Racked 	The Rack's Devices
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Device_Type_Racked> 	The Rack's Devices
 	 */
-	public function getDevices()
+	public function getDevices(array $options = null)
 	{
-		$rack_devices = $this->getRackDevices();
-		$devices = array();
-
-		foreach ($rack_devices as $key => $rack_device)
-		{
-			$devices[] = array(
-				'id' => $rack_device['id']
-			);
-		}
-
-		//Remove Duplicates
-		$devices = array_map("unserialize", array_unique(array_map("serialize", $devices)));
-
-		$this->setValue('devices', $devices);
+		$devices = array_map(function($device) {
+			return intval($device['id']);
+		}, $this->getRackDevices());
 
 		$client = $this->getClient();
 
-		//Ignores Devices We Dont Have Access to
-		return $this->getObjectArray('devices', $client->devices, null, null, null, true);
+		return $client->devices->findByIds($devices, $options);
 	}
 
 	/**
