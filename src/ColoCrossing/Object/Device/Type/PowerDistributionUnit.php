@@ -83,4 +83,26 @@ class ColoCrossing_Object_Device_Type_PowerDistributionUnit extends ColoCrossing
 		return ColoCrossing_Utility::getObjectFromCollectionById($ports, $id);
 	}
 
+	/**
+	 * Retrieves the Devices that are assigned to this PDU.
+	 * @return ColoCrossing_Collection<ColoCrossing_Object_Device> 	The PDU's Devices
+	 */
+	public function getDevices(array $options = null)
+	{
+		$ports = $this->getPorts();
+		$devices = array();
+
+		foreach ($ports as $index => $port)
+		{
+			if(isset($port['device']))
+			{
+				$devices[] = $port['device']['id'];
+			}
+		}
+
+		$client = $this->getClient();
+
+		return $client->devices->findByIds($devices, $options);
+	}
+
 }
