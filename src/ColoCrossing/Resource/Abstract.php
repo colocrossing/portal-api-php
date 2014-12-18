@@ -132,9 +132,16 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$options = $this->createCollectionOptions($options);
 		$url = $this->createCollectionUrl($parent_id);
 
-		if (isset($options['format']) && $options['format'] == 'paged')
+		if (isset($options['format']))
 		{
-			return new ColoCrossing_PagedCollection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
+			switch ($options['format'])
+			{
+				case 'paged':
+					return new ColoCrossing_PagedCollection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
+				case 'map':
+					$collection = new ColoCrossing_Collection($this, $url, $options['sort'], $options['filters']);
+					return ColoCrossing_Utility::getMapCollection($collection);
+			}
 		}
 
 		return new ColoCrossing_Collection($this, $url, $options['sort'], $options['filters']);
