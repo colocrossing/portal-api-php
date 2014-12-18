@@ -26,9 +26,8 @@ class ColoCrossing_Resource_Devices extends ColoCrossing_Resource_Abstract
 	public function findLikeName($name, array $options = null)
 	{
 		$options = isset($options) && is_array($options) ? $options : array();
-		$options['filters'] = array(
-			'name' => $name
-		);
+		$options['filters'] = isset($options['filters']) && is_array($options['filters']) ? $options['filters'] : array();
+		$options['filters']['name'] = $name;
 
 		return $this->findAll($options);
 	}
@@ -42,11 +41,26 @@ class ColoCrossing_Resource_Devices extends ColoCrossing_Resource_Abstract
 	public function findByType($type_id, array $options = null)
 	{
 		$options = isset($options) && is_array($options) ? $options : array();
-		$options['filters'] = array(
-			'type' => $type_id
-		);
+		$options['filters'] = isset($options['filters']) && is_array($options['filters']) ? $options['filters'] : array();
+		$options['filters']['type'] = $type_id;
 
 		return $this->findAll($options);
 	}
+
+	/**
+	 * Retrieve a Collection of Devices whose Ids are in the provided list
+	 * @param  array<int> 	$ids 		The Ids
+	 * @param  array 		$options    The Options for the page and sort.
+	 * @return array|ColoCrossing_Collection<ColoCrossing_Object_Device> The Devices
+	 */
+	public function findByIds(array $ids, array $options = null)
+	{
+		$options = isset($options) && is_array($options) ? $options : array();
+		$options['filters'] = isset($options['filters']) && is_array($options['filters']) ? $options['filters'] : array();
+		$options['filters']['ids'] = array_unique($ids);
+
+		return $this->findAll($options);
+	}
+
 
 }
