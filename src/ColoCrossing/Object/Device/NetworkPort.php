@@ -58,9 +58,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isBandwidthGraphAvailable()
 	{
-		$device = $this->getDevice();
-
-		return !!$this->getHasGraph() && isset($device);
+		return !!$this->getHasGraph() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -77,11 +75,10 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->getBandwidthGraph($switch, $this, $device, $start, $end);
+		return $client->devices->switches->getBandwidthGraph($switch, $this, $this->getDeviceId(), $start, $end);
 	}
 
 	/**
@@ -90,9 +87,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isBandwidthUsageAvailable()
 	{
-		$device = $this->getDevice();
-
-		return !!$this->getHasBandwidthUsage() && isset($device);
+		return !!$this->getHasBandwidthUsage() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -107,11 +102,10 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->getBandwidthUsage($switch, $this, $device);
+		return $client->devices->switches->getBandwidthUsage($switch, $this, $this->getDeviceId());
 	}
 
 	/**
@@ -120,7 +114,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isControllable()
 	{
-		return $this->isControl();
+		return $this->isControl() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -137,11 +131,10 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->setPortStatus($switch, $this, $device, $status, $comment);
+		return $client->devices->switches->setPortStatus($switch, $this, $this->getDeviceId(), $status, $comment);
 	}
 
 	/**

@@ -58,7 +58,7 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 	 */
 	public function isControllable()
 	{
-		return $this->isControl();
+		return $this->isControl() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -75,11 +75,10 @@ class ColoCrossing_Object_Device_PowerPort extends ColoCrossing_Object
 		}
 
 		$pdu = $this->getPowerDistributionUnit();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->pdus->setPortStatus($pdu, $this, $device, $status, $comment);
+		return $client->devices->pdus->setPortStatus($pdu, $this, $this->getDeviceId(), $status, $comment);
 	}
 
 	/**

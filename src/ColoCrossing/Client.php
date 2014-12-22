@@ -52,12 +52,12 @@ class ColoCrossing_Client
 	private $http_executor;
 
 	/**
-	 * @param string $api_token The api token.
+	 * @param string $api_key The api key.
 	 * @param array  $options   The Options to overide.
 	 */
-	public function __construct($api_token = null, $options = array())
+	public function __construct($api_key = null, array $options = array())
 	{
-		$this->setAPIToken($api_token);
+		$this->setAPIToken($api_key);
 
 		if (empty($this->api_token))
 		{
