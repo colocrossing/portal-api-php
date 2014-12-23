@@ -46,6 +46,12 @@ class ColoCrossing_Client
 	private $options = array();
 
 	/**
+	 * The Permission for the Client associated with the API Key.
+	 * @var array
+	 */
+	private $permissions;
+
+	/**
 	 * The executor of HTTP Requests
 	 * @var ColoCrossing_Http_Executor
 	 */
@@ -119,6 +125,36 @@ class ColoCrossing_Client
 		return isset($this->options[$key]) ? $this->options[$key] : false;
 	}
 
+	/**
+	 * Retrieve the Permssions of the User
+	 * @return array<string, string> The Permissions
+	 */
+	public function getPermissions()
+	{
+		if(isset($this->permissions))
+		{
+			return $this->permissions;
+		}
+
+		$request = new ColoCrossing_Http_Request($this->getBaseUrl() . '/', 'GET');
+		$executor = $this->getHttpExecutor();
+		$response = $executor->executeRequest($request);
+		$content = $response->getContent();
+
+		return $this->permissions = isset($content) && isset($content['permissions']) ? $content['permissions'] : array();
+	}
+
+	/**
+	 * Checks if the User has the Permission Type Requested
+	 * @param  string  $type The Type of Permission, Possible Values include 'device_cancellation' or 'rdns_records'
+	 * @return boolean True if the User has Permission
+	 */
+	public function hasPermission($type)
+	{
+		$permissions = $this->getPermissions();
+
+		return isset($permissions[$type]) && !!$permissions[$type];
+	}
 
 	/**
 	 * Retrieves the Executor of HTTP Requests. If not exists, then it creates it.
