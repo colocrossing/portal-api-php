@@ -136,7 +136,7 @@ class ColoCrossing_Client
 			return $this->permissions;
 		}
 
-		$request = new ColoCrossing_Http_Request($this->getBaseUrl() . '/', 'GET');
+		$request = new ColoCrossing_Http_Request('/', 'GET');
 		$executor = $this->getHttpExecutor();
 		$response = $executor->executeRequest($request);
 		$content = $response->getContent();
