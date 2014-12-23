@@ -62,5 +62,36 @@ class ColoCrossing_Resource_Devices extends ColoCrossing_Resource_Abstract
 		return $this->findAll($options);
 	}
 
+	/**
+	 * Cancels the Service Associated with the Provided Device
+	 * @param  int|ColoCrossing_Object_Device $device 	The Device or Id
+	 * @return boolean		True if the cancellation suceeds, false otherwise.
+	 */
+	public function cancelService($device)
+	{
+		if(is_numeric($device))
+		{
+			$device = $this->find($device);
+		}
+
+		$client = $this->getClient();
+
+		if (empty($device) || !$client->hasPermission('device_cancellation'))
+		{
+			return false;
+		}
+
+		$url = $this->createObjectUrl($device->getId());
+		$response = $this->sendRequest($url, 'DELETE');
+
+		if (empty($response))
+		{
+			return false;
+		}
+
+		$content = $response->getContent();
+
+		return isset($content) && isset($content['status']) && $content['status'] == 'ok';
+	}
 
 }
