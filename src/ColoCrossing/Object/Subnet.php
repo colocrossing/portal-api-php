@@ -199,6 +199,24 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	}
 
 	/**
+	 * Computes the Total Number of Usable Ip Addesses in the Subnet Accoring to the CIDR.
+	 * @return int The Total Number of Usable Ip Addresses
+	 */
+	public function getNumberOfUsableIpAddresses()
+	{
+		$cidr = intval($this->getCidr());
+
+		switch ($cidr) {
+			case '32':
+				return 1;
+			case '31':
+				return 0;
+		}
+
+		return $this->getNumberOfIpAddresses() - 3;
+	}
+
+	/**
 	 * Retrieves a list of all Ip Addresses in the Subnet
 	 * @return array<string> The list of Ip Addresses
 	 */
