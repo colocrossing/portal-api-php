@@ -62,7 +62,7 @@ class ColoCrossing_Http_Executor
 
 		curl_setopt($this->curl, CURLOPT_FOLLOWLOCATION, $this->client->getOption('follow_redirects'));
     	curl_setopt($this->curl, CURLOPT_USERAGENT, $this->client->getOption('application_name') . '/' . $this->client->getVersion());
-    	curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, $this->client->getOption('request_timeout'));
+    	curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, $this->client->getOption('connection_timeout'));
     	curl_setopt($this->curl, CURLOPT_TIMEOUT, $this->client->getOption('request_timeout'));
 
     	return $this->curl;

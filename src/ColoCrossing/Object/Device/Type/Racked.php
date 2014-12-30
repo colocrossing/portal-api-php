@@ -41,4 +41,52 @@ class ColoCrossing_Object_Device_Type_Racked extends ColoCrossing_Object_Device
 		return $this->getObject('rack', $resource);
 	}
 
+	/**
+	 * Retrieves the Rack Id that this Device is assigned to.
+	 * @return integer|null	The Rack Id, Null if unassigned
+	 */
+	public function getRackId()
+	{
+		$rack = $this->getValue('rack');
+
+		if (empty($rack) || !is_array($rack))
+		{
+			return null;
+		}
+
+		return $rack['id'];
+	}
+
+	/**
+	 * Retrieves the Rack Name that this Device is assigned to.
+	 * @return string|null	The Rack Name, Null if unassigned
+	 */
+	public function getRackName()
+	{
+		$rack = $this->getValue('rack');
+
+		if (empty($rack) || !is_array($rack))
+		{
+			return null;
+		}
+
+		return $rack['name'];
+	}
+
+	/**
+	 * Retrieves the Owner of Rack that this Device is assigned to.
+	 * @return array|null	The Rack Owner, Null if unassigned
+	 */
+	public function getRackOwner()
+	{
+		$rack = $this->getValue('rack');
+
+		if (empty($rack) || !is_array($rack) || empty($rack['owner']) || !is_array($rack['owner']))
+		{
+			return null;
+		}
+
+		return $rack['owner'];
+	}
+
 }

@@ -23,14 +23,14 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Retrieves the Bandwidth Graph of the provided Port on the provided Switch
 	 * that is assigned to the provided Device.
-	 * @param  int $switch_id 	The Switch Id
-	 * @param  int $port_id   	The Port Id
-	 * @param  int $device_id 	The Device Id
-	 * @param  int $start     	The Unix Timestamp that is the start time of the graph range.
-	 * @param  int $end      	The Unix Timestamp that is the end time of the graph range.
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
+	 * @param  int 											$start     	The Unix Timestamp that is the start time of the graph range.
+	 * @param  int 											$end      	The Unix Timestamp that is the end time of the graph range.
 	 * @return resource|null	An PNG Image Resource if it is available, null otherwise
 	 */
-	public function getBandwidthGraph($switch_id, $port_id, $device_id, $start = null, $end = null)
+	public function getBandwidthGraph($switch, $port, $device, $start = null, $end = null)
 	{
 		$start = isset($start) ? $start : strtotime(date('Y').'-'.date('m').'-01'.' '.date('h').':'.date('i').':00');
 		$end = isset($end) ? $end : strtotime(date('Y').'-'.date('m').'-'.date('d').' '.date('h').':'.date('i').':59');
@@ -40,21 +40,29 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return null;
 		}
 
-		$switch = $this->find($device_id, $switch_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isBandwidthGraphAvailable())
 		{
 			return null;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id) . '/graphs/' . urlencode($port_id);
+		$url = $this->createObjectUrl($switch->getId(), $device_id) . '/graphs/' . urlencode($port->getId());
 		$data = array(
 			'start' => date('c', $start),
 			'end' => date('c', $end)
@@ -73,29 +81,36 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Retrieves the Bandwidth Usage of the provided Port on the provided Switch
 	 * that is assigned to the provided Device.
-	 * @param  int $switch_id 		The Switch Id
-	 * @param  int $port_id   		The Port Id
-	 * @param  int $device_id 		The Device Id
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
 	 * @return ColoCrossing_Object	The Bandwidth Usage
 	 */
-	public function getBandwidthUsage($switch_id, $port_id, $device_id, $start = null, $end = null)
+	public function getBandwidthUsage($switch, $port, $device, $start = null, $end = null)
 	{
-		$switch = $this->find($device_id, $switch_id);
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return null;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isBandwidthUsageAvailable())
 		{
 			return null;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id) . '/bandwidths/' . urlencode($port_id);
-
+		$url = $this->createObjectUrl($switch->getId(), $device_id) . '/bandwidths/' . urlencode($port->getId());
 		$response = $this->sendRequest($url);
 
 		if (empty($response))
@@ -117,13 +132,14 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 	/**
 	 * Set the status of the provided port on the provided switch that
 	 * is connected to the provided device.
-	 * @param  int 		$switch_id  The Id of Switch the Port is on
-	 * @param  int 		$port_id   	The Id of the Port to control
-	 * @param  int 		$device_id 	The Id of the Device the Port is assigned to
-	 * @param  string 	$status    	The new Port status. 'on' or 'off'
+	 * @param  int|ColoCrossing_Object_Device_Type_Switch	$switch 	The Switch or Id
+	 * @param  int|ColoCrossing_Object_Device_NetworkPort 	$port   	The Port or Id
+	 * @param  int|ColoCrossing_Object_Device 				$device 	The Device or Id
+	 * @param  string 										$status    	The new Port status. 'on' or 'off'
+	 * @param  string 										$comment    The comment, Optional, Max Length of 20 Chars
 	 * @return boolean  		   	True if succeeds, false otherwise.
 	 */
-	public function setPortStatus($switch_id, $port_id, $device_id, $status)
+	public function setPortStatus($switch, $port, $device, $status, $comment = null)
 	{
 		$status = strtolower($status);
 
@@ -132,24 +148,38 @@ class ColoCrossing_Resource_Child_Devices_Switches extends ColoCrossing_Resource
 			return false;
 		}
 
-		$switch = $this->find($device_id, $switch_id);
+		if (isset($comment) && strlen($comment) > 20)
+		{
+			return false;
+		}
+
+		$device_id = is_numeric($device) ? $device : $device->getId();
+
+		if(is_numeric($switch))
+		{
+			$switch = $this->find($switch, $device_id);
+		}
 
 		if (empty($switch) || !$switch->getType()->isNetworkDistribution())
 		{
 			return false;
 		}
 
-		$port = $switch->getPort($port_id);
+		if(is_numeric($port))
+		{
+			$port = $switch->getPort($port);
+		}
 
 		if (empty($port) || !$port->isControllable())
 		{
 			return false;
 		}
 
-		$url = $this->createObjectUrl($switch_id, $device_id);
+		$url = $this->createObjectUrl($switch->getId(), $device_id);
 		$data = array(
 			'status' => $status,
-			'port_id' => $port_id
+			'port_id' => $port->getId(),
+			'comment' => $comment
 		);
 
 		$response = $this->sendRequest($url, 'PUT', $data);

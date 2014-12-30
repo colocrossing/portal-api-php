@@ -37,4 +37,22 @@ class ColoCrossing_Utility
 		return null;
 	}
 
+	/**
+	 * Gets A Map of ColoCrossing_Object's From a List
+	 * @param  Iterable<ColoCrossing_Object>	$objects 	The Objects to Convert to Map.
+	 * @param  string 							$key      	The Id to search for.
+	 * @return array<string, ColoCrossing_Object)          	The Map of Objects
+	 */
+	public static function getMapCollection($objects, $key = 'id')
+	{
+		$map = array();
+
+		foreach ($objects as $index => $object)
+		{
+			$map[$object->getValue($key)] = $object;
+		}
+
+		return $map;
+	}
+
 }

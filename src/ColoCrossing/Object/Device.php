@@ -99,4 +99,17 @@ class ColoCrossing_Object_Device extends ColoCrossing_Resource_Object
 		return $this->getResourceChildObject('notes', $id);
 	}
 
+	/**
+	 * Cancels the Service of this Device.
+	 * If this succeeds, this device will no longer be available.
+	 * This action requires your client to have the 'device_cancellation' permission
+	 * @return boolean		True if the cancellation suceeds, false otherwise.
+	 */
+	public function cancelService()
+	{
+		$client = $this->getClient();
+
+		return $client->devices->cancelService($this);
+	}
+
 }

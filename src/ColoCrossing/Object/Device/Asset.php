@@ -35,4 +35,17 @@ class ColoCrossing_Object_Device_Asset extends ColoCrossing_Resource_Object
 		return ColoCrossing_Utility::getObjectFromCollectionById($groups, $id);
 	}
 
+	/**
+	 * Retrieves list of Names of the Groups that this asset belong to.
+	 * @return array<string>	The Asset's Group's Names
+	 */
+	public function getGroupsNames()
+	{
+		$groups = $this->getGroups();
+
+		return array_map(function($group) {
+			return $group->getName();
+		}, $groups);
+	}
+
 }

@@ -124,24 +124,38 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 	 * Retrieves a List of ColoCrossing_Object from this Resource
 	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
 	 *											sort, page_number, and page_size.
+	 * @param  int 				$parent_id 	The Parent Id, 	Only Used For Child Resources
 	 * @return ColoCrossing_Collection<ColoCrossing_Object>	A List of ColoCrossing_Object
 	 */
-	public function findAll(array $options = null)
+	public function findAll(array $options = null, $parent_id)
 	{
 		$options = $this->createCollectionOptions($options);
-		$url = $this->createCollectionUrl();
+		$url = $this->createCollectionUrl($parent_id);
 
-		return new ColoCrossing_Collection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
+		if (isset($options['format']))
+		{
+			switch ($options['format'])
+			{
+				case 'paged':
+					return new ColoCrossing_PagedCollection($this, $url, $options['page_number'], $options['page_size'], $options['sort'], $options['filters']);
+				case 'map':
+					$collection = new ColoCrossing_Collection($this, $url, $options['sort'], $options['filters']);
+					return ColoCrossing_Utility::getMapCollection($collection);
+			}
+		}
+
+		return new ColoCrossing_Collection($this, $url, $options['sort'], $options['filters']);
 	}
 
 	/**
 	 * Retrieves a ColoCrossing_Object from this Resource
-	 * @param  int 			$id     The Id
-	 * @return ColoCrossing_Object	The ColoCrossing_Object
+	 * @param  int 			$id     	The Id
+	 * @param  int 			$parent_id 	The Parent Id, 	Only Used For Child Resources
+	 * @return ColoCrossing_Object		The ColoCrossing_Object
 	 */
-	public function find($id)
+	public function find($id, $parent_id)
 	{
-		$url = $this->createObjectUrl($id);
+		$url = $this->createObjectUrl($id, $parent_id);
 
 		return $this->fetch($url);
 	}
@@ -151,7 +165,7 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 	 * @param  string 			$url     	The Url of the Resource relative the root of the API.
 	 * @param  array 			$options 	An Array of Options to Adjust the Result. Includes filters,
 	 *											sort, page_number, and page_size.
-	 * @return array<ColoCrossing_Object>	A List of ColoCrossing_Object from the Url
+	 * @return array(array<ColoCrossing_Object>, int)	A List of ColoCrossing_Object from the Url and the Total Record Count
 	 */
 	public function fetchAll($url, array $options = null)
 	{
@@ -171,14 +185,16 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 		$request->setQueryParams($query_params);
 
 		$response = $this->executeRequest($request);
-		$content = $this->getResponseContent($response, true);
+		list($content, $total_record_count) = $this->getResponseContent($response, true);
 
-		if (empty($content))
+		if (empty($content) || empty($total_record_count))
 		{
-			return array();
+			return array(array(), 0);
 		}
 
-		return ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content);
+		$records = ColoCrossing_Object_Factory::createObjectArray($this->client, $this, $content);
+
+		return array($records, $total_record_count);
 	}
 
 	/**
@@ -220,19 +236,21 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 
 	/**
 	 * Creates the Url that refers to the Collection/Index of this Resource
-	 * @return string 	The Url
+	 * @param  int $parent_id 	The Parent Id, Only Used For Child Resources
+	 * @return string 			The Url
 	 */
-	protected function createCollectionUrl()
+	protected function createCollectionUrl($parent_id)
 	{
 		return $this->url;
 	}
 
 	/**
 	 * Creates the Url that refers to a Object in this Resource.
-	 * @param  int $id 	The Object Id
-	 * @return string   The Url
+	 * @param  int $id 			The Object Id
+	 * @param  int $parent_id 	The Parent Id, Only Used For Child Resources
+	 * @return string   		The Url
 	 */
-	protected function createObjectUrl($id)
+	protected function createObjectUrl($id, $parent_id)
 	{
 		return $this->url . '/' . urlencode($id);
 	}
@@ -297,10 +315,17 @@ abstract class ColoCrossing_Resource_Abstract implements ColoCrossing_Resource
 			return null;
 		}
 
-		$content = $response->getContent();
+		$data = $response->getContent();
 		$name = $this->getName($is_collection);
 
-		return isset($content) && isset($content[$name]) && is_array($content[$name]) ? $content[$name] : null;
+		$content = isset($data) && isset($data[$name]) && is_array($data[$name]) ? $data[$name] : null;
+
+		if($is_collection)
+		{
+			return array($content, $data['total_record_count']);
+		}
+
+		return $content;
 	}
 
 	/**

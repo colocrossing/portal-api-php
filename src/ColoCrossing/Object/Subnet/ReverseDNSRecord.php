@@ -29,7 +29,7 @@ class ColoCrossing_Object_Subnet_ReverseDNSRecord extends ColoCrossing_Resource_
 		}
 
 		$resource = $this->getResource();
-		$result = $resource->update($subnet->getId(), $this->getId(), $value);
+		$result = $resource->update($subnet, $this, $value);
 
 		if ($result)
 		{

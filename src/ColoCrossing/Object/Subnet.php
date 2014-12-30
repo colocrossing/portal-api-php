@@ -35,6 +35,17 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	}
 
 	/**
+	 * Determines if Subnet is Assigned to Device
+	 * @return boolean True if Subnet is Assigned to Device
+	 */
+	public function isAssigned()
+	{
+		$device = $this->getValue('device');
+
+		return isset($device);
+	}
+
+	/**
 	 * Retrieves the Device Object that this is Assigned to. Returns null
 	 * if subnet unassigned.
 	 * @return ColoCrossing_Object_Device|null 	The Device
@@ -45,6 +56,41 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 
 		return $this->getObject('device', $client->devices);
 	}
+
+	/**
+	 * Retrieves the Device Name that this is Assigned to. Returns null
+	 * if subnet unassigned.
+	 * @return string 	The Device Name
+	 */
+	public function getDeviceName()
+	{
+		if(!$this->isAssigned())
+		{
+			return null;
+		}
+
+		$device = $this->getValue('device');
+
+		return $device['name'];
+	}
+
+	/**
+	 * Retrieves the Device Id that this is Assigned to. Returns null
+	 * if subnet unassigned.
+	 * @return string 	The Device Id
+	 */
+	public function getDeviceId()
+	{
+		if(!$this->isAssigned())
+		{
+			return null;
+		}
+
+		$device = $this->getValue('device');
+
+		return $device['id'];
+	}
+
 
 	/**
 	 * Retrieves the list of Subnet Null Route objects.
@@ -94,7 +140,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		$client = $this->getClient();
 
-		return $client->null_routes->add($this->getId(), $ip_address, $comment, $expire_date);
+		return $client->null_routes->add($this, $ip_address, $comment, $expire_date);
 	}
 
 	/**
@@ -139,7 +185,7 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		$resource = $this->getResource();
 
-		return $resource->rdns_records->updateAll($this->getId(), $rdns_records);
+		return $resource->rdns_records->updateAll($this, $rdns_records);
 	}
 
 	/**
@@ -150,6 +196,24 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
 	{
 		$cidr = intval($this->getCidr());
 		return pow(2, 32 - $cidr);
+	}
+
+	/**
+	 * Computes the Total Number of Usable Ip Addesses in the Subnet Accoring to the CIDR.
+	 * @return int The Total Number of Usable Ip Addresses
+	 */
+	public function getNumberOfUsableIpAddresses()
+	{
+		$cidr = intval($this->getCidr());
+
+		switch ($cidr) {
+			case '32':
+				return 1;
+			case '31':
+				return 0;
+		}
+
+		return $this->getNumberOfIpAddresses() - 3;
 	}
 
 	/**
@@ -188,6 +252,15 @@ class ColoCrossing_Object_Subnet extends ColoCrossing_Resource_Object
         $ip_address = ip2long($ip_address);
 
         return $start_ip <= $ip_address && $end_ip >= $ip_address;
+	}
+
+	/**
+	 * Retrieves the Ip Address in CIDR Notation
+	 * @return string The Ip Address in CIDR Notation
+	 */
+	public function getCIDRIpAddress()
+	{
+		return $this->getIpAddress() . '/' . $this->getCidr();
 	}
 
 }

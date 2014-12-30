@@ -26,14 +26,39 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	}
 
 	/**
+	 * Retrieves the device Id that is Assigned to this Port
+	 * Returns Null if port is unassigned.
+	 * @return int|null The Device Id
+	 */
+	public function getDeviceId()
+	{
+		$device = $this->getValue('device');
+
+		if(empty($device) || !is_array($device))
+		{
+			return null;
+		}
+
+		return $device['id'];
+	}
+
+	/**
+	 * Determines if this Port is Assigned to a Device
+	 * @return boolean True if port is assigned
+	 */
+	public function isAssignedToDevice()
+	{
+		$device_id = $this->getDeviceId();
+		return isset($device_id);
+	}
+
+	/**
 	 * Determines if a Bandwidth Graph is available for this Port
 	 * @return boolean True if graph is available, false otherwise.
 	 */
 	public function isBandwidthGraphAvailable()
 	{
-		$device = $this->getDevice();
-
-		return !!$this->getHasGraph() && isset($device);
+		return !!$this->getHasGraph() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -50,11 +75,10 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->getBandwidthGraph($switch->getId(), $this->getId(), $device->getId(), $start, $end);
+		return $client->devices->switches->getBandwidthGraph($switch, $this, $this->getDeviceId(), $start, $end);
 	}
 
 	/**
@@ -63,9 +87,7 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isBandwidthUsageAvailable()
 	{
-		$device = $this->getDevice();
-
-		return !!$this->getHasBandwidthUsage() && isset($device);
+		return !!$this->getHasBandwidthUsage() && $this->isAssignedToDevice();
 	}
 
 	/**
@@ -80,11 +102,10 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->getBandwidthUsage($switch->getId(), $this->getId(), $device->getId());
+		return $client->devices->switches->getBandwidthUsage($switch, $this, $this->getDeviceId());
 	}
 
 	/**
@@ -93,17 +114,16 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 	 */
 	public function isControllable()
 	{
-		$device = $this->getDevice();
-
-		return $this->isControl() && isset($device);
+		return $this->isControl() && $this->isAssignedToDevice();
 	}
 
 	/**
 	 * Sets the status of the port.
 	 * @param 	string $status 	The status of the port. Either 'on' or 'off'.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 			True if the status is set successfully, false otherwise.
 	 */
-	public function setStatus($status)
+	public function setStatus($status, $comment = null)
 	{
 		if (!$this->isControllable())
 		{
@@ -111,29 +131,30 @@ class ColoCrossing_Object_Device_NetworkPort extends ColoCrossing_Object
 		}
 
 		$switch = $this->getSwitch();
-		$device = $this->getDevice();
 
 		$client = $this->getClient();
 
-		return $client->devices->switches->setPortStatus($switch->getId(), $this->getId(), $device->getId(), $status);
+		return $client->devices->switches->setPortStatus($switch, $this, $this->getDeviceId(), $status, $comment);
 	}
 
 	/**
 	 * Turns the port on.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 	True if the status is set successfully, false otherwise.
 	 */
-	public function turnOn()
+	public function turnOn($comment = null)
 	{
-		return $this->setStatus('on');
+		return $this->setStatus('on', $comment);
 	}
 
 	/**
 	 * Turns the port off.
+	 * @param 	string $comment The comment, Optional, Max Length of 20 Chars
 	 * @return boolean 	True if the status is set successfully, false otherwise.
 	 */
-	public function turnOff()
+	public function turnOff($comment = null)
 	{
-		return $this->setStatus('off');
+		return $this->setStatus('off', $comment);
 	}
 
 }

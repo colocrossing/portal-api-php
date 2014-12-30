@@ -10,7 +10,7 @@ class ColoCrossing_Client
 	/**
 	 * The Version of this Library
 	 */
-	const VERSION = '1.0.1';
+	const VERSION = '1.1.0';
 
 	/**
 	 * The Default Options
@@ -21,6 +21,7 @@ class ColoCrossing_Client
 		'api_url' => 'https://portal.colocrossing.com/api/',
 		'api_version' => 1,
 		'request_timeout' => 60,
+		'connection_timeout' => 5,
 		'follow_redirects' => false,
 		'ssl_verify' => true,
 		'page_size' => 30
@@ -45,18 +46,24 @@ class ColoCrossing_Client
 	private $options = array();
 
 	/**
+	 * The Permission for the Client associated with the API Key.
+	 * @var array
+	 */
+	private $permissions;
+
+	/**
 	 * The executor of HTTP Requests
 	 * @var ColoCrossing_Http_Executor
 	 */
 	private $http_executor;
 
 	/**
-	 * @param string $api_token The api token.
+	 * @param string $api_key The api key.
 	 * @param array  $options   The Options to overide.
 	 */
-	public function __construct($api_token = null, $options = array())
+	public function __construct($api_key = null, array $options = array())
 	{
-		$this->setAPIToken($api_token);
+		$this->setAPIToken($api_key);
 
 		if (empty($this->api_token))
 		{
@@ -118,6 +125,36 @@ class ColoCrossing_Client
 		return isset($this->options[$key]) ? $this->options[$key] : false;
 	}
 
+	/**
+	 * Retrieve the Permssions of the User
+	 * @return array<string, string> The Permissions
+	 */
+	public function getPermissions()
+	{
+		if(isset($this->permissions))
+		{
+			return $this->permissions;
+		}
+
+		$request = new ColoCrossing_Http_Request('/', 'GET');
+		$executor = $this->getHttpExecutor();
+		$response = $executor->executeRequest($request);
+		$content = $response->getContent();
+
+		return $this->permissions = isset($content) && isset($content['permissions']) ? $content['permissions'] : array();
+	}
+
+	/**
+	 * Checks if the User has the Permission Type Requested
+	 * @param  string  $type The Type of Permission, Possible Values include 'device_cancellation' or 'rdns_records'
+	 * @return boolean True if the User has Permission
+	 */
+	public function hasPermission($type)
+	{
+		$permissions = $this->getPermissions();
+
+		return isset($permissions[$type]) && !!$permissions[$type];
+	}
 
 	/**
 	 * Retrieves the Executor of HTTP Requests. If not exists, then it creates it.

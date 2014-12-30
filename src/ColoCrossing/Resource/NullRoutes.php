@@ -41,26 +41,28 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 	/**
 	 * Adds a Null Route to an Ip Address on the provided Subnet.
-	 * @param int 		$subnet_id 		The Id of the Subnet
-	 * @param string 	$ip_address  	The Ip Address
-	 * @param string 	$comment     	The Comment Explaing the Reason for the Null Route
-	 * @param int 		$expire_date 	The Date The Null Route is to Expire as a Unix Timestamp.
-	 *                           			Defaults to 4 hrs from now. Max of 30 days from now.
-	 * @return boolean|ColoCrossing_Object_NullRoute
-	 *         						 	The new Null Route object if successful, false otherwise.
+	 * @param int|ColoCrossing_Object_Subnet 	$subnet 		The Subnet or Subnet Id
+	 * @param string 							$ip_address  	The Ip Address
+	 * @param string 							$comment     	The Comment Explaing the Reason for the Null Route
+	 * @param int 								$expire_date 	The Date The Null Route is to Expire as a Unix Timestamp.
+	 *                           			    				  Defaults to 4 hrs from now. Max of 30 days from now.
+	 * @return boolean|ColoCrossing_Object_NullRoute 	The new Null Route object if successful, false otherwise.
 	 */
-	public function add($subnet_id, $ip_address, $comment = '', $expire_date = null)
+	public function add($subnet, $ip_address, $comment = '', $expire_date = null)
 	{
-		$client = $this->getClient();
-		$subnet = $client->subnets->find($subnet_id);
+		if(is_numeric($subnet))
+		{
+			$client = $this->getClient();
+			$subnet = $client->subnets->find($subnet);
+		}
 
-		if (empty($subnet) || !$subnet->isIpAddressInSubnet($ip_address))
+		if (empty($subnet) || !$subnet->isIpAddressInSubnet($ip_address) || !$subnet->isNullRoutesEnabled())
 		{
 			return false;
 		}
 
 		$data = array(
-			'subnet_id' => $subnet_id,
+			'subnet_id' => $subnet->getId(),
 			'ip_address' => $ip_address,
 			'comment' => $comment
 		);
@@ -79,9 +81,9 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 		foreach ($null_routes as $key => $null_route)
 		{
-			$subnet = $null_route->getSubnet();
+			$null_route_subnet = $null_route->getSubnet();
 
-			if (isset($subnet) && $subnet->getId() == $subnet_id)
+			if (isset($null_route_subnet) && $subnet->getId() == $null_route_subnet->getId())
 			{
 				return false;
 			}
@@ -108,19 +110,22 @@ class ColoCrossing_Resource_NullRoutes extends ColoCrossing_Resource_Abstract
 
 	/**
 	 * Removes this Null Route.
-	 * @param  int 	$id 	The Id
+	 * @param  int|ColoCrossing_Object_NullRoute $null_route 	The Null Route or Id
 	 * @return boolean		True if the removal suceeds, false otherwise.
 	 */
-	public function remove($id)
+	public function remove($null_route)
 	{
-		$null_route = $this->find($id);
+		if(is_numeric($null_route))
+		{
+			$null_route = $this->find($null_route);
+		}
 
 		if (empty($null_route) || !$null_route->isRemovable())
 		{
 			return false;
 		}
 
-		$url = $this->createObjectUrl($id);
+		$url = $this->createObjectUrl($null_route->getId());
 
 		$response = $this->sendRequest($url, 'DELETE');
 

@@ -37,7 +37,7 @@ class ColoCrossing_Resource_Child_Networks_NullRoutes extends ColoCrossing_Resou
 			'ip_address' => $ip_address
 		);
 
-		return $this->findAll($parent_id, $options);
+		return $this->findAll($options, $parent_id);
 	}
 
 }

@@ -21,38 +21,41 @@ class ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords extends ColoCrossing
 
 	/**
 	 * Updates a Reverse DNS Records in the provided.
-	 * @param  int 		$subnet_id 	The Subnet Id
-	 * @param  int  	$id 		The Reverse DNS Record Id
-	 * @param  string 	$value 		The new value of the record
+	 * @param  int|ColoCrossing_Object_Subnet 					$subnet 	The Subnet or Subnet Id
+	 * @param  int|ColoCrossing_Object_Subnet_ReverseDNSRecord  $record 	The Reverse DNS Record  or Id
+	 * @param  string 											$value 		The new value of the record
 	 * @return boolean|int 		True if successful, false otherwise. If a ticket to review the request
 	 *                            	must be created, then the ticket id is returned.
 	 */
-	public function update($subnet_id, $id, $value)
+	public function update($subnet, $record, $value)
 	{
 		$records = array();
 		$records[] = array(
-			'id' => $id,
+			'id' => is_object($record) ? $record->getId() : $record,
 			'value' => $value
 		);
 
-		return $this->updateAll($subnet_id, $records);
+		return $this->updateAll($subnet, $records);
 	}
 
 	/**
 	 * Updates Multiple Reverse DNS Records in the provided Subnet all at once.
-	 * @param  int 						$subnet_id 	  The Subnet Id
-	 * @param  array<array(id, value)> $rdns_records  List of Arrays that have an id attribute with the Id
-	 *                                  				of the record and a value attribute with the value
-	 *                                  				of the record.
+	 * @param  int|ColoCrossing_Object_Subnet 	$subnet 		The Subnet or Subnet Id
+	 * @param  array<array(id, value)> 			$rdns_records  	List of Arrays that have an id attribute with the Id
+	 *                                  						of the record and a value attribute with the value
+	 *                                  				  		of the record.
 	 * @return boolean|int 		True if successful, false otherwise. If a ticket to review the request
 	 *                            	must be created, then the ticket id is returned.
 	 */
-	public function updateAll($subnet_id, array $records)
+	public function updateAll($subnet, array $records)
 	{
-		$client = $this->getClient();
-		$subnet = $client->subnets->find($subnet_id);
+		if(is_numeric($subnet))
+		{
+			$client = $this->getClient();
+			$subnet = $client->subnets->find($subnet);
+		}
 
-		if (empty($subnet) || $subnet->isPendingServiceRequest())
+		if (empty($subnet) || $subnet->isPendingServiceRequest()  || !$subnet->isReverseDnsEnabled())
 		{
 			return false;
 		}
@@ -62,7 +65,7 @@ class ColoCrossing_Resource_Child_Subnets_ReverseDNSRecords extends ColoCrossing
 			$data['record'][$record['id']] = $record['value'];
 		}
 
-		$url = $this->createCollectionUrl($subnet_id);
+		$url = $this->createCollectionUrl($subnet->getId());
 
 		$response = $this->sendRequest($url, 'PUT', $data);
 

@@ -47,7 +47,7 @@ class ColoCrossing_Resource_Object extends ColoCrossing_Object
 		$parent_id = $this->getId();
 		$child_resource = $this->resource->$child_type;
 
-		return $child_resource->findAll($parent_id, $options);
+		return $child_resource->findAll($options, $parent_id);
 	}
 
 	/**
@@ -61,7 +61,7 @@ class ColoCrossing_Resource_Object extends ColoCrossing_Object
 		$parent_id = $this->getId();
 		$child_resource = $this->resource->$child_type;
 
-		return $child_resource->find($parent_id, $child_id);
+		return $child_resource->find($child_id, $parent_id);
 	}
 
 }
