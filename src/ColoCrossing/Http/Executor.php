@@ -65,6 +65,11 @@ class ColoCrossing_Http_Executor
     	curl_setopt($this->curl, CURLOPT_CONNECTTIMEOUT, $this->client->getOption('connection_timeout'));
     	curl_setopt($this->curl, CURLOPT_TIMEOUT, $this->client->getOption('request_timeout'));
 
+    	if($this->client->getOption('cookies')) {
+    		curl_setopt($this->curl, CURLOPT_COOKIEJAR, $this->client->getOption('cookie_jar'));
+         	curl_setopt($this->curl, CURLOPT_COOKIEFILE, $this->client->getOption('cookie_jar'));
+        }
+
     	return $this->curl;
 	}
 
