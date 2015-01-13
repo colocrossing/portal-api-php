@@ -131,7 +131,8 @@ class ColoCrossing_Http_Executor
 
 		if (is_bool($body) && !$body)
 		{
-			throw new ColoCrossing_Error('Unable to make connection to ColoCrossing API.');
+			throw new ColoCrossing_Error('Unable to make connection. The ColoCrossing API may temporarily be unavailable or your IP address may be blocked. ' .
+											'Contact ColoCrossing Support to with your IP address to verify it is configured correctly.');
 		}
 
 		$code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
