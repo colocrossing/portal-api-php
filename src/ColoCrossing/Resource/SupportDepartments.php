@@ -14,7 +14,7 @@ class ColoCrossing_Resource_SupportDepartments extends ColoCrossing_Resource_Abs
 	 */
 	public function __construct(ColoCrossing_Client $client)
 	{
-		parent::__construct($client, 'department', '/support/departments');
+		parent::__construct($client, 'support_department', '/support/departments', 'department');
 	}
 
 }

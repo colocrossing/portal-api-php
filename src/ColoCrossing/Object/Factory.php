@@ -74,6 +74,9 @@ class ColoCrossing_Object_Factory
 			case 'support_response':
 				require_once(dirname(__FILE__) . '/SupportResponse.php');
 				return new ColoCrossing_Object_SupportResponse($client, $resource, $values);
+			case 'support_department':
+				require_once(dirname(__FILE__) . '/SupportDepartment.php');
+				return new ColoCrossing_Object_SupportDepartment($client, $resource, $values);
 			case 'ddos_zone':
 				require_once(dirname(__FILE__) . '/DdosZone.php');
 				return new ColoCrossing_Object_DdosZone($client, $resource, $values);
