@@ -6,7 +6,7 @@
  * @category   ColoCrossing
  * @package    ColoCrossing_Resource
  */
-class ColoCrossing_Resource_DdosZone extends ColoCrossing_Resource_Abstract
+class ColoCrossing_Resource_DdosZones extends ColoCrossing_Resource_Abstract
 {
 
 	/**
