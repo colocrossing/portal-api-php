@@ -11,4 +11,13 @@
 class ColoCrossing_Object_DdosZone_Attack extends ColoCrossing_Resource_Object
 {
 
+	/**
+	 * Retrieves the Type object.
+	 * @return ColoCrossing_Object The Type
+	 */
+	public function getType()
+	{
+		return $this->getObject('type');
+	}
+
 }
